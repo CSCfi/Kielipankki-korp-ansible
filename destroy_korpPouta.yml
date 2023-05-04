@@ -1,9 +1,0 @@
-- name: Destroy a compute instance
-  hosts: localhost
-  tasks:
-    - name: Destroy a VM
-      os_server:
-        name: "{{ item }}"
-        state: absent
-      with_items:
-        - "{{ pouta_instance_name }}"
