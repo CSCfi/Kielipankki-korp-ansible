@@ -1,0 +1,32 @@
+- name: Prepare server
+  hosts: korp2
+  become: yes
+
+  roles:
+      - role: ../all/roles/opsview
+        tags: opsview
+      - role: ../all/roles/fetch_backup
+        tags: fetch_backup
+      - role: apache
+        tags: apache
+      - role: korp-frontend
+        tags: korp-frontend
+      - role: korp-backend
+        tags: korp-backend
+      - role: csc_backup
+        tags: csc_backup
+      - role: download
+        tags: download
+      - role: firewall
+        tags: firewall
+      - role: geerlingguy.memcached
+        tags: memcached
+#      - role: shibboleth
+#        tags: shibboleth
+
+
+
+
+
+
+

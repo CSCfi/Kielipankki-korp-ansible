@@ -1,0 +1,182 @@
+---
+# Setup korp backend
+
+- name: install CentOS IUS release package
+  yum:
+    name: "https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm"
+    state: present
+  when: ansible_distribution == 'CentOS'
+
+- name: Set timezone
+  community.general.timezone:
+    name: "{{ timezone }}"
+
+- name: Add gunicorn user
+  user:
+    name: gunicorn
+    state: present
+
+- name: "add clarin group"
+  group:
+    name: clarin
+    state: present
+
+- name: Install CWB compile environment
+  yum:
+    name:
+      - subversion
+      - make
+      - gcc
+      - flex
+      - bison
+      - ncurses-devel
+      - readline-devel
+      - pcre-devel
+      - glib2-devel
+      - perl
+    state: present
+
+- name: Install korp backend packages
+  yum:
+    name:
+      - git224
+      - python3
+      - python3-wheel
+      - python3-devel
+      - python2-setuptools
+      - python3-setuptools
+      - python-virtualenv
+      - memcached
+      - libmemcached
+      - mariadb
+      - mariadb-devel
+
+- name: Create directories
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  loop: "{{ mk_directories }}"
+
+- name: Clone backend
+  git:
+    repo: "{{ korp_backend_repo  }}"
+    version: "{{ korp_backend_version }}"
+    dest: "{{ korp_backend_home }}"
+
+- name: Clone CWB subversion
+  subversion:
+    repo: "{{ cwb_svn_repo }}"
+    dest: "{{ cwb_compile_root }}"
+    revision: "{{ cwb_revision }}"
+
+- name: Copy cwb site config
+  template:
+    src: cwb_korp
+    dest:  "{{ cwb_compile_root }}/config/site/cwb_korp"
+
+- name: Compile/Install cwb
+  make:
+    chdir: "{{ cwb_compile_root }}"
+    target: "{{ item }}"
+    params:
+      PLATFORM: linux-64
+      SITE: cwb_korp
+  loop:
+    - clean
+    - depend
+    - all
+    - install
+  become: yes
+
+- name: Install pip
+  pip:
+    name: pip
+    state: latest
+    virtualenv:   "{{ korp_backend_venv }}"
+    virtualenv_python: python3
+
+- name: Install requirements
+  pip:
+    requirements: "{{ korp_backend_home }}/requirements.txt"
+    virtualenv:   "{{ korp_backend_venv }}"
+    virtualenv_python: python3
+
+- name: checkout worktrees
+  shell:
+    cmd: "git worktree add -f {{ item }}"
+    chdir: "{{ korp_backend_home }}"
+    creates: "{{ item.split(' ')[0] }}/.git"
+  loop:
+     - "{{ korp_backend_auth_home }} authserver/{{ korp_backend_version }}"
+     - "{{ korp_backend_plugin_home }} plugins/{{ korp_backend_version }}"
+
+- name: remove local changes in worktrees
+  shell:
+    cmd: "git checkout -f"
+    chdir: "{{ item }}"
+  loop:
+    - "{{ korp_backend_auth_home }}"
+    - "{{ korp_backend_plugin_home }}"
+  notify:
+    - restart korp-backend
+    - restart korp-authserver
+
+- name: Enable default configs for most plugins
+  file:
+    src: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py.template"
+    dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
+    state: link
+  loop:
+    - charcoder
+    - contenthider
+    - lemgramcompleter
+    - logger
+
+- name: Install custom configs for plugins
+  template:
+    src:  "{{ item }}_plugin_config.py"
+    dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
+  loop:
+    - protectedcorporadb
+
+- name: Install backend config
+  template:
+    src: backend_config.py
+    dest: "{{ korp_backend_home }}/config.py"
+
+- name: Install auth server config
+  template:
+    src: authserver_config.py
+    dest: "{{ korp_backend_auth_home }}/auth/config.py"
+
+- name: Install gevent 1.4
+  pip:
+    name: gevent
+    version: 1.4
+    virtualenv:   "{{ korp_backend_venv }}"
+    virtualenv_python: python3
+
+- name: Install gunicorn / start backend
+  pip:
+    name: gunicorn
+    virtualenv:   "{{ korp_backend_venv }}"
+    virtualenv_python: python3
+  notify:
+    - start korp-backend
+    - start korp-authserver
+
+- name: Install systemd templates
+  template:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+  loop:
+    - korp-backend.socket
+    - korp-backend.service
+    - korp-authserver.service
+  notify:
+    - restart systemd

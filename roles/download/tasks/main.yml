@@ -1,0 +1,27 @@
+---
+# Setup apache
+
+- name: Copy style static files
+  copy: 
+    src: download-style
+    dest: "{{ style_dir }}"
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+    owner: root 
+    group: root 
+  loop:
+    - "{{ style_dir }}"
+
+    
+- name: Copy conf.d template files
+  template: 
+    src: "{{ item }}.conf.j2"
+    dest: /etc/httpd/conf.d/{{ item }}.conf
+  loop:
+    - download_autoindex
+
+

@@ -1,0 +1,14 @@
+{# generates firewall rules, assumes ""/6  in item #}
+
+# Load new rules by running /etc/rc.d/rc{{ item }}.firewall
+
+# set rules
+ip{{ item }}tables -I INPUT -p tcp -m tcp --dport 443 -m comment --comment "Allow https from everywhere" -j ACCEPT
+ip{{ item }}tables -I INPUT -p tcp -m tcp --dport 80 -m comment --comment "Allow http from everywhere" -j ACCEPT
+ip{{ item }}tables -I INPUT -p tcp -m tcp -s 193.167.254.68 --dport 5666 -m comment --comment "Allow nagios" -j ACCEPT
+
+# set policies
+ip{{ item }}tables -P INPUT DROP
+ip{{ item }}tables -P FORWARD DROP
+ip{{ item }}tables -P OUTPUT ACCEPT
+

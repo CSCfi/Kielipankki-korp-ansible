@@ -1,0 +1,13 @@
+# turn HTTP_REMOTE_USER from Proxy into REMOTE_USER
+RewriteEngine On
+
+# block if spoofkey incorrect
+RewriteCond %{HTTP:SHIB-SPOOF-CHECK} !^{{ korp_shib_spoof_key }}$
+RewriteRule ^ - [F]
+
+# rewrite to REMOTE_USER
+RewriteCond %{HTTP:REMOTE-USER} ^(.+)$
+RewriteRule .* - [E=REMOTE_USER:%1]
+
+
+

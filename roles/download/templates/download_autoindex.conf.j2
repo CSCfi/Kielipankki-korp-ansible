@@ -1,0 +1,57 @@
+<Directory /var/www/html/download-style>
+      Options -Indexes +Includes
+      XbitHack on
+</Directory>
+
+<Directory /var/www/html/download>
+      AllowOverride all
+      AddOutputFilterByType INCLUDES httpd/unix-directory
+    # Tell Apache to add theme support to autoindex
+      Options Indexes FollowSymLinks Includes
+      XbitHack on
+      AddIcon /icons/dir.png ^^DIRECTORY^^
+      IndexOptions +FancyIndexing
+      IndexOptions +VersionSort
+      IndexOptions +HTMLTable
+      IndexOptions +FoldersFirst
+      IndexOptions +IconsAreLinks
+      IndexOptions +IgnoreCase
+      IndexOptions +ShowForbidden
+      IndexIgnore .??*
+      IndexIgnore ..
+      IndexIgnore *~
+      IndexOptions +SuppressHTMLPreamble
+      IndexOptions +Charset=UTF-8
+      IndexOptions +IconWidth=16
+      IndexOptions +IconHeight=16
+      IndexOptions +NameWidth=*
+      IndexOptions +DescriptionWidth=*
+      IndexOptions +SuppressLastModified
+      IndexOptions -SuppressSize
+      IndexOrderDefault Ascending Name
+      HeaderName /download-style/header.html
+      ReadmeName /download-style/footer.html
+
+AddDescription "More information" "README*.txt"
+AddDescription "Licence information" "license*.txt"
+AddDescription "Licence information" "LICENSE*.txt"
+AddDescription "Licence information" "licence*.txt"
+AddDescription "Licence information" "LICENCE*.txt"
+
+{% for item in autoindex_info %}
+{% if item.url is defined %}
+AddDescription '<div><a target="_blank" href="{{ item.url }}">{{ item.text }}</a></div>' "{{ item.regex }}"
+{% else %}
+AddDescription '<div>{{ item.text }}</div>' "{{ item.regex }}"
+{% endif %}
+{% endfor %}
+
+# General
+AddDescription "compressed file" "*.zip"
+AddDescription "text document" "*.txt"
+
+ErrorDocument 403 /download-style/download_error403.html
+ErrorDocument 401 /download-style/download_error403.html
+
+</Directory>
+

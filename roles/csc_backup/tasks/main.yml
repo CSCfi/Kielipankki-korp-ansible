@@ -1,0 +1,58 @@
+---
+# Setup korp frontend
+
+- name: Ensure directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "3777"
+    owner: root
+    group: root
+  loop:
+    - "{{ tmp_dir }}"
+
+- name: "add {{ cv_unix_group }} group"
+  group:
+    name: "{{ cv_unix_group }}"
+    state: present
+
+- name: "Check access to {{ cv_proxy_host }}"
+  wait_for:
+    host: "{{ cv_proxy_host }}"
+    port: "{{ item }}"
+    state: started
+    delay: 0
+    timeout: 3             # Stop checking after timeout (sec)
+  ignore_errors: yes
+  with_items:
+    - 8400
+    - 8404
+
+- name: get backup tool and config
+  shell:
+    cmd: wget -c "{{ cv_download_base }}{{ item }}"
+    chdir: "{{ local_download_dir }}"
+  delegate_to: localhost
+  become: no
+  loop:
+    - "{{ cv_package }}"
+    - "{{ cv_config }}"
+
+- name: copy backup config to client
+  vars:
+    ansible_remote_tmp: "{{ tmp_dir }}"
+  copy:
+    src: "{{ local_download_dir }}/{{ cv_config }}"
+    dest: "{{ tmp_dir }}/{{ cv_basedir }}/{{ cv_config }}"
+
+- name: extract backup tool to client
+  unarchive:
+    src: "{{ local_download_dir }}/{{ cv_package }}"
+    dest: "{{ tmp_dir }}"
+    creates: "{{ cv_install_cmd }}"
+
+- name: Install backup tool
+  shell:
+    cmd: "{{ cv_install_cmd }} -p {{ cv_config }}"
+    chdir: "{{ tmp_dir }}/{{ cv_basedir }}/"
+    creates: /opt/hds/Base/cvlaunchd

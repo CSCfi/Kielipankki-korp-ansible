@@ -1,0 +1,12 @@
+
+# note that the package is 6+ GB, so you need plenty of free space locally and remotely.
+local_download_dir: "{{ lookup('env','HOME') }}/Downloads"
+tmp_dir: "/data1/tmp/commvault"
+
+cv_download_base: "ftp://linftp.csc.fi/pub/Enterprise_Linux/commvault/linux/"
+cv_package: Linux_11.20.tar
+cv_config: default_espoo.xml
+cv_basedir: Unix
+cv_install_cmd: "{{ tmp_dir }}/{{ cv_basedir }}/silent_install"
+cv_proxy_host: fb-p1.csc.fi
+cv_unix_group: simpana

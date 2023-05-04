@@ -1,0 +1,6 @@
+# Static IP settings for generated CPouta VMs. Needs to be adjusted if the IP pool changes.
+[korp_old]
+korp-old-janiemi ansible_host=195.148.22.239 ansible_user=cloud-user ansible_ssh_private_key_file=~/.ssh/id_rsa  ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+[korp2]
+korp2 ansible_host=86.50.31.6 ansible_user=cloud-user ansible_ssh_extra_args='-o StrictHostKeyChecking=no'

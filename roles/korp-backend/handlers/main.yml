@@ -1,0 +1,27 @@
+---
+- name: restart systemd
+  command: systemctl daemon-reload
+
+- name: start korp-backend
+  systemd:
+    name: korp-backend
+    state: started
+  become: yes
+
+- name: start korp-authserver
+  systemd:
+    name: korp-authserver
+    state: started
+  become: yes
+
+- name: restart korp-backend
+  systemd:
+    name: korp-backend
+    state: restarted
+  become: yes
+
+- name: restart korp-authserver
+  systemd:
+    name: korp-authserver
+    state: restarted
+  become: yes

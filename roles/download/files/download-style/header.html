@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Listing folder</title>
+		<meta name="description" content="Apache folder listing" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<meta content="noarchive" name="robots" />
+		<link rel="shorcut icon" href="/icons/favicon.ico" />
+		<link href="/favicon.ico" rel="shortcut icon" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
+		<link href="/download-style/style.css" media="screen,projection" type="text/css" rel="stylesheet" />
+
+<!--
+<link rel="apple-touch-icon" sizes="57x57" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="http://kielipankki.csc.fi/wp-content/themes/kielipankki/favicon-16x16.png">
+-->
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+		<script>
+		$(document).ready(function(){
+
+			// Set the path heading
+			var location = document.location.pathname;
+			var segments = location.split("/");
+			var breadcrumbs = '/';
+			var currentPath = "/";
+			for (var i=0; i<segments.length; i++) {
+				if (segments[i] != '') {
+					currentPath += segments[i] + '/';
+					breadcrumbs += '<a href="' +  currentPath + '">' + segments[i] + '</a>/';
+				}
+			}
+			
+			document.title = "Listing folder '" + location + "' at " + document.domain;
+			$('#folder').html(breadcrumbs);
+			
+			// Hide the 'parent' link if we're at the top level
+			if (location == '/') $('#parent').hide();
+           
+			// Set header cell widths
+			$('hr').parent().remove();
+			var headers = $('th');
+			// First column should be the icon
+			$(headers[0]).addClass('icon');
+			// Last two columns should be 'date' and 'size' - no way to be sure really so this is a bit of a hack
+			$(headers[headers.length-1]).addClass('size');
+			$(headers[headers.length-2]).addClass('date');
+			
+			// Setup row hover
+			$('tr').mouseover(function(){this.className="hover"}).mouseout(function(){this.className=""});
+			$('td:has(a)').addClass('name');
+			// this is a hack: enclose links that should not get class name in div tags
+			$('td:has(div)').removeClass('name');
+
+			// Refresh button
+			$('a#refresh').click(function(){window.location.reload(true);return false;});
+		});
+		</script>
+	</head>
+	<body>
+    	  <div id="wrapper"  class="clearfix">
+	    <div id="header" class="clearfix">
+              
+	      <table style="width: 100%">
+		<tr>
+		  <td>
+		    <div id="main-logo"> 
+		      <h1> 
+			<a href="http://www.kielipankki.fi" class="logo"> 
+			  <img src="/icons/KIELIPANKKI_logotxt_SU_EN_kopio.png" alt="Kielipankki" /></a> 
+		      </h1> 
+		    </div><!-- end main logo --> 
+		  </td>
+		  <td>
+		    <div id="description" class="column" style="text-align: left">Lataukset<br>Downloads</div> 
+		  </td>
+		</table>
+	      </div><!-- end header --> 
+	      <div id="commandbar" class="clearfix">
+		<ul>
+		  <li><a href="/download/" id="home">home</a></li>
+		  <li><a href="../" id="parent">up</a></li>
+              </ul>
+              </div><!-- end commandbar --> 
+	      <div id="files">
+		<h2>
+            	  <span>Location: <span id="folder"></span> <span style="float:right;">Logged in as: <!--#echo var="REMOTE_USER" -->&nbsp;</span>
+		</h2>
+	      

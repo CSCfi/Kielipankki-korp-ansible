@@ -1,0 +1,34 @@
+korp_backend_name: Kielipankki-korp-backend
+korp_backend_repo: https://github.com/CSCfi/{{ korp_backend_name }}.git
+korp_backend_version: master
+korp_backend_socket: "/run/{{ korp_backend_name }}.sock"
+cwb_svn_repo: http://svn.code.sf.net/p/cwb/code/cwb/trunk
+cwb_revision: "r1732"
+cwb_registry: /v/corpora/registry
+cwb_compile_root: /v/appl/cwb
+korp_git_root: /v/appl/korp
+korp_backend_home: "{{ korp_git_root }}/{{ korp_backend_name }}"
+korp_backend_auth_home:  "{{ korp_git_root }}/Kielipankki-korp-backend-auth"
+korp_backend_plugin_home:  "{{ korp_git_root }}/Kielipankki-korp-backend-plugins"
+
+korp_backend_venv: "{{ korp_git_root }}/{{ korp_backend_name }}/venv"
+timezone: "Europe/Helsinki"
+
+korp_db_name: "korp"
+korp_db_server: "kielipankkidb.csc.fi"
+korp_db_port: 3306
+korp_db_user: "korp"
+korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp/korp_db_user_password') }}"
+backend_cache_dir: "/v/korp/cache"
+
+mk_directories:
+- { path: /v/                , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
+- { path: /v/appl/           , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
+- { path: /v/corpora/data    , owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
+- { path: "{{ cwb_registry }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
+- { path: /v/korp/           , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
+- { path: /v/korp/log/       , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
+- { path: /v/korp/log/korp-py, owner: gunicorn, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
+- { path: "{{ backend_cache_dir }}", owner: gunicorn, group: clarin, mode: "u+rwx,g+rwxs,o-rwx" }
+- { path: "{{ korp_git_root }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
+- { path: /v/appl/utils/     , owner: root, group: clarin, mode: "u+rwx,g+rwxs,o-rwx" }

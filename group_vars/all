@@ -1,0 +1,868 @@
+---
+
+opsview_rpm: opsview-agent-6.7.3.202206170928-1.ct7.x86_64.rpm
+
+# settigs for pass
+password_store: "lb_passwords/" # relative to .password-store root
+
+local_user: "{{ lookup('env','USER') }}"
+# name Pouta dev instance using local user to avoid conflicts.
+vm_name_postfix: "{{ local_user }}"
+
+korp_backend_name: Kielipankki-korp-backend
+korp_backend_socket: "/run/{{ korp_backend_name }}.sock"
+
+korp_shib_spoof_key: "{{ lookup('passwordstore', 'lb_passwords/portal/wp_shib_spoof_key') }}"
+
+
+korp_url: https://www.kielipankki.fi/korp
+korp_backend_url: "{{ korp_url }}/api8/"
+korp_backend_download_cgi: "{{ korp_url }}/cgi-bin/korp/korp_download.cgi"
+
+
+# WP-Cli specific
+remote_deploy_user: 'apache'
+remote_deploy_group: 'apache'
+
+# Webserver
+korp_private_key: korp.csc.fi.key 
+korp_certificate: korp.csc.fi.pem
+intermediate_chain: GEANT_OV_RSA_CA4.pem
+
+#Backup settings
+backup_dir: "/var/backup"
+#Server IPs for getting backups:
+portal_server_ip: 195.148.21.204
+metashare_server_ip: 86.50.253.167
+webanno_server_ip: 195.148.31.151
+
+
+# Shibboleth
+shibboleth_key: "sp.korp.csc.fi.key"
+shibboleth_certificate: "sp.korp.csc.fi.crt"
+rems_aa_cert: "idp.remsaa.fi.crt"
+
+shib_cert_contents:
+  - "{{ password_store }}/korp/{{ shibboleth_key }}"
+  - "{{ password_store }}/korp/{{ shibboleth_certificate }}"
+  - "{{ password_store }}/remsaa/{{ rems_aa_cert }}"
+
+autoindex_info:
+  - regex: 'acquis-ftb3/*.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+  - regex: 'acquis-ftb3'
+    text: 'The Finnish Sub-corpus of the JRC-Acquis Multilingual Parallel Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017020801'
+
+  - regex: 'AI2D-RST/*.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+  - regex: 'AI2D-RST'
+    text: 'A multimodal corpus of 1000 primary school science diagrams'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019120407'
+
+  - regex: 'aku-egg.zip'
+    text: 'CLARIN ACA +NC +PRIV +DEP +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2015041311'
+  - regex: 'aku-egg'
+    text: 'Puheen ja EGG:n samanaikaiset tallenteet'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020112923'
+
+  - regex: 'amph*'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017022402'
+  - regex: 'AMPH'
+    text: 'amph Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2015021301'
+
+  - regex: 'avoid.zip'
+    text: 'CLARIN RES +NC +PRIV +DEP'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201901162'
+  - regex: 'avoid'
+    text: 'Corpus of Age-related Voice Disguise'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018060621'
+
+  - regex: 'BYU'
+    text: 'The BYU corpora at Kielipankki - The Language Bank of Finland'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201711061'
+  - regex: 'BYU/COCA*'
+    text: 'CLARIN RES +ND +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017072503'
+  - regex: 'BYU/COHA*'
+    text: 'CLARIN RES +ND +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017072507'
+  - regex: 'BYU/GloWbE*'
+    text: 'CLARIN RES +ND +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017072511'
+
+  - regex: 'ccmh-src/www/*.txt'
+    text: 'ccmh-src'
+    url: 'http://urn.fi/urn:nbn:fi:lb-20140730106'
+  - regex: 'ccmh-src/www/*.html'
+    text: 'ccmh-src'
+    url: 'http://urn.fi/urn:nbn:fi:lb-20140730106'
+  - regex: 'ccmh-src/www/*.xml'
+    text: 'ccmh-src'
+    url: 'http://urn.fi/urn:nbn:fi:lb-20140730106'
+  - regex: 'ccmh-src/www/*.xls'
+    text: 'ccmh-src'
+    url: 'http://urn.fi/urn:nbn:fi:lb-20140730106'
+  - regex: 'ccmh-src/www'
+    text: 'Browsable web pages'
+  - regex: 'ccmh-src/*.zip'
+    text: 'CC BY'
+    url: 'http://creativecommons.org/licenses/by/4.0/'
+  - regex: 'ccmh-src'
+    text: 'Corpus of Old Church Slavonic Texts, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-20140730106'
+
+  - regex: 'CEAL_orig_20170113.zip'
+    text: 'CLARIN RES +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017011305'
+  - regex: 'CEAL'
+    text: 'CEAL corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016110901'
+
+  - regex: 'ceal-par-s-dl.zip'
+    text: 'CLARIN ACA +AFFIL=EDU +NC 1.0'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021060204'
+
+  - regex: 'CEAL/ceal-par-s-dl'
+    text: 'ceal-par-s-dl'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021060203'
+
+  - regex: 'CEAL/CEAL_orig_20170113.zip'
+    text: 'CLARIN RES +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017011305'
+
+  - regex: 'CEAL/ceal-dl'
+    text: 'ceal-dl'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017011301'
+
+  - regex: 'cfinsl/elicit/*.zip'
+    text: 'CC BY NC SA'
+    url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
+
+  - regex: 'cfinsl/elicit'
+    text: 'CFinSL Elicited Narratives'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019092710'
+
+  - regex: 'cfinsl/conv/*.zip'
+    text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019012325'
+
+  - regex: 'cfinsl/conv'
+    text: 'CFinSL Conversations'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201910041'
+
+  - regex: 'cfinsl'
+    text: 'Corpus of Finnish Sign Language'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019012321'
+
+  - regex: 'klk_fi_1771_1874'
+    text: 'CLARIN PUB +BY'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201502113'
+
+  - regex: 'klk-fi/1771_1874'
+    text: 'Kansalliskirjaston lehtikokoelma 1771&mdash;1874'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201405276'
+
+  - regex: 'klk-fi/1875_1920'
+    text: 'Kansalliskirjaston lehtikokoelma 1875&mdash;1920'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201405276'
+
+  - regex: 'klk-fi'
+    text: 'Kansalliskirjaston lehtikokoelma'
+
+  - regex: 'DSPCON'
+    text: 'Aalto University DSP Course Conversation Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2015101901'
+
+  - regex: 'dspcon2013-2015-dl'
+    text: 'Aalto University DSP Course Conversation Corpus 2013-2015'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016051604'
+
+  - regex: 'dspcon2013-2016-dl'
+    text: 'Aalto University DSP Course Conversation Corpus 2013-2016'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017092133'
+
+  - regex: 'eduskunta/*wav.zip'
+    text: 'CLARIN PUB +BY +PRIV +ND +OTHER 1.0'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019112822'
+
+  - regex: 'eduskunta/*eaf.zip'
+    text: 'CLARIN PUB +BY +PRIV'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019112823'
+
+  - regex: 'eduskunta/*vrt.zip'
+    text: 'CLARIN PUB +BY +PRIV'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019112823'
+
+  - regex: 'eduskunta/v1.5'
+    text: 'Plenary Sessions of the Parliament of Finland'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019101721'
+
+  - regex: 'eduskunta/v1'
+    text: 'Plenary Sessions of the Parliament of Finland'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017030901'
+
+  - regex: 'eduskunta'
+    text: 'Plenary Sessions of the Parliament of Finland'
+
+  - regex: 'ELFA_xml.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'ELFA_txt.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'ELFA_wav_audio'
+    text: 'CLARIN RES +PLAN +NC +INF +PRIV '
+    url: 'http://urn.fi/urn:nbn:fi:lb-20150304132'
+
+  - regex: 'ELFA'
+    text: 'ELFA corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201403262'
+
+  - regex: 'FBC/fbc-*'
+    text: 'CLARIN RES +PLAN+BY+NC+LOC+NORED+ND'
+    url: 'http://urn.fi/urn:nbn:fi:lb-20150304135'
+
+  - regex: 'FBC/FBC.zip'
+    text: 'CLARIN RES +PLAN+BY+NC+LOC+NORED+ND'
+    url: 'http://urn.fi/urn:nbn:fi:lb-20150304135'
+
+  - regex: 'FBC'
+    text: 'Finnish Broadcast Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201403265'
+
+  - regex: 'Fenno-Ugrica*.zip'
+    text: 'CC BY'
+    url: 'http://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'Fenno-Ugrica'
+    text: 'Fenno-Ugrica'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201902261'
+
+  - regex: 'Fenno-Ugrica/*'
+    text: 'Fenno-Ugrica'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201902261'
+
+  - regex: 'fi-parliament-asr/*.zip'
+    text: 'CLARIN PUB +BY +PRIV +ND +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019112822'
+
+  - regex: 'fi-parliament-asr'
+    text: 'Aalto Finnish Parliament ASR Corpus 2008-2020'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021051903'
+
+  - regex: 'finestbert/*.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'finestbert'
+    text: 'FinEst BERT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020061201'
+
+  - regex: 'FinnWordNet/v2.0/FinnWordNet-2.0.zip'
+    text: 'CC +BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'FinnWordNet/v2.0'
+    text: 'FinnWordNet-dl'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016042503'
+
+  - regex: 'FinnWordNet'
+    text: 'FinnWordNet'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2014052714'
+
+  - regex: 'finsen'
+    text: 'FinnSentiment'
+
+  - regex: 'finsen/src/*.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'finsen/src'
+    text: 'Finnsentiment, src'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020111001'
+
+  - regex: 'finnish-tagtools'
+    text: 'Finnish Tagtools'
+
+  - regex: 'finnish-tagtools/v1.1'
+    text: 'Finnish Tagtools 1.1'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018062101'
+
+  - regex: 'finnish-tagtools/v1.3'
+    text: 'Finnish Tagtools 1.3'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201811141'
+
+  - regex: 'finnish-tagtools/v1.4'
+    text: 'Finnish Tagtools 1.4'
+
+  - regex: 'FNC1/klk_fi_*.zip'
+    text: 'CC +BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'FNC1'
+    text: 'Kansalliskirjaston lehtikokoelman suomenkieliset n-grammit 1820-2000'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2014073038'
+
+  - regex: 'FTC'
+    text: 'Finnish Text Collection'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201403268'
+
+  - regex: 'FTC-B'
+    text: 'Finnish Text Collection - Commercial Use'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201908072'
+
+  - regex: 'fvcc_v1.zip'
+    text: 'CC BY'
+    url: 'http://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'fvcc_v1'
+    text: 'Finnish Verbal Colorative Constructions'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017090401'
+
+  - regex: 'GeM-HTB/*.zip'
+    text: 'CC BY NC'
+    url: 'https://creativecommons.org/licenses/by-nc/4.0/'
+
+  - regex: 'GeM-HTB'
+    text: 'A Multimodal Corpus of Tourist Brochures'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201411281'
+
+  - regex: 'giellagas-north/*.zip'
+    text: 'CLARIN RES +INF +PRIV +DEP'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2015061211'
+
+  - regex: 'giellagas-north'
+    text: 'Pohjoissaamen näytekorpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201407302'
+
+  - regex: 'hallituskausi/*/hallituskausi*.zip'
+    text: 'CC BY'
+    url: 'http://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'hallituskausi'
+    text: 'Hallituskausi Translation Memories'
+
+  - regex: 'hallituskausi/2007-2011'
+    text: 'The "Hallituskausi 2007–2011" Translation Memory'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017090402'
+
+  - regex: 'hallituskausi/2011-2015'
+    text: 'The "Hallituskausi 2011–2015" Translation Memory'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017090403'
+
+  - regex: 'HCS'
+    text: 'Helsinki Corpus of Swahili 2.0'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2014032624'
+
+  - regex: 'HCS/na-v2'
+    text: 'Not Annotated Version'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016011302'
+
+  - regex: 'HCS/a-v2'
+    text: 'Annotated Downloadable Version'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201803271'
+
+  - regex: 'hc/vrt/*.zip'
+    text: 'CLARIN ACA +NC +DEP'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021052001'
+
+  - regex: 'hc'
+    text: 'Helsinki Corpus of English Texts'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021051901'
+
+  - regex: 'helpuhe'
+    text: 'The Longitudinal Corpus of Finnish Spoken in Helsinki'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201609142'
+
+  - regex: 'hfst-morphologies/en/wn-bnc'
+    text: 'HFST English Morphology based on WordNet 2.0 and BNC corpora'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018041703'
+
+  - regex: 'hfst-morphologies/fi/omorfi'
+    text: 'HFST Finnish Morphology based on Omorfi'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018041701'
+
+  - regex: 'hfst-morphologies/*'
+    text: 'HFST morphologies for various languages'
+
+  - regex: 'hfst-morphologies'
+    text: 'HFST morphologies for various languages'
+
+  - regex: 'hfst-morphologies/sv/dsso'
+    text: 'HFST Swedish Morphology based on Den stora svenska ordlistan'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018041702'
+
+  - regex: 'hfst-morphologies/test/'
+    text: 'HFST test morphologies for various languages'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018041704'
+
+  - regex: 'iijoki/vrt/iijoki_vrt.zip'
+    text: 'CLARIN ACA +NC +DEP'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021030501'
+
+  - regex: 'iijoki/vrt'
+    text: 'Iijoki VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021020401'
+
+  - regex: 'iijoki/src/iijoki_src.zip'
+    text: 'CLARIN ACA +NC +DEP'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021030503'
+
+  - regex: 'iijoki/src'
+    text: 'Iijoki SRC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021020403'
+
+  - regex: 'iijoki'
+    text: 'Iijoki Collection'
+    url: 'https://www.kielipankki.fi/aineistot/iijoki/'
+
+  - regex: 'italian-letters/*.zip'
+    text: 'CC BY SA'
+    url: 'http://creativecommons.org/licenses/by-sa/4.0/'
+
+  - regex: 'italian-letters'
+    text: 'Italian Letters from the 16. Century'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016031701'
+
+  - regex: 'italian-letters/*'
+    text: 'Italian Letters from the 16. Century'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016031701'
+
+  - regex: 'Karjalan kielen sanakirja'
+    text: 'CC BY'
+    url: 'http://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'KKS'
+    text: 'Karjalan kielen sanakirja (XML)'
+    url: 'http://urn.fi/urn:nbn:fi:lb-20140730157'
+
+  - regex: 'kipo_v2.zip'
+    text: 'PUB CC BY NC SA'
+    url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
+
+  - regex: 'kipo'
+    text: 'Suomen viittomakielten kielipoliittinen ohjelma'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020112921'
+
+  - regex: 'la-murre/*.zip'
+    text: 'CC BY ND'
+    url: 'https://creativecommons.org/licenses/by-nd/4.0/'
+
+  - regex: 'la-murre'
+    text: 'The Finnish Dialect Syntax Archive'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2014052716'
+
+  - regex: 'la-murre/audio'
+    text: 'EAF, WAV amd TextGrid files'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020112935'
+
+  - regex: 'la-murre/vrt'
+    text: 'VRT files'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019092001'
+
+  - regex: 'las2*'
+    text: 'CLARIN RES'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2015041305'
+
+  - regex: 'LAS2'
+    text: 'Advanced Finnish Learners’ Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201407167'
+
+  - regex: 'lehdet90ff/*/*.zip'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016050602'
+
+  - regex: 'lehdet90ff'
+    text: 'Finnish Magazines and Newspapers from the 1990s and 2000s'
+
+  - regex: 'lehdet90ff/v1'
+    text: 'Finnish Magazines and Newspapers from the 1990s and 2000s v1'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016011101'
+
+  - regex: 'lehdet90ff/v2/src'
+    text: 'Finnish Magazines and Newspapers from the 1990s and 2000s v2'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017091901'
+
+  - regex: 'lehdet90ff/v2/vrt'
+    text: 'Finnish Magazines and Newspapers from the 1990s and 2000s (VRT) v2'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201908191'
+
+  - regex: 'montint-src/*.zip'
+    text: 'CLARIN ACA +NC +PRIV +DEP +OTHER 1.0'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021050422'
+
+  - regex: 'montint-src'
+    text: 'Yves Montand in the USSR interviews, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020081501'
+
+  - regex: 'opensubtitles-fi/opensub-fi-2017-src/*.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'opensubtitles-fi/opensub-fi-2017-src'
+    text: 'Finnish OpenSubtitles 2017, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019110801'
+
+  - regex: 'opensubtitles-fi/opensub-fi-2017-vrt/*.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'opensubtitles-fi/opensub-fi-2017-vrt'
+    text: 'Finnish OpenSubtitles 2017, VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081701'
+
+  - regex: 'opensubtitles-fi'
+    text: 'Finnish OpenSubtitles'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019110801'
+
+  - regex: 'opusparcus'
+    text: 'Open Subtitles Paraphrase Corpus for Six Languages'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018021221'
+
+  - regex: 'ORACC/*/*.zip'
+    text: 'CC BY SA'
+    url: 'https://creativecommons.org/licenses/by-sa/4.0/'
+
+  - regex: 'ORACC/2017-09/vrt'
+    text: 'ORACC, Downloadable Version, September 2017'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019111602'
+
+  - regex: 'ORACC/*'
+    text: 'Open Richly Annotated Cuneiform Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019111602'
+
+  - regex: 'ORACC'
+    text: 'Open Richly Annotated Cuneiform Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019111602'
+
+  - regex: 'psychlingdesc'
+    text: 'Psycholinguistic Descriptives'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018081601'
+
+  - regex: 'Raja-Karjalan_korpus'
+    text: 'CC BY'
+    url: 'http://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'finka'
+    text: 'Raja-Karjalan korpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017121322'
+
+  - regex: 'reittidemo.zip'
+    text: 'CC 0'
+    url: 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
+
+  - regex: 'reittidemo'
+    text: 'Reitti A-siipeen'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2014101401'
+
+  - regex: 'rel-freq-fi-lit.zip'
+    text: 'CC BY'
+    url: 'http://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'rel-freq-fi-lit'
+    text: 'Relative frequencies in native and translated Finnish literary prose'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018120301'
+
+  - regex: 'ScotsCorr/vrt/*.zip'
+    text: 'CLARIN ACA +NC +DEP'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016051203'
+
+  - regex: 'ScotsCorr'
+    text: 'Helsinki Corpus of Scottish Correspondence'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201411071'
+
+  - regex: 'ScotsCorr/vrt'
+    text: 'Helsinki Corpus of Scottish Correspondence'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201411071'
+
+  - regex: 'YLE/fi-selko/2011-2018-selko-src/ylenews-fi-2011-2018-selko-src'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019050903'
+
+  - regex: 'YLE/fi-selko/2011-2018-selko-vrt/ylenews-fi-2011-2018-selko-vrt'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021117'
+
+  - regex: 'YLE/fi-selko/2011-2018-selko-s-vrt/ylenews-fi-2011-2018-selko-s-vrt.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'YLE/fi-selko/2019-2020-selko-src/ylenews-fi-2019-2020-selko-src'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019050903'
+
+  - regex: 'YLE/fi-selko/2011-2018-selko-src'
+    text: 'Easy-to-read Finnish, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019050901'
+
+  - regex: 'YLE/fi-selko/2011-2018-selko-vrt'
+    text: 'Easy-to-read Finnish, VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021115'
+
+  - regex: 'YLE/fi-selko/2011-2018-selko-s-vrt'
+    text: 'Easy-to-read Finnish, scrambled VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021113'
+
+  - regex: 'YLE/fi-selko/2019-2020-selko-src'
+    text: 'Easy-to-read Finnish, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019050901'
+
+  - regex: 'semfinlex/asd/semfinlex_asd*'
+    text: 'Finnish Parliament original statutes from 1734-2018'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019042611'
+
+  - regex: 'semfinlex/asd'
+    text: 'Finnish Parliament original statutes from 1734-2018'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019042611'
+
+  - regex: 'semfinlex/kko_kho/fi'
+    text: 'Finnish Supreme and Supreme Administrative Court decisions from 1980-2018 in Finnish'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019042612'
+
+  - regex: 'semfinlex/kko_kho/sv'
+    text: 'Finnish Supreme and Supreme Administrative Court decisions from 1980-2018 in Swedish'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019052701'
+
+  - regex: 'semfinlex/kko_kho'
+    text: 'Finnish Supreme and Supreme Administrative Court decisions from 1980-2018'
+
+  - regex: 'semfinlex'
+    text: 'Finnish parliament and court documents'
+
+  - regex: 'sfnet*'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017022206'
+
+  - regex: 'SFNET'
+    text: 'SFNET Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-20150126'
+
+  - regex: 'SKN/*.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'SKN'
+    text: 'Samples of spoken Finnish'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016042701'
+
+  - regex: 'SNC1/klk_sv_*.zip'
+    text: 'CC +BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'SNC1'
+    text: 'Kansalliskirjaston lehtikokoelman ruotsinkieliset n-grammit 1770-1940'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2014073038'
+
+  - regex: 'SSDC*.zip'
+    text: 'CLARIN RES +PRIV'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017100121'
+
+  - regex: 'SSDC'
+    text: 'Skolt Saami Documentation Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2014073037'
+
+  - regex: 'STT/*/*.zip'
+    text: 'CLARIN RES +NC +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019052705'
+
+  - regex: 'STT'
+    text: 'Finnish News Agency'
+
+  - regex: 'STT/stt-fi-1992-2018-src'
+    text: 'Finnish News Agency Archive 1992-2018, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2018121004'
+
+  - regex: 'STT/stt-fi-1992-2018-conllu-src'
+    text: 'Finnish News Agency Archive 1992-2018, CoNLL-U, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020031201'
+
+  - regex: 'Suomi24/*/*.zip'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017021630'
+
+  - regex: 'Suomi24'
+    text: 'The Suomi 24 Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017021630'
+
+  - regex: 'Suomi24/2001-2017'
+    text: 'Suomi24 2001-2017, VRT v1.1'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021801'
+
+  - regex: 'taaf/taaf'
+    text: 'CLARIN ACA +NC +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019040802'
+
+  - regex: 'taaf'
+    text: 'Triangle of Aspects Analysis of Frozen'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019022701'
+
+  - regex: 'termforum-src/*/*.pdf'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/deed.fi'
+
+  - regex: 'termforum-src/termforum-src-atk'
+    text: 'Ensimmäinen ATK-sanasto'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081901'
+
+  - regex: 'termforum-src/termforum-src-halo'
+    text: 'Halosanasto'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081902'
+
+  - regex: 'termforum-src/termforum-src-karavaanari'
+    text: 'Karavaanarin sanasto'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081903'
+
+  - regex: 'termforum-src/termforum-src-kokous'
+    text: 'Kokous- ja konferenssisanasto'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081904'
+
+  - regex: 'termforum-src/termforum-src-maastopyoraily'
+    text: 'Maastopyöräilysanasto'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081905'
+
+  - regex: 'termforum-src/termforum-src-polkupyorawiki'
+    text: 'Polkupyöräwikin sanasto'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081906'
+
+  - regex: 'termforum-src/termforum-src-puutarha'
+    text: 'Puutarhasanasto'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081907'
+
+  - regex: 'termforum-src/termforum-src-rahoitus'
+    text: 'Rahoitusalan sanasto'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081908'
+
+  - regex: 'termforum-src/termforum-src-tietotekniikka'
+    text: 'Tietotekniikkasanasto'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081909'
+
+  - regex: 'termforum-src/termforum-src-tv'
+    text: 'TV-mittaritutkimus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021081910'
+
+  - regex: 'termforum-src'
+    text: 'Terminology Forum Glossaries (selection), source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021051911'
+
+  - regex: 'TSK/*/*.zip'
+    text: 'CC BY NC ND'
+    url: 'https://creativecommons.org/licenses/by-nc-nd/4.0'
+
+  - regex: 'TSK/TSK-35'
+    text: 'The Vocabulary of Safety and Health at Work'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017090407'
+
+  - regex: 'TSK/TSK-49'
+    text: 'The Terminological Vocabulary of Kela – Benefit-related Concepts'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017090406'
+
+  - regex: 'TSK'
+    text: 'Sanastokeskus TSK'
+
+  - regex: 'UHLCS'
+    text: 'U Helsinki Language Corpus Server'
+    url: 'http://urn.fi/urn:nbn:fi:lb-201403269'
+
+  - regex: 'quantlang-uhlcs'
+    text: 'quantlang-uhlcs corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016012202'
+
+  - regex: 'Wanca/*/*/wanca*.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'Wanca/2016/2016-src'
+    text: 'Wanca 2016, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020022901'
+
+  - regex: 'Wanca/2016/2016-vrt'
+    text: 'Wanca 2016, VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020030501'
+
+  - regex: 'Wanca'
+    text: 'Collection of Uralic Languages'
+
+  - regex: 'wikipedia-fi/wikipedia-fi-2017-src/*.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'wikipedia-fi/wikipedia-fi-2017-src'
+    text: 'Finnish Wikipedia 2017, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019110801'
+
+  - regex: 'wikipedia-fi'
+    text: 'Finnish Wikipedia'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019110801'
+
+  - regex: 'YLE'
+    text: 'Archives of the Finnish Broadcasting Company'
+
+  - regex: 'YLE/fi/2011-2018-src'
+    text: 'Finnish news, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2017070501'
+
+  - regex: 'YLE/fi/2019-2020-src'
+    text: 'Finnish news, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021050401'
+
+  - regex: 'YLE/fi/2011-2018-vrt'
+    text: 'Finnish news, VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021109'
+
+  - regex: 'YLE/fi/2011-2018-s-vrt'
+    text: 'Finnish news, scrambled VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021107'
+
+  - regex: 'YLE/sv/2012-2018-src/ylenews-sv-2012-2018-src'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019032201'
+
+  - regex: 'YLE/sv/2012-2018-vrt/ylenews-sv-2012-2018-vrt'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021105'
+
+  - regex: 'YLE/sv/2012-2018-s-vrt/ylenews-sv-2012-2018-s-vrt.zip'
+    text: 'CC BY'
+    url: 'https://creativecommons.org/licenses/by/4.0/'
+
+  - regex: 'YLE/sv/2012-2018-src'
+    text: 'Swedish news, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016111401'
+
+  - regex: 'YLE/sv/2019-2020-src'
+    text: 'Swedish news, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021032301'
+
+  - regex: 'YLE/sv/2012-2018-vrt'
+    text: 'Swedish news, VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021103'
+
+  - regex: 'YLE/sv/2012-2018-s-vrt'
+    text: 'Swedish news, scrambled VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021101'
+
+  - regex: 'YLE/fi-selko'
+    text: 'Yle News archive easy-to-read Finnish'
+
+  - regex: 'YLE/sv'
+    text: 'YLE Swedish archives'
+
+  - regex: 'YLE/fi'
+    text: 'YLE Finnish archives'
+
+  - regex: 'Ylilauta/*.zip'
+    text: 'CLARIN ACA +NC +PRIV +DEP 1.0'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021042822'
+
+  - regex: 'Ylilauta'
+    text: 'Ylilauta Corpus'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2016101210'
+

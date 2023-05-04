@@ -1,0 +1,57 @@
+---
+# Setup apache
+- name: Install httpd
+  yum: 
+    name:
+      - httpd
+      - mod_proxy_html
+    state: present
+
+- name: remove defaults
+  file:
+    path: "/etc/httpd/conf.d/{{ item }}"
+    state: absent
+  loop:
+    - welcome.conf
+    - userdir.conf
+    - autoindex.conf
+
+- name: Copy conf.d static files
+  copy:
+    src: "{{ role_path }}/files/httpd/conf.d/{{ item }}.conf"
+    dest: /etc/httpd/conf.d/{{ item }}.conf
+  loop:
+    - Z-CSC-traceoff
+    - error
+    - icons
+  notify: restart httpd
+  tags:
+    - apache_config_update
+    - dl_update
+
+- name: Copy conf.d template files
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: /etc/httpd/conf.d/{{ item }}.conf
+  loop:
+    - backend_proxy
+    - download_autoindex
+    - remote_user
+  notify: restart httpd
+  tags:
+    - apache_config_update
+    - dl_update
+
+- name: copy favicon
+  copy:
+    src: favicon.ico
+    dest: /var/www/html/favicon.ico
+    mode: 0444
+
+- name: http service state
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+

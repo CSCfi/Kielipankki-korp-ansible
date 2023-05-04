@@ -1,0 +1,65 @@
+---
+- name: add hosts to inventory
+  add_host:
+    name: "{{ instance_item['openstack']['name'] }}"
+    groups: "{{ instance_item['item']['meta']['group'] }}"
+    ansible_host: "{{ instance_item.openstack.accessIPv4 }}"
+
+- name: wait for SSH connection
+  wait_for:
+    host: "{{ instance_item.openstack.accessIPv4 }}"
+    state: started
+    port: 22
+    delay: 0
+  become: no
+
+- name: "run apt-get update and install python"
+  raw: "{{ item }}"
+  loop:
+    - "sudo yum -y install python2"
+    - "sudo alternatives --set python /usr/bin/python2"
+    - "sudo alternatives --set python /usr/bin/python2"
+  become: yes
+  remote_user: cloud-user
+  delegate_to: "{{ instance_item['openstack']['name'] }}"
+
+- name: Install selinux tools
+  yum:
+    name: python3-libselinux
+    state: present
+    use_backend: yum
+  become: yes
+  remote_user: cloud-user
+  delegate_to: "{{ instance_item['openstack']['name'] }}"
+  when: false
+  
+- name: mkdir /tmp/keys
+  file:
+    dest: /tmp/keys
+    mode: 0700
+    state: directory
+  delegate_to: localhost
+  become: no
+
+- name: Copy SSH keys from Spacewalk
+  get_url:
+    url: http://spacewalk.csc.fi/pub/ssh-keys/{{ item }}.pub
+    dest: /tmp/keys/{{ item }}.pub
+  loop:
+    - aalto
+    - matthies
+  delegate_to: localhost
+  become: no
+  
+- name: Copy public ssh keys
+  assemble:
+    src: /tmp/keys/
+    dest: ~/.ssh/authorized_keys
+    remote_src: false
+    mode: 0600
+    regexp: \.pub$
+    validate: '/usr/bin/ssh-keygen -l -f %s'
+  become: no
+  remote_user: cloud-user
+  delegate_to: "{{ instance_item['openstack']['name'] }}"
+

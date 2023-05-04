@@ -1,0 +1,13 @@
+korp_frontend_name: "Kielipankki-korp-frontend"
+korp_frontend_repo: https://github.com/CSCfi/Kielipankki-korp-frontend.git
+korp_frontend_version: master
+korp_git_root: /v/appl/korp
+korp_frontend_home: "{{ korp_git_root }}/{{ korp_frontend_name }}"
+
+korp_frontend_config_dir: "Kielipankki-korp-frontend-config" # needed in run_config.json.j2
+korp_frontend_plugin_dir: "Kielipankki-korp-frontend-plugins"
+korp_frontend_config_home: "{{ korp_git_root }}/{{ korp_frontend_config_dir }}"
+korp_frontend_plugin_home: "{{ korp_git_root }}/{{ korp_frontend_plugin_dir }}"
+korp_frontend_news_home: "{{ korp_git_root }}/Kielipankki-korp-frontend-news"
+
+korp_frontend_www_home: /var/www/html/korp/ 
