@@ -3,9 +3,9 @@
   become: yes
 
   roles:
-      - role: ../all/roles/opsview
+      - role: kielipankki.common.opsview
         tags: opsview
-      - role: ../all/roles/fetch_backup
+      - role: fetch_backup
         tags: fetch_backup
       - role: apache
         tags: apache

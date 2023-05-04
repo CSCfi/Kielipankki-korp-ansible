@@ -1,0 +1,43 @@
+---
+
+- name: Create Backup User
+  user:
+   name: backup
+   shell: /bin/bash
+   groups: nobody
+
+- name: Create Backup Dir
+  file:
+    path: "{{ backup_dir }}"
+    state: directory
+    owner: backup
+    group: backup
+    mode: 0770
+
+- name: Ensure .ssh
+  file:
+    path: ~/.ssh/
+    state: directory
+  become: true
+  become_user: backup
+
+- name: setup daily backups
+  template:
+    src: get_pouta_backups.j2
+    dest: /etc/cron.daily/get_pouta_backup
+    owner: backup
+    mode: 0700
+
+- name: Setup SSH keys
+  copy:
+    content: "{{ lookup('passwordstore', '{{ item.content }} returnall=true')}}"
+    dest: "~/.ssh/{{ item.name }}"
+    owner: backup
+    group: backup
+    mode: 0600
+  become: true
+  become_user: backup
+  loop:
+    - { name: id_rsa.pub, content: "{{ backup_id_pub }}" }
+    - { name: id_rsa , content: "{{ backup_id_key }}" }
+

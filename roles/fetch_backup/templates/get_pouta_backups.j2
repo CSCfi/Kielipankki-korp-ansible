@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# restart as user backup (from root)
+if [ "$(id -u)" -eq 0 ]; then
+    exec sudo -H -u backup $0 "$@"
+fi
+
+# stderr to stdout:
+exec 2>&1
+
+# One way to get IPs: openstack server list|egrep "webanno|portal|metashare"|cut -f 5 -d"|"|cut -f3 -d " "
+
+SERVER_IPS="{{ portal_server_ip }} {{ metashare_server_ip }} {{ webanno_server_ip}}"
+
+# on Korp:
+LOCAL_BACKUP_DIR="/var/backup"
+
+if ! [ -d $LOCAL_BACKUP_DIR/ ]; then
+    echo "Backup of cPouta failed."
+    echo "Local backup directory \"$LOCAL_BACKUP_DIR\" does not exist."
+fi
+
+# on remote machines:
+BACKUP_GLOB='/var/backup/*backup.tar.gz'
+
+for IP in $SERVER_IPS; do
+    SERVER_NAME=`ssh backup@$IP hostname`
+
+    NEWEST_BACKUP=`ssh backup@$IP "ls -rt $BACKUP_GLOB |tail -n 1"`
+    BACKUP_FILE=`basename $NEWEST_BACKUP` 
+    LOCAL_BACKUP_FILE=$LOCAL_BACKUP_DIR/$BACKUP_FILE
+
+    if [ -f $LOCAL_BACKUP_FILE ]; then
+	if [ -n "$(find $LOCAL_BACKUP_FILE -mtime -1)" ]; then
+	    echo
+	    echo "When backing up \"$SERVER_NAME\" ($IP):"
+	    echo "Local copy of \"$LOCAL_BACKUP_FILE\" is too recent."
+	    echo "Output of stat:"
+	    echo
+	    stat $LOCAL_BACKUP_FILE
+	fi
+    fi
+
+    scp -qp backup@$IP:$NEWEST_BACKUP $LOCAL_BACKUP_DIR
+
+    if ! [ -n "$(find $LOCAL_BACKUP_FILE -mtime -1)" ]; then
+	echo
+	echo "When backing up \"$SERVER_NAME\" ($IP):"
+	echo "Backup \"$LOCAL_BACKUP_FILE\" is too old."
+	echo "Output of stat:"
+	echo
+	stat $LOCAL_BACKUP_FILE
+	echo
+    fi
+    # check integrity once more
+    if ! tar tfz $LOCAL_BACKUP_FILE > /dev/null; then
+	echo
+	echo "Error when backing up \"$SERVER_NAME\" ($IP)."
+	echo
+    fi
+done;

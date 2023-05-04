@@ -1,0 +1,2 @@
+backup_id_pub: "lb_passwords/backup/id_rsa.pub"
+backup_id_key: "lb_passwords/backup/id_rsa"
