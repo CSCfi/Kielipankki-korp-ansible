@@ -1,7 +1,7 @@
-# memcached
-collections:
-  - geerlingguy.memcached
+roles:
+  - src: geerlingguy.memcached
 
+collections:
   - name: git@github.com:CSCfi/Kielipankki-ansible-common.git
     type: git
     version: main
