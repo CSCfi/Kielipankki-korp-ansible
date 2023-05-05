@@ -1,0 +1,14 @@
+# Python virtualenv stuff
+.venv
+.venv?
+
+# Vim temp files
+*.sw?
+
+#Ansible
+*.retry
+
+#CSC Openstack
+project*-openrc.sh
+
+.DS_Store
