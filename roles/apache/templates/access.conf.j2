@@ -1,0 +1,5 @@
+<Location "/">
+{% for item in allowed_ips %}
+ Require ip {{ item }}
+{% endfor %}
+</Location>

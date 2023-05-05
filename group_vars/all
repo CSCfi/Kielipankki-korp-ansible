@@ -36,6 +36,10 @@ portal_server_ip: 195.148.21.204
 metashare_server_ip: 86.50.253.167
 webanno_server_ip: 195.148.31.151
 
+#access control from proxy
+allowed_ips:
+  - 128.214.255.214
+  - 195.148.30.210
 
 # Shibboleth
 shibboleth_key: "sp.korp.csc.fi.key"

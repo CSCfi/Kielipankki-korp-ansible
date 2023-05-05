@@ -134,6 +134,8 @@
     - contenthider
     - lemgramcompleter
     - logger
+  notify:
+    - restart korp-backend
 
 - name: Install custom configs for plugins
   template:
@@ -141,32 +143,42 @@
     dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
   loop:
     - protectedcorporadb
+  notify:
+    - restart korp-backend
 
 - name: Install backend config
   template:
     src: backend_config.py
     dest: "{{ korp_backend_home }}/config.py"
+  notify:
+    - restart korp-backend
 
 - name: Install auth server config
   template:
     src: authserver_config.py
     dest: "{{ korp_backend_auth_home }}/auth/config.py"
+  notify:
+    - restart korp-authserver
 
-- name: Install gevent 1.4
+- name: Install gevent
   pip:
     name: gevent
-    version: 1.4
+    state: latest
     virtualenv:   "{{ korp_backend_venv }}"
     virtualenv_python: python3
+  notify:
+    - restart korp-backend
+    - restart korp-authserver
 
 - name: Install gunicorn / start backend
   pip:
     name: gunicorn
+    state: latest
     virtualenv:   "{{ korp_backend_venv }}"
     virtualenv_python: python3
   notify:
-    - start korp-backend
-    - start korp-authserver
+    - restart korp-backend
+    - restart korp-authserver
 
 - name: Install systemd templates
   template:

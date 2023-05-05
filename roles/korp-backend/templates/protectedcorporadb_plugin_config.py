@@ -11,7 +11,7 @@ DBCONN_PARAMS = {}
 
 # Database host and port
 DBCONN_HOST = "{{ korp_db_server }}"
-DBCONN_PORT = "{{ korp_db_port }}"
+DBCONN_PORT = {{ korp_db_port }}
 # Database name
 DBCONN_DB = "korp_auth"
 # Username and password for database access

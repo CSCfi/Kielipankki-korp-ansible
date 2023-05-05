@@ -37,6 +37,7 @@
     - backend_proxy
     - download_autoindex
     - remote_user
+    - access
   notify: restart httpd
   tags:
     - apache_config_update
