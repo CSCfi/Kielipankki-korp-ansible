@@ -31,8 +31,27 @@ The [OpenStack auth file](https://docs.csc.fi/#cloud/pouta/install-client/#confi
 $ source project_2000680-openrc.sh
 ```
 
+## Making sure that SSH connection to korp2 works
 
-# Provisioning
+To ensure that you can establish an SSH connection from your local machine to korp2 from outside the office network (VPN still needed), add the following entries to your `.ssh/config`:
+
+```
+host korp.csc.fi
+  HostName korp.csc.fi
+  ForwardAgent yes
+  User cloud-user
+  IdentityFile ~/.ssh/id_rsa
+
+host korp2.csc.fi
+  HostName korp2.csc.fi
+  ProxyJump korp.csc.fi
+  User cloud-user
+```
+
+Modify the `IdentityFile` path if needed. Establishing a connection to korp2.csc.fi should now work via korp.csc.fi (i.e. the playbook should run without issues).
+
+
+## Provisioning
 
 Run the provisioning playbook.
 
