@@ -160,7 +160,7 @@
   notify:
     - restart korp-authserver
 
-- name: Install gevent
+- name: Install latest gevent
   pip:
     name: gevent
     state: latest

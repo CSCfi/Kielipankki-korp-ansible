@@ -73,7 +73,7 @@ CACHE_MAX_STATS = 5000
 # Whether corpus results should be sorted by corpus id by default (true) or
 # output in the order specified in the corpus parameter (false); this can be
 # overridden with the parameter sort_corpora=true|false
-SORT_CORPORA_DEFAULT = True
+SORT_CORPORA_DEFAULT = False
 
 # List of names of plugin modules to load
 PLUGINS = [
