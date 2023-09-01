@@ -11,3 +11,6 @@
 
 ssh root@korp.csc.fi rsync -av --delete                      /var/www/html/download korp2.csc.fi:/data2
 ssh root@korp.csc.fi rsync -av --delete --exclude korp/cache /mnt/cwbdata           korp2.csc.fi:/data1
+
+# sync korp:/etc/httpd/conf.d to korp2:/root/
+ssh root@korp.csc.fi rsync -av --delete                      /etc/httpd/conf.d/ korp2.csc.fi:/root/korp_apache_conf_bak
