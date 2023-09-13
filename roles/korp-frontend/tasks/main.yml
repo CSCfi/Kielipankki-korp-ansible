@@ -46,7 +46,12 @@
     repo: "{{ korp_frontend_repo  }}"
     version: "{{ korp_frontend_version }}"
     dest:  "{{ korp_frontend_home }}"
-    force: yes
+    force: true
+  register: frontend_clone
+
+- name: Set compile_frontend
+  set_fact:
+    compile_frontend: "{{ frontend_clone.after != frontend_clone.before }}"
 
 - name: checkout worktrees
   shell:
@@ -88,13 +93,13 @@
   shell:
     cmd: scl enable devtoolset-7 yarn
     chdir: "{{ korp_frontend_home }}"
-  when: compile_frontend|default(False) == true
+  when: compile_frontend  == true
   
 - name: Build frontend
   shell:
     cmd: yarn build
     chdir: "{{ korp_frontend_home }}"
-  when: compile_frontend|default(False) == true
+  when: compile_frontend == true
 
 - name: Create news directory
   file:
@@ -105,7 +110,7 @@
   shell:
     cmd: "./compile.bash"
     chdir: "{{ korp_frontend_news_home }}"
-  when: compile_frontend|default(False) == true
+  when: compile_frontend == true
  
 - name: Link news
   file:
@@ -116,5 +121,5 @@
 - name: Install frontend
   shell:
     cmd: rsync -av --delete  "{{ korp_frontend_home }}/dist/" "{{ korp_frontend_www_home }}"
-  when: compile_frontend|default(False) == true
+  when: compile_frontend == true
 
