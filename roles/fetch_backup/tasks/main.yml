@@ -23,10 +23,13 @@
 
 - name: setup daily backups
   template:
-    src: get_pouta_backups.j2
-    dest: /etc/cron.daily/get_pouta_backup
-    owner: backup
+    src: "{{ item }}.j2"
+    dest: "/etc/cron.daily/{{ item }}"
+    owner: root
     mode: 0700
+  loop:
+    - get_pouta_backup
+    - sync_korp_servers
 
 - name: Setup SSH keys
   copy:
