@@ -1,0 +1,22 @@
+# This script syncs korp.csc.fi to korp2.csc.fi
+# Assumptions:
+# - korp.csc.fi contains the master data
+# - root's .ssh/authorized_keys file on both servers allows for passwordless login
+
+# add up error codes and exit with the sum (hopefully zero)
+ERROR_CODE=0
+
+# Download
+rsync -av --delete                      korp.csc.fi:/var/www/html/download /data2
+ERROR_CODE=$(($ERROR_CODE+$?))
+
+# CWB data
+rsync -av --delete --exclude korp/cache korp.csc.fi:/mnt/cwbdata           /data1
+ERROR_CODE=$(($ERROR_CODE+$?))
+
+# Apache config
+# sync korp:/etc/httpd/conf.d to korp2:/root/korp_apache_conf_bak
+rsync -av --delete                      korp.csc.fi:/etc/httpd/conf.d/     /root/korp_apache_conf_bak
+ERROR_CODE=$(($ERROR_CODE+$?))
+
+exit $ERROR_CODE
