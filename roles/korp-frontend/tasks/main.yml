@@ -27,8 +27,8 @@
       - yarn
       - git224
       - gcc-c++
-      - centos-release-scl
-      - devtoolset-7
+      - centos-release-scl # https://www.softwarecollections.org/en/about/
+      - devtoolset-7 # https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/
     state: present
 
 - name: Ensure directories
@@ -50,6 +50,9 @@
   register: frontend_clone
 
 - name: Set compile_frontend
+  # Request recompilation (compile_frontend = true) if an actual change has
+  # happened, not if a local change has been overwritten, but nothing else
+  # changed.
   set_fact:
     compile_frontend: "{{ frontend_clone.after != frontend_clone.before }}"
 
