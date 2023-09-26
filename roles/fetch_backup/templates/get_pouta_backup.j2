@@ -5,7 +5,10 @@ if [ "$(id -u)" -eq 0 ]; then
     exec sudo -H -u backup $0 "$@"
 fi
 
+LOG_MESSAGE_FILE=/tmp/get_pouta_backup.txt
+
 # stderr to stdout:
+exec > $LOG_MESSAGE_FILE
 exec 2>&1
 
 # One way to get IPs: openstack server list|egrep "webanno|portal|metashare"|cut -f 5 -d"|"|cut -f3 -d " "
@@ -18,32 +21,32 @@ LOCAL_BACKUP_DIR="/var/backup"
 if ! [ -d $LOCAL_BACKUP_DIR/ ]; then
     echo "Backup of cPouta failed."
     echo "Local backup directory \"$LOCAL_BACKUP_DIR\" does not exist."
-fi
+else
 
-# on remote machines:
-BACKUP_GLOB='/var/backup/*backup.tar.gz'
+  # on remote machines:
+  BACKUP_GLOB='/var/backup/*backup.tar.gz'
 
-for IP in $SERVER_IPS; do
-    SERVER_NAME=`ssh backup@$IP hostname`
+  for IP in $SERVER_IPS; do
+      SERVER_NAME=`ssh backup@$IP hostname`
 
-    NEWEST_BACKUP=`ssh backup@$IP "ls -rt $BACKUP_GLOB |tail -n 1"`
-    BACKUP_FILE=`basename $NEWEST_BACKUP` 
-    LOCAL_BACKUP_FILE=$LOCAL_BACKUP_DIR/$BACKUP_FILE
+      NEWEST_BACKUP=`ssh backup@$IP "ls -rt $BACKUP_GLOB |tail -n 1"`
+      BACKUP_FILE=`basename $NEWEST_BACKUP` 
+      LOCAL_BACKUP_FILE=$LOCAL_BACKUP_DIR/$BACKUP_FILE
 
-    if [ -f $LOCAL_BACKUP_FILE ]; then
-	if [ -n "$(find $LOCAL_BACKUP_FILE -mtime -1)" ]; then
-	    echo
-	    echo "When backing up \"$SERVER_NAME\" ($IP):"
-	    echo "Local copy of \"$LOCAL_BACKUP_FILE\" is too recent."
-	    echo "Output of stat:"
-	    echo
-	    stat $LOCAL_BACKUP_FILE
+      if [ -f $LOCAL_BACKUP_FILE ]; then
+        if [ -n "$(find $LOCAL_BACKUP_FILE -mtime -1)" ]; then
+          echo
+	  echo "When backing up \"$SERVER_NAME\" ($IP):"
+	  echo "Local copy of \"$LOCAL_BACKUP_FILE\" is too recent."
+	  echo "Output of stat:"
+	  echo
+	  stat $LOCAL_BACKUP_FILE
 	fi
-    fi
+      fi
 
-    scp -qp backup@$IP:$NEWEST_BACKUP $LOCAL_BACKUP_DIR
+      scp -qp backup@$IP:$NEWEST_BACKUP $LOCAL_BACKUP_DIR
 
-    if ! [ -n "$(find $LOCAL_BACKUP_FILE -mtime -1)" ]; then
+      if ! [ -n "$(find $LOCAL_BACKUP_FILE -mtime -1)" ]; then
 	echo
 	echo "When backing up \"$SERVER_NAME\" ($IP):"
 	echo "Backup \"$LOCAL_BACKUP_FILE\" is too old."
@@ -51,11 +54,35 @@ for IP in $SERVER_IPS; do
 	echo
 	stat $LOCAL_BACKUP_FILE
 	echo
-    fi
-    # check integrity once more
-    if ! tar tfz $LOCAL_BACKUP_FILE > /dev/null; then
+      fi
+      # check integrity once more
+      if ! tar tfz $LOCAL_BACKUP_FILE > /dev/null; then
 	echo
 	echo "Error when backing up \"$SERVER_NAME\" ($IP)."
 	echo
-    fi
-done;
+      fi
+  done;
+fi # ! [ -d $LOCAL_BACKUP_DIR/ ]
+
+# mails error message and optionally log file
+# $1: Error message
+# $2: Path to file
+mail_log() {
+RECIPIENT=root # Use .forward to forward root's mail if needed.
+   if [ -n $2 ]; then # mail the file content
+       cat $2 | mail -s "$0 @ `hostname -f`: $1" $RECIPIENT
+   else
+       echo "(No mail content)"  | mail -s "$0 @ `hostname -f`: $1"  $RECIPIENT
+   fi
+}
+
+
+# mail error if logfile does not exist
+if [ ! -e $LOG_MESSAGE_FILE ]; then
+   mail_log "No logfile!"
+fi
+
+# mail errors if the logfile is not empty
+if [ -s $LOG_MESSAGE_FILE ]; then
+   mail_log "Error. See mail body for details" $LOG_MESSAGE_FILE
+fi
