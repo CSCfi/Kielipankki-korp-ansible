@@ -47,19 +47,20 @@ else
       scp -qp backup@$IP:$NEWEST_BACKUP $LOCAL_BACKUP_DIR
 
       if ! [ -n "$(find $LOCAL_BACKUP_FILE -mtime -1)" ]; then
-	echo
-	echo "When backing up \"$SERVER_NAME\" ($IP):"
-	echo "Backup \"$LOCAL_BACKUP_FILE\" is too old."
-	echo "Output of stat:"
-	echo
-	stat $LOCAL_BACKUP_FILE
-	echo
+        echo
+        echo "When backing up \"$SERVER_NAME\" ($IP):"
+        echo "Backup \"$LOCAL_BACKUP_FILE\" is too old."
+        echo "Output of stat:"
+        echo
+        stat $LOCAL_BACKUP_FILE
+        echo
+
       fi
       # check integrity once more
       if ! tar tfz $LOCAL_BACKUP_FILE > /dev/null; then
-	echo
-	echo "Error when backing up \"$SERVER_NAME\" ($IP)."
-	echo
+        echo
+        echo "Error when backing up \"$SERVER_NAME\" ($IP)."
+        echo
       fi
   done;
 fi # ! [ -d $LOCAL_BACKUP_DIR/ ]
