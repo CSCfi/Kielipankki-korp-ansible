@@ -7,6 +7,9 @@ fi
 
 LOG_MESSAGE_FILE=/tmp/get_pouta_backup.txt
 
+# remove possible last log file
+rm -f $LOG_MESSAGE_FILE
+
 # stderr to stdout:
 exec > $LOG_MESSAGE_FILE
 exec 2>&1
