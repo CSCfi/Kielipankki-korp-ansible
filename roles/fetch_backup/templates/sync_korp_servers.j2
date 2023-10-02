@@ -3,7 +3,6 @@
 # - korp.csc.fi contains the master data
 # - root's .ssh/authorized_keys file on both servers allows for passwordless login
 
-<<<<<<< HEAD
 
 # mails error message and optionally log file
 # $1: Error message
@@ -27,11 +26,6 @@ LOG_MESSAGE_FILE="/var/log/korp_sync-$DOW.log"
 exec > $LOG_MESSAGE_FILE
 exec 2>&1
 
-=======
-# add up error codes and exit with the sum (hopefully zero)
-ERROR_CODE=0
->>>>>>> main
-
 # Download
 rsync -av --delete                      korp.csc.fi:/var/www/html/download /data2
 ERROR_CODE=$(($ERROR_CODE+$?))
@@ -45,7 +39,6 @@ ERROR_CODE=$(($ERROR_CODE+$?))
 rsync -av --delete                      korp.csc.fi:/etc/httpd/conf.d/     /root/korp_apache_conf_bak
 ERROR_CODE=$(($ERROR_CODE+$?))
 
-<<<<<<< HEAD
 
 # mail error if logfile does not exist
 if [ ! -e $LOG_MESSAGE_FILE ]; then
@@ -61,6 +54,3 @@ else
     exit 2
 fi
 
-=======
-exit $ERROR_CODE
->>>>>>> main
