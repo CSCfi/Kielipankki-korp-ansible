@@ -42,7 +42,7 @@ ERROR_CODE=$(($ERROR_CODE+$?))
 
 # mail error if logfile does not exist
 if [ ! -e $LOG_MESSAGE_FILE ]; then
-    mail_log "No logfile!"
+    mail_log "No logfile!" "Something went wrong with syncing korp.csc.fi to korp2. At least a very short logfile should have been produced."
     exit 1
 fi
 
