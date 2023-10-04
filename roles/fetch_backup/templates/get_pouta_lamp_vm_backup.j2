@@ -85,7 +85,7 @@ RECIPIENT=root # Use .forward to forward root's mail if needed.
 
 # mail error if logfile does not exist
 if [ ! -e $LOG_MESSAGE_FILE ]; then
-   mail_log "No logfile!"
+   mail_log "No logfile!" "In normal operation, an empty logfile should have been created."
 fi
 
 # mail errors if the logfile is not empty
