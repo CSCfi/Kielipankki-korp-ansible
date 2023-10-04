@@ -5,6 +5,18 @@ if [ "$(id -u)" -eq 0 ]; then
     exec sudo -H -u backup $0 "$@"
 fi
 
+# get_pouta_lamp_vm_backup
+# backs up lamp servers, (e.g. portal, metashare, webanno, specified by $SERVER_IPS) using $BACKUP_GLOB to $LOCAL_BACKUP_DIR
+
+# One way to get IPs: openstack server list|egrep "webanno|portal|metashare"|cut -f 5 -d"|"|cut -f3 -d " "
+SERVER_IPS="{{ portal_server_ip }} {{ metashare_server_ip }} {{ webanno_server_ip}}"
+
+# on Korp2:
+LOCAL_BACKUP_DIR="/var/backup"
+
+# on lamp machines:
+BACKUP_GLOB='/var/backup/*backup.tar.gz'
+
 LOG_MESSAGE_FILE=/tmp/get_pouta_backup.txt
 
 # remove possible last log file
@@ -14,21 +26,11 @@ rm -f $LOG_MESSAGE_FILE
 exec > $LOG_MESSAGE_FILE
 exec 2>&1
 
-# One way to get IPs: openstack server list|egrep "webanno|portal|metashare"|cut -f 5 -d"|"|cut -f3 -d " "
-
-SERVER_IPS="{{ portal_server_ip }} {{ metashare_server_ip }} {{ webanno_server_ip}}"
-
-# on Korp:
-LOCAL_BACKUP_DIR="/var/backup"
 
 if ! [ -d $LOCAL_BACKUP_DIR/ ]; then
-    echo "Backup of cPouta failed."
-    echo "Local backup directory \"$LOCAL_BACKUP_DIR\" does not exist."
+  echo "Backup of cPouta failed."
+  echo "Local backup directory \"$LOCAL_BACKUP_DIR\" does not exist."
 else
-
-  # on remote machines:
-  BACKUP_GLOB='/var/backup/*backup.tar.gz'
-
   for IP in $SERVER_IPS; do
       SERVER_NAME=`ssh backup@$IP hostname`
 
