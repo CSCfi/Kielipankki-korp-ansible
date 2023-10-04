@@ -29,7 +29,7 @@
     group: backup
     mode: 0750
   loop:
-    - get_pouta_lamp_vm_backup
+    - get_pouta_webserver_vm_backup
     - sync_korp_servers
 
 - name: Setup SSH keys
