@@ -5,7 +5,6 @@ if [ "$(id -u)" -eq 0 ]; then
     exec sudo -H -u backup $0 "$@"
 fi
 
-# get_pouta_lamp_vm_backup
 # backs up lamp/tomcat servers, (e.g. portal, metashare, webanno, specified by $SERVER_IPS) using $BACKUP_GLOB to $LOCAL_BACKUP_DIR
 
 # One way to get IPs: openstack server list|egrep "webanno|portal|metashare"|cut -f 5 -d"|"|cut -f3 -d " "
