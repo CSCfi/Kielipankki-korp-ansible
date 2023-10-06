@@ -11,4 +11,8 @@
 #CSC Openstack
 project*-openrc.sh
 
+#Mac
 .DS_Store
+
+# the obvious:
+*~

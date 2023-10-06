@@ -5,6 +5,8 @@
   roles:
       - role: kielipankki.common.opsview
         tags: opsview
+      - role: kielipankki.common.mail_forward
+        tags: mail_forward
       - role: fetch_backup
         tags: fetch_backup
       - role: apache
