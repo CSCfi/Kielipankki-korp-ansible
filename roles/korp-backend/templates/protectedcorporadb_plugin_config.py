@@ -1,4 +1,3 @@
-
 """
 korpplugins.protectedcorporadb.config (template)
 
@@ -16,7 +15,7 @@ DBCONN_PORT = {{ korp_db_port }}
 DBCONN_DB = "korp_auth"
 # Username and password for database access
 DBCONN_USER = "{{ korp_db_user }}"
-DBCONN_PASSWORD = "{{ korp_db_password }}"
+DBCONN_PASSWD = "{{ korp_db_password }}"
 DBCONN_USE_UNICODE = True
 DBCONN_CHARSET = "utf8mb4"
 
