@@ -8,3 +8,11 @@
 # This returns 404 instead of eg. LocationMatch denying access,
 # not revealing the presence of these files
 RedirectMatch 404 "(\.tmp|~)$"
+
+# Do we need any indices except downloads?
+<Directory /var/www/>
+        Options -Indexes
+</Directory>
+<Directory /var/www/html/download>
+        Options +Indexes
+</Directory>
