@@ -192,3 +192,13 @@
     - korp-authserver.service
   notify:
     - restart systemd
+
+- name: Install daily crontab scripts
+  ansible.builtin.copy:
+    src: "{{ item }}" 
+    dest: "/etc/cron.daily/"
+    owner: root
+    group: root
+    mode: "755"
+  loop:
+    "../files/clear_korp_cache"
