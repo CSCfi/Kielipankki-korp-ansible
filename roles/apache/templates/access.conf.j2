@@ -3,3 +3,8 @@
  Require ip {{ item }}
 {% endfor %}
 </Location>
+
+# RedirectMatch is from mod_alias
+# This returns 404 instead of eg. LocationMatch denying access,
+# not revealing the presence of these files
+RedirectMatch 404 "(\.tmp|~)$"
