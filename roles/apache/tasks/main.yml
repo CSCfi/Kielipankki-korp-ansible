@@ -16,6 +16,13 @@
     - userdir.conf
     - autoindex.conf
 
+- name: Comment out Options Indexes in httpd.conf
+  replace:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: ' Options .*Indexes'
+    replace: '# Disabled by Ansible:Options Indexes' # this does not match again
+  notify: restart httpd
+
 - name: Copy conf.d static files
   copy:
     src: "{{ role_path }}/files/httpd/conf.d/{{ item }}.conf"
