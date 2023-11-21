@@ -194,11 +194,11 @@
     - restart systemd
 
 - name: Install daily crontab scripts
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: "{{ item }}" 
     dest: "/etc/cron.daily/"
     owner: root
     group: root
     mode: "755"
   loop:
-    "../files/clear_korp_cache"
+    - clear_korp_cache

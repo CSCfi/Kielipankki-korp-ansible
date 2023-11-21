@@ -1,4 +1,0 @@
-#!/bin/bash
-# Clear Korp cache
-# background: Jira: KP-5628
-wget https://korp.csc.fi/korp/api8/cache -o /dev/null -O - > /dev/null
