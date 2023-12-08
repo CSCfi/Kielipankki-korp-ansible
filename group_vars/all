@@ -40,6 +40,7 @@ webanno_server_ip: 195.148.31.151
 allowed_ips:
   - 128.214.255.214
   - 195.148.30.210
+  - 195.148.30.109
 
 # Shibboleth
 shibboleth_key: "sp.korp.csc.fi.key"
