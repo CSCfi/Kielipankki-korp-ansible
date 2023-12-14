@@ -19,16 +19,16 @@ korp_db_server: "kielipankkidb.csc.fi"
 korp_db_port: 3306
 korp_db_user: "korp"
 korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp/korp_db_user_password') }}"
-backend_cache_dir: "/v/korp/cache"
+backend_cache_dir: "/data1/korp/cache"
 
 mk_directories:
 - { path: /v/                , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
 - { path: /v/appl/           , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
 - { path: /v/corpora/data    , owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
 - { path: "{{ cwb_registry }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
-- { path: /v/korp/           , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
-- { path: /v/korp/log/       , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
-- { path: /v/korp/log/korp-py, owner: gunicorn, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
+- { path: /data1/korp/           , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
+- { path: /data1/log/       , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
+- { path: /data1/korp/log/korp-py, owner: gunicorn, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
 - { path: "{{ backend_cache_dir }}", owner: gunicorn, group: clarin, mode: "u+rwx,g+rwxs,o-rwx" }
 - { path: "{{ korp_git_root }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
 - { path: /v/appl/utils/     , owner: root, group: clarin, mode: "u+rwx,g+rwxs,o-rwx" }

@@ -11,7 +11,7 @@ WSGI_PORT = 1235
 
 # Database host and port
 DBHOST = "{{ korp_db_server }}"
-DBPORT = {{ korp_db_port }}
+DBPORT = {{korp_db_port}}
 # Database name
 DBNAME = "korp_auth"
 # Username and password for database access
@@ -19,5 +19,5 @@ DBUSER = "{{ korp_db_user }}"
 DBPASSWORD = "{{ korp_db_password }}"
 
 # Log file and level
-LOG_FILE = "/v/korp/log/korp-auth-py.log"
-LOG_LEVEL = logging.INFO    # in non-logging version, WARNING
+LOG_FILE = "/data1/korp/log/korp-auth-py.log"
+LOG_LEVEL = logging.INFO  # in non-logging version, WARNING
