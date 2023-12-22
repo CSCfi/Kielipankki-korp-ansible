@@ -50,6 +50,7 @@
       - libmemcached
       - mariadb
       - mariadb-devel
+      - python-xlwt # for korp_download.cgi
 
 - name: Create directories
   file:
@@ -202,3 +203,24 @@
     mode: "755"
   loop:
     - clear_korp_cache
+
+- name: Install old API / korp_download.cgi
+  ansible.builtin.copy:
+    src: korp_download/
+    dest: "{{ korp_backend_cgibin_dir }}"
+    owner: root
+    group: apache
+    mode: "755"
+
+- name: Precompile python files
+  ansible.builtin.shell:
+    cmd: find -name \*.py -exec python2 -m py_compile  {} \;
+    chdir: "{{ korp_backend_cgibin_dir }}/korpexport"
+
+- name: Install old API config
+  ansible.builtin.template:
+    src: korp_cgi_config.py
+    dest: "{{ korp_backend_cgibin_dir }}/korp_config.py"
+    owner: root
+    group: apache
+    mode: "640"
