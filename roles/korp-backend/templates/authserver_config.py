@@ -19,5 +19,5 @@ DBUSER = "{{ korp_db_user }}"
 DBPASSWORD = "{{ korp_db_password }}"
 
 # Log file and level
-LOG_FILE = "/v/korp/log/korp-auth-py.log"
-LOG_LEVEL = logging.INFO    # in non-logging version, WARNING
+LOG_FILE = "/data1/korp/log/korp-auth-py.log"
+LOG_LEVEL = logging.INFO  # in non-logging version, WARNING

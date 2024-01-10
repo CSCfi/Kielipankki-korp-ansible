@@ -61,6 +61,14 @@
     group: "{{ item.group }}"
   loop: "{{ mk_directories }}"
 
+- name: symlink /v/korp to /data1/korp
+  file:
+    src: /data1/korp
+    dest: /v/korp
+    owner: root
+    group: root
+    state: link
+
 - name: Clone backend
   git:
     repo: "{{ korp_backend_repo  }}"
