@@ -29,7 +29,8 @@ mk_directories:
 - { path: /data1/korp/           , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
 - { path: /data1/korp/log/       , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
 - { path: /data1/korp/log/korp-py, owner: gunicorn, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
-- { path: "{{ backend_cache_dir }}", owner: gunicorn, group: clarin, mode: "u+rwx,g+rwxs,o-rwx" }
+- { path: "{{ backend_cache_dir }}", owner: gunicorn, group: apache, mode: "u+rwx,g+rwxs,o-rwx" }
 - { path: "{{ korp_git_root }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
 - { path: /v/appl/utils/     , owner: root, group: clarin, mode: "u+rwx,g+rwxs,o-rwx" }
-- { path: /var/www/html/korp/cgi-bin/korp/  , owner: root, group: root, mode: "u+rwx,g+rxs,o-rwx" } # for old backend korp.cgi
+- { path: /var/www/html/korp/cgi-bin/korp/  , owner: root, group: root, mode: "u+rwx,g+rxs,o+rx" } # for old backend korp.cgi
+- { path: /var/www/html/korp/cgi-bin/  , owner: root, group: root, mode: "u+rwx,g+rxs,o+rx" }
