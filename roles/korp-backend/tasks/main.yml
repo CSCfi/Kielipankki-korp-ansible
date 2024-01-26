@@ -124,7 +124,7 @@
 
 - name: remove local changes in worktrees
   shell:
-    cmd: "git checkout -f"
+    cmd: "git checkout -f && git pull"
     chdir: "{{ item }}"
   loop:
     - "{{ korp_backend_auth_home }}"
