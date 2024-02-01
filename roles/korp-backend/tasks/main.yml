@@ -133,7 +133,7 @@
     - restart korp-backend
     - restart korp-authserver
 
-- name: Enable default configs for most plugins
+- name: Enable default configs for some plugins
   file:
     src: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py.template"
     dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
@@ -142,15 +142,15 @@
     - charcoder
     - contenthider
     - lemgramcompleter
-    - logger
   notify:
     - restart korp-backend
 
-- name: Install custom configs for plugins
+- name: Install custom configs for other plugins
   template:
     src:  "{{ item }}_plugin_config.py"
     dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
   loop:
+    - logger
     - protectedcorporadb
   notify:
     - restart korp-backend
