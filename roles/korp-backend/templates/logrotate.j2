@@ -1,0 +1,15 @@
+/var/log/httpd/*log {
+    {{ httpd_logrotate_frequency }}
+    rotate {{ httpd_logrotate_keep }}
+    {% if httpd_logrotate_compress is true -%}
+    compress
+    {% endif -%}
+
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    postrotate
+        /bin/systemctl reload httpd.service > /dev/null 2>/dev/null || true
+    endscript
+}
