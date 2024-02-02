@@ -9,7 +9,7 @@ import logging
 
 
 # Base directory for log files
-LOG_BASEDIR = "/v/korp/log/korp-py"
+LOG_BASEDIR = "/v/korp/log"
 
 # Log filename format string (for str.format()), which may include a
 # directory part, to be appended to LOG_BASEDIR to get the full log
@@ -18,7 +18,7 @@ LOG_BASEDIR = "/v/korp/log/korp-py"
 # time.localtime()), and pid (process id), which should be included to
 # avoid having multiple processes writing to the same log file when
 # using a WSGI server with multiple worker processes.
-LOG_FILENAME_FORMAT = "korp.py.log"
+LOG_FILENAME_FORMAT = "korp-py.log"
 
 # Default log level
 LOG_LEVEL = logging.INFO
