@@ -1,0 +1,13 @@
+/v/korp/log/*log {
+    monthly
+    rotate 6
+    compress
+
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    postrotate
+        /bin/systemctl restart korp-backend.service
+    endscript
+}
