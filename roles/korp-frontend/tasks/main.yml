@@ -87,11 +87,6 @@
     src: run_config.json.j2
     dest: "{{ korp_frontend_home }}/run_config.json"
 
-- name: Install frontend config
-  template:
-    src: korp_frontend_config.js.j2
-    dest: "{{ korp_frontend_config_home }}/app/config.js"
-
 - name: Fetch and compile dependencies
   shell:
     cmd: scl enable devtoolset-7 yarn
