@@ -1,0 +1,3 @@
+httpd_logrotate_frequency: "monthly"
+httpd_logrotate_keep: 6
+httpd_logrotate_compress: true
