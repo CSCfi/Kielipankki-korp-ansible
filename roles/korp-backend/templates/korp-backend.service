@@ -14,7 +14,7 @@ Group=gunicorn
 # see http://0pointer.net/blog/dynamic-users-with-systemd.html
 RuntimeDirectory=gunicorn
 WorkingDirectory={{ korp_backend_home }}
-ExecStart={{ korp_backend_home }}/venv/bin/gunicorn --worker-class gevent --timeout 180 --workers 1 --max-requests 250 --limit-request-line 0 korp:app
+ExecStart={{ korp_backend_home }}/venv/bin/gunicorn --worker-class gevent --timeout 120 --workers 2 --max-requests 500 --limit-request-line 0 korp:app
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5
