@@ -24,7 +24,7 @@ TMPDIR = "/tmp"
 MAX_KWIC_ROWS = 0
 
 # Number of threads to use during parallel processing
-PARALLEL_THREADS = 3
+PARALLEL_THREADS = 2
 
 # The name of the MySQL database and table prefix
 DBNAME = "korp"

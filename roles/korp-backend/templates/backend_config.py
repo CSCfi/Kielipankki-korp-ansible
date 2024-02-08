@@ -26,7 +26,7 @@ LC_COLLATE = "sv_SE.UTF-8"
 MAX_KWIC_ROWS = 0
 
 # Number of threads to use during parallel processing
-PARALLEL_THREADS = 3
+PARALLEL_THREADS = 2
 
 # Database host and port
 DBHOST = "{{ korp_db_server }}"
