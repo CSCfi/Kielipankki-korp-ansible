@@ -29,6 +29,7 @@
       - gcc-c++
       - centos-release-scl # https://www.softwarecollections.org/en/about/
       - devtoolset-7 # https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/
+      - java-11-openjdk # annlab only
     state: present
 
 - name: Ensure directories
@@ -40,6 +41,7 @@
   loop:
     - "{{ korp_git_root }}"
     - "{{ korp_frontend_www_home }}"
+    - "{{ korp_frontend_annlab_dir }}"
 
 - name: Clone frontend
   git:
@@ -54,7 +56,7 @@
   # happened, not if a local change has been overwritten, but nothing else
   # changed.
   set_fact:
-    compile_frontend: "{{ frontend_clone.after != frontend_clone.before }}"
+    compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) }}"
 
 - name: checkout worktrees
   shell:
@@ -79,7 +81,7 @@
 - name: Skip this if all up to date
   set_fact:
     compile_frontend: true
-  when: item.stdout != "Already up to date."
+  when: (item.stdout != "Already up to date.") or ( force_compile | default(false))
   loop: "{{ worktree.results }}"
 
 - name: Install run_config
@@ -121,3 +123,12 @@
     cmd: rsync -av --delete  "{{ korp_frontend_home }}/dist/" "{{ korp_frontend_www_home }}"
   when: compile_frontend == true
 
+- name: Hardcode annlab+korp_download
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+    force: yes
+  with_items:
+    - { src: "{{ korp_static_frontend_cgi_dir }}",      dest: "{{ korp_frontend_www_home }}/cgi-bin" }
+    - { src: "{{ korp_frontend_annlab_dir }}/deptrees", dest: "{{ korp_frontend_www_home }}/lib/annlab_deptrees" }

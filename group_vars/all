@@ -17,7 +17,11 @@ korp_shib_spoof_key: "{{ lookup('passwordstore', 'lb_passwords/portal/wp_shib_sp
 
 korp_url: https://www.kielipankki.fi/korp
 korp_backend_url: "{{ korp_url }}/api8/"
-korp_backend_cgibin_dir: "/var/www/html/korp/cgi-bin/korp"
+
+# static hacks for annlab + download_cgi
+korp_static_frontend_cgi_dir: "/data1/korp/frontend_static/cgi-bin"
+korp_frontend_annlab_dir: "{{ korp_static_frontend_cgi_dir }}/annlab"
+korp_backend_cgibin_dir:  "{{ korp_static_frontend_cgi_dir }}/korp"
 korp_backend_download_cgi: "{{ korp_url }}/cgi-bin/korp/korp_download.cgi"
 
 
