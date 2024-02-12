@@ -62,3 +62,16 @@ $  ansible-playbook site.yml -i inventories/korp2
 By default, some files are downloaded locally into `~/Downloads`. If you do not
 wish to use that directory, specify an alternative using `--extra-vars
 "local_download_dir=your/path/here"`.
+
+### Recompilation of frontend
+
+The script will recompile the frontend in case of changes (including new news). You can force the recompilation and reinstallation of the frontend using
+the `force_compile` parameter, e.g.:
+
+$ ansible-playbook -vi inventories/korp2 site.yml -t korp-frontend -e force_compile=true
+
+### Install only new news
+
+To just update the news information you can start later in the script:
+
+$ ansible-playbook -vi inventories/korp2 site.yml -t korp-frontend --start-at="update worktrees" -e force_compile=true
