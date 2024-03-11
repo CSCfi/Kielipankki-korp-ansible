@@ -37,7 +37,7 @@ intermediate_chain: GEANT_OV_RSA_CA4.pem
 #Backup settings
 backup_dir: "/var/backup"
 #Server IPs for getting backups:
-portal_server_ip: 195.148.21.204
+portal_server_ip: 128.214.255.125
 metashare_server_ip: 86.50.170.142
 webanno_server_ip: 195.148.31.151
 
