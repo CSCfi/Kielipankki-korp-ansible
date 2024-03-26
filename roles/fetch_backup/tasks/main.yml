@@ -45,3 +45,8 @@
     - { name: id_rsa.pub, content: "{{ backup_id_pub }}" }
     - { name: id_rsa , content: "{{ backup_id_key }}" }
 
+- name: Configure anacron
+  ansible.builtin.lineinfile:
+    path: /etc/anacrontab
+    regexp: '^START_HOURS_RANGE='
+    line: "START_HOURS_RANGE={{ anacron_hours }}"
