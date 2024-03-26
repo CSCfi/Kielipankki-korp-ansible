@@ -1,2 +1,3 @@
 backup_id_pub: "lb_passwords/backup/id_rsa.pub"
 backup_id_key: "lb_passwords/backup/id_rsa"
+anacron_hours: "6-7" # run cron-* between 6 and 7 am.
