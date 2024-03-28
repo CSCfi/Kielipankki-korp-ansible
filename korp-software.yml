@@ -1,5 +1,5 @@
 - name: Prepare server
-  hosts: korp2
+  hosts: korp
   become: yes
 
   roles:
