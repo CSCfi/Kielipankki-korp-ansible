@@ -5,6 +5,6 @@ all:
       floating_ip: 86.50.169.164
       vm_name_postfix: pre-prod
       ansible_python_interpreter: python
-    korp2:
+    korp:
       ansible_host: 86.50.169.164
       ansible_user: almalinux
