@@ -3,7 +3,7 @@
 opsview_rpm: opsview-agent-6.7.3.202206170928-1.ct7.x86_64.rpm
 
 # settigs for pass
-password_store: "lb_passwords/" # relative to .password-store root
+password_store: "lb_passwords/"  # relative to .password-store root
 
 local_user: "{{ lookup('env','USER') }}"
 # name Pouta dev instance using local user to avoid conflicts.
@@ -21,7 +21,7 @@ korp_backend_url: "{{ korp_url }}/api8/"
 # static hacks for annlab + download_cgi
 korp_static_frontend_cgi_dir: "/data1/korp/frontend_static/cgi-bin"
 korp_frontend_annlab_dir: "{{ korp_static_frontend_cgi_dir }}/annlab"
-korp_backend_cgibin_dir:  "{{ korp_static_frontend_cgi_dir }}/korp"
+korp_backend_cgibin_dir: "{{ korp_static_frontend_cgi_dir }}/korp"
 korp_backend_download_cgi: "{{ korp_url }}/cgi-bin/korp/korp_download.cgi"
 
 
@@ -30,21 +30,21 @@ remote_deploy_user: 'apache'
 remote_deploy_group: 'apache'
 
 # Webserver
-korp_private_key: korp.csc.fi.key 
+korp_private_key: korp.csc.fi.key
 korp_certificate: korp.csc.fi.pem
 intermediate_chain: GEANT_OV_RSA_CA4.pem
 
-#Backup settings
+# Backup settings
 backup_dir: "/var/backup"
 #Server IPs for getting backups:
 portal_server_ip: 195.148.21.204
 metashare_server_ip: 86.50.170.142
 webanno_server_ip: 195.148.31.151
 
-#access control from proxy
+# access control from proxy
 allowed_ips:
-  - 195.148.30.210 # production proxy
-  - 195.148.30.109 # pre-production proxy
+  - 195.148.30.210  # production proxy
+  - 195.148.30.109  # pre-production proxy
 
 # Shibboleth
 shibboleth_key: "sp.korp.csc.fi.key"
@@ -874,4 +874,3 @@ autoindex_info:
   - regex: 'Ylilauta'
     text: 'Ylilauta Corpus'
     url: 'http://urn.fi/urn:nbn:fi:lb-2016101210'
-

@@ -1,3 +1,4 @@
+---
 # Set firewall in CSC compatible way
 
 - name: test for PATA VM
@@ -9,7 +10,7 @@
     name: firewalld
     state: absent
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-  
+
 - name: install iptables-services
   yum:
     name: iptables-services
@@ -21,7 +22,7 @@
     src: firewall.j2
     dest: "/etc/rc.d/rc{{ item }}.firewall"
     mode: 0750
-    force: no
+    force: false
   with_items:
     - ""
     - 6
@@ -43,7 +44,7 @@
     owner: root
     state: present
     insertafter: EOF
-    create: True
+    create: true
   when: pata_host.stat.exists == False
 
 - name: execute firewall

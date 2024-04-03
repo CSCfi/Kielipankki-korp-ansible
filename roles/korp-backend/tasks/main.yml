@@ -84,7 +84,7 @@
 - name: Copy cwb site config
   template:
     src: cwb_korp
-    dest:  "{{ cwb_compile_root }}/config/site/cwb_korp"
+    dest: "{{ cwb_compile_root }}/config/site/cwb_korp"
 
 - name: Compile/Install cwb
   make:
@@ -98,19 +98,19 @@
     - depend
     - all
     - install
-  become: yes
+  become: true
 
 - name: Install pip
   pip:
     name: pip
     state: latest
-    virtualenv:   "{{ korp_backend_venv }}"
+    virtualenv: "{{ korp_backend_venv }}"
     virtualenv_python: python3
 
 - name: Install requirements
   pip:
     requirements: "{{ korp_backend_home }}/requirements.txt"
-    virtualenv:   "{{ korp_backend_venv }}"
+    virtualenv: "{{ korp_backend_venv }}"
     virtualenv_python: python3
 
 - name: checkout worktrees
@@ -119,8 +119,8 @@
     chdir: "{{ korp_backend_home }}"
     creates: "{{ item.split(' ')[0] }}/.git"
   loop:
-     - "{{ korp_backend_auth_home }} authserver/{{ korp_backend_version }}"
-     - "{{ korp_backend_plugin_home }} plugins/{{ korp_backend_version }}"
+    - "{{ korp_backend_auth_home }} authserver/{{ korp_backend_version }}"
+    - "{{ korp_backend_plugin_home }} plugins/{{ korp_backend_version }}"
 
 - name: remove local changes in worktrees
   shell:
@@ -147,7 +147,7 @@
 
 - name: Install custom configs for other plugins
   template:
-    src:  "{{ item }}_plugin_config.py"
+    src: "{{ item }}_plugin_config.py"
     dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
   loop:
     - logger
@@ -173,7 +173,7 @@
   pip:
     name: gevent
     state: latest
-    virtualenv:   "{{ korp_backend_venv }}"
+    virtualenv: "{{ korp_backend_venv }}"
     virtualenv_python: python3
   notify:
     - restart korp-backend
@@ -183,7 +183,7 @@
   pip:
     name: gunicorn
     state: latest
-    virtualenv:   "{{ korp_backend_venv }}"
+    virtualenv: "{{ korp_backend_venv }}"
     virtualenv_python: python3
   notify:
     - restart korp-backend
@@ -204,7 +204,7 @@
 
 - name: Install daily crontab scripts
   ansible.builtin.template:
-    src: "{{ item }}" 
+    src: "{{ item }}"
     dest: "/etc/cron.daily/"
     owner: root
     group: root
@@ -222,7 +222,7 @@
 
 - name: Precompile python files
   ansible.builtin.shell:
-    cmd: find -name \*.py -exec python2 -m py_compile  {} \;
+    cmd: find -name \*.py -exec python3 -m py_compile  {} \;
     chdir: "{{ korp_backend_cgibin_dir }}/korpexport"
 
 - name: Install old API config
