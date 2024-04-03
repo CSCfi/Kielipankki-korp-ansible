@@ -31,7 +31,7 @@ rsync -av --delete                      korp.csc.fi:/var/www/html/download /data
 ERROR_CODE=$(($ERROR_CODE+$?))
 
 # CWB data
-rsync -av          --exclude korp/cache korp.csc.fi:/mnt/cwbdata           /data1
+rsync -av --exclude korp/cache          korp.csc.fi:/mnt/cwbdata           /data1
 ERROR_CODE=$(($ERROR_CODE+$?))
 
 # Apache config
