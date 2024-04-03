@@ -1,3 +1,5 @@
+---
+
 korp_backend_name: Kielipankki-korp-backend
 korp_backend_repo: https://github.com/CSCfi/{{ korp_backend_name }}.git
 korp_backend_version: master
@@ -8,8 +10,8 @@ cwb_registry: /v/corpora/registry
 cwb_compile_root: /v/appl/cwb
 korp_git_root: /v/appl/korp
 korp_backend_home: "{{ korp_git_root }}/{{ korp_backend_name }}"
-korp_backend_auth_home:  "{{ korp_git_root }}/Kielipankki-korp-backend-auth"
-korp_backend_plugin_home:  "{{ korp_git_root }}/Kielipankki-korp-backend-plugins"
+korp_backend_auth_home: "{{ korp_git_root }}/Kielipankki-korp-backend-auth"
+korp_backend_plugin_home: "{{ korp_git_root }}/Kielipankki-korp-backend-plugins"
 
 korp_backend_venv: "{{ korp_git_root }}/{{ korp_backend_name }}/venv"
 timezone: "Europe/Helsinki"
@@ -22,14 +24,14 @@ korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp/korp_db_user_pa
 backend_cache_dir: "/data1/korp/cache"
 
 mk_directories:
-- { path: /v/                , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
-- { path: /v/appl/           , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
-- { path: /v/corpora/data    , owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
-- { path: "{{ cwb_registry }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
-- { path: /data1/korp/           , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx" }
-- { path: /data1/korp/log/       , owner: root, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
-- { path: /data1/korp/log/korp-py, owner: gunicorn, group: root, mode: "u+rwx,g+rwxs,o+rwx" }
-- { path: "{{ backend_cache_dir }}", owner: gunicorn, group: apache, mode: "u+rwx,g+rwxs,o-rwx" }
-- { path: "{{ korp_git_root }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx" }
-- { path: /v/appl/utils/     , owner: root, group: clarin, mode: "u+rwx,g+rwxs,o-rwx" }
-- { path: "{{ korp_backend_cgibin_dir }}"  , owner: root, group: apache, mode: "u+rwx,g+rx,o-rx" } # for old backend korp.cgi
+  - {path: /v/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx"}
+  - {path: /v/appl/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx"}
+  - {path: /v/corpora/data, owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
+  - {path: "{{ cwb_registry }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
+  - {path: /data1/korp/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx"}
+  - {path: /data1/korp/log/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rwx"}
+  - {path: /data1/korp/log/korp-py, owner: gunicorn, group: root, mode: "u+rwx,g+rwxs,o+rwx"}
+  - {path: "{{ backend_cache_dir }}", owner: gunicorn, group: apache, mode: "u+rwx,g+rwxs,o-rwx"}
+  - {path: "{{ korp_git_root }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
+  - {path: /v/appl/utils/, owner: root, group: clarin, mode: "u+rwx,g+rwxs,o-rwx"}
+  - {path: "{{ korp_backend_cgibin_dir }}", owner: root, group: apache, mode: "u+rwx,g+rx,o-rx"}  # for old backend korp.cgi

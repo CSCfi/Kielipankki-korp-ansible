@@ -23,7 +23,7 @@
     state: started
     delay: 0
     timeout: 3             # Stop checking after timeout (sec)
-  ignore_errors: yes
+  ignore_errors: true
   with_items:
     - 8400
     - 8404
@@ -33,7 +33,7 @@
     cmd: wget -c "{{ cv_download_base }}{{ item }}"
     chdir: "{{ local_download_dir }}"
   delegate_to: localhost
-  become: no
+  become: false
   loop:
     - "{{ cv_package }}"
     - "{{ cv_config }}"

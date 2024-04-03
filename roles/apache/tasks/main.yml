@@ -1,7 +1,7 @@
 ---
 # Setup apache
 - name: Install httpd
-  yum: 
+  yum:
     name:
       - httpd
       - mod_proxy_html
@@ -66,5 +66,3 @@
     name: httpd
     state: started
     enabled: yes
-
-

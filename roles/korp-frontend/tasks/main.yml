@@ -27,9 +27,9 @@
       - yarn
       - git224
       - gcc-c++
-      - centos-release-scl # https://www.softwarecollections.org/en/about/
-      - devtoolset-7 # https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/
-      - java-11-openjdk # annlab only
+      - centos-release-scl  # https://www.softwarecollections.org/en/about/
+      - devtoolset-7  # https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/
+      - java-11-openjdk  # annlab only
     state: present
 
 - name: Ensure directories
@@ -47,7 +47,7 @@
   git:
     repo: "{{ korp_frontend_repo  }}"
     version: "{{ korp_frontend_version }}"
-    dest:  "{{ korp_frontend_home }}"
+    dest: "{{ korp_frontend_home }}"
     force: true
   register: frontend_clone
 
@@ -64,9 +64,9 @@
     chdir: "{{ korp_frontend_home }}"
     creates: "{{ item.split(' ')[0] }}/.git"
   loop:
-     - "{{ korp_frontend_config_home }} config/{{ korp_frontend_version }}"
-     - "{{ korp_frontend_plugin_home }} plugins/{{ korp_frontend_version }}"
-     - "{{ korp_frontend_news_home }} news/{{ korp_frontend_version }}"
+    - "{{ korp_frontend_config_home }} config/{{ korp_frontend_version }}"
+    - "{{ korp_frontend_plugin_home }} plugins/{{ korp_frontend_version }}"
+    - "{{ korp_frontend_news_home }} news/{{ korp_frontend_version }}"
 
 - name: update worktrees
   shell:
@@ -74,9 +74,9 @@
     chdir: "{{ item }}"
   register: worktree
   loop:
-     - "{{ korp_frontend_config_home }}"
-     - "{{ korp_frontend_plugin_home }}"
-     - "{{ korp_frontend_news_home }}"
+    - "{{ korp_frontend_config_home }}"
+    - "{{ korp_frontend_plugin_home }}"
+    - "{{ korp_frontend_news_home }}"
 
 - name: Skip this if all up to date
   set_fact:
@@ -94,7 +94,7 @@
     cmd: scl enable devtoolset-7 yarn
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend  == true
-  
+
 - name: Build frontend
   shell:
     cmd: yarn build
@@ -103,7 +103,7 @@
 
 - name: Create news directory
   file:
-    dest:  "{{ korp_frontend_home }}/dist/news"
+    dest: "{{ korp_frontend_home }}/dist/news"
     state: directory
 
 - name: Compile News
@@ -111,11 +111,11 @@
     cmd: "./compile.bash"
     chdir: "{{ korp_frontend_news_home }}"
   when: compile_frontend == true
- 
+
 - name: Link news
   file:
     src: "{{ korp_frontend_news_home }}/json"
-    dest:  "{{ korp_frontend_home }}/dist/news/json"
+    dest: "{{ korp_frontend_home }}/dist/news/json"
     state: link
 
 - name: Install frontend
@@ -128,7 +128,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     state: link
-    force: yes
+    force: true
   with_items:
-    - { src: "{{ korp_static_frontend_cgi_dir }}",      dest: "{{ korp_frontend_www_home }}/cgi-bin" }
-    - { src: "{{ korp_frontend_annlab_dir }}/deptrees", dest: "{{ korp_frontend_www_home }}/lib/annlab_deptrees" }
+    - {src: "{{ korp_static_frontend_cgi_dir }}", dest: "{{ korp_frontend_www_home }}/cgi-bin"}
+    - {src: "{{ korp_frontend_annlab_dir }}/deptrees", dest: "{{ korp_frontend_www_home }}/lib/annlab_deptrees"}

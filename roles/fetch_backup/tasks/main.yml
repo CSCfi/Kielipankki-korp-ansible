@@ -8,45 +8,45 @@
 
 - name: Create Backup Dir
   file:
-    path: "{{ backup_dir }}"
-    state: directory
-    owner: backup
-    group: backup
-    mode: 0770
+   path: "{{ backup_dir }}"
+   state: directory
+   owner: backup
+   group: backup
+   mode: 0770
 
 - name: Ensure .ssh
   file:
-    path: ~/.ssh/
-    state: directory
+   path: ~/.ssh/
+   state: directory
   become: true
   become_user: backup
 
 - name: setup daily backups
   template:
-    src: "{{ item }}.j2"
-    dest: "/etc/cron.daily/{{ item }}"
-    owner: root
-    group: backup
-    mode: 0750
+   src: "{{ item }}.j2"
+   dest: "/etc/cron.daily/{{ item }}"
+   owner: root
+   group: backup
+   mode: 0750
   loop:
-    - get_pouta_webserver_vm_backup
-    - sync_korp_servers
+   - get_pouta_webserver_vm_backup
+   - sync_korp_servers
 
 - name: Setup SSH keys
   copy:
-    content: "{{ lookup('passwordstore', '{{ item.content }} returnall=true')}}"
-    dest: "~/.ssh/{{ item.name }}"
-    owner: backup
-    group: backup
-    mode: 0600
+   content: "{{ lookup('passwordstore', '{{ item.content }} returnall=true') }}"
+   dest: "~/.ssh/{{ item.name }}"
+   owner: backup
+   group: backup
+   mode: 0600
   become: true
   become_user: backup
   loop:
-    - { name: id_rsa.pub, content: "{{ backup_id_pub }}" }
-    - { name: id_rsa , content: "{{ backup_id_key }}" }
+   - {name: id_rsa.pub, content: "{{ backup_id_pub }}"}
+   - {name: id_rsa, content: "{{ backup_id_key }}"}
 
 - name: Configure anacron
   ansible.builtin.lineinfile:
-    path: /etc/anacrontab
-    regexp: '^START_HOURS_RANGE='
-    line: "START_HOURS_RANGE={{ anacron_hours }}"
+   path: /etc/anacrontab
+   regexp: '^START_HOURS_RANGE='
+   line: "START_HOURS_RANGE={{ anacron_hours }}"
