@@ -25,12 +25,14 @@
     name:
       - nodejs
       - yarn
-      - git224
+      - git
       - gcc-c++
-      - centos-release-scl  # https://www.softwarecollections.org/en/about/
-      - devtoolset-7  # https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/
       - java-11-openjdk  # annlab only
     state: present
+
+- name: Install yarn
+  ansible.builtin.command:
+    cmd: npm install yarn
 
 - name: Ensure directories
   file:
@@ -89,11 +91,16 @@
     src: run_config.json.j2
     dest: "{{ korp_frontend_home }}/run_config.json"
 
-- name: Fetch and compile dependencies
-  shell:
-    cmd: scl enable devtoolset-7 yarn
+- name: Install dependencies for frontend
+  ansible.builtin.command:
+    cmd: yarn install
     chdir: "{{ korp_frontend_home }}"
-  when: compile_frontend  == true
+  when: compile_frontend == true
+
+- name: Update browserlist
+  ansible.builtin.command:
+    cmd: npx browserslist@latest
+    chdir: "{{ korp_frontend_home }}"
 
 - name: Build frontend
   shell:
