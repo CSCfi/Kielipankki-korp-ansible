@@ -108,10 +108,13 @@
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
-- name: Create news directory
+- name: Create news directories
   file:
-    dest: "{{ korp_frontend_home }}/dist/news"
+    dest: "{{ item }}"
     state: directory
+  loop:
+    - "{{ korp_frontend_news_home }}/json"
+    - "{{ korp_frontend_home }}/dist/news"
 
 - name: Compile News
   shell:
