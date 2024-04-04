@@ -39,15 +39,14 @@
 - name: Install korp backend packages
   yum:
     name:
-      - git224
+      - git
       - python3
       - python3-wheel
       - python3-devel
-      - python2-setuptools
       - python3-setuptools
-      - python-virtualenv
+      - python3-virtualenv
       - memcached
-      - libmemcached
+      - libmemcached-awesome-devel
       - mariadb
       - mariadb-devel
       - python-xlwt # for korp_download.cgi
