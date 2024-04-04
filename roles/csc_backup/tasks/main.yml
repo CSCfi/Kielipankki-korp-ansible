@@ -1,5 +1,4 @@
 ---
-# Setup korp frontend
 
 - name: Ensure directories
   file:
