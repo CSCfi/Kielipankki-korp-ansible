@@ -56,7 +56,7 @@
   # happened, not if a local change has been overwritten, but nothing else
   # changed.
   set_fact:
-    compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) }}"
+    compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) ) }}"
 
 - name: checkout worktrees
   shell:
