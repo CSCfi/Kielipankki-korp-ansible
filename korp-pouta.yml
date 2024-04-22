@@ -1,0 +1,7 @@
+---
+
+- name: Create Pouta VM
+  ansible.builtin.import_playbook: pouta-vm.yml
+
+- name: Install Korp software
+  ansible.builtin.import_playbook: korp-software-vm.yml
