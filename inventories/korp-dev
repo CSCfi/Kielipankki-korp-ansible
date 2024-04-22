@@ -8,3 +8,5 @@ all:
     korp:
       ansible_host: 86.50.169.164
       ansible_user: almalinux
+      allowed_ips:
+        - 192.168.1
