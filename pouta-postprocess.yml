@@ -1,0 +1,6 @@
+---
+
+- name: Post-processing for dev VM
+  hosts: korp
+  roles:
+    - role: create_database

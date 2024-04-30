@@ -56,6 +56,11 @@ shib_cert_contents:
   - "{{ password_store }}/korp/{{ shibboleth_certificate }}"
   - "{{ password_store }}/remsaa/{{ rems_aa_cert }}"
 
+# Database configuration shared between dev and prod and needed when creating dev database
+korp_db_user: "korp"
+korp_db_port: 3306
+
+
 autoindex_info:
   - regex: 'acquis-ftb3/*.zip'
     text: 'CC BY'
