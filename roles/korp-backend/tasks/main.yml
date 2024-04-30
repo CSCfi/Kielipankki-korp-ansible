@@ -201,6 +201,15 @@
   notify:
     - restart systemd
 
+- name: Enable korp services
+  ansible.builtin.systemd_service:
+    state: started
+    enabled: true
+    name: "{{ item }}"
+  loop:
+    - korp-backend.service
+    - korp-authserver.service
+
 - name: Install daily crontab scripts
   ansible.builtin.template:
     src: "{{ item }}"
