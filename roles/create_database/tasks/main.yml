@@ -1,0 +1,42 @@
+---
+
+- name: Install MariaDB and required packages
+  ansible.builtin.yum:
+    name:
+      - mariadb
+      - mariadb-server
+      - python3-PyMySQL
+    state: present
+  become: true
+
+- name: Start MariaDB service
+  ansible.builtin.systemd_service:
+    name: mariadb
+    state: started
+    enabled: true
+  become: true
+
+- name: Set root password for MariaDB
+  community.mysql.mysql_user:
+    login_user: root
+    name: root
+    password: "{{ db_root_password }}"
+    check_implicit_admin: true
+    login_unix_socket: /var/lib/mysql/mysql.sock
+  become: true
+  ignore_errors: true  # This is only possible when doing the initial install
+
+- name: Create korp database
+  community.mysql.mysql_db:
+    login_user: root
+    login_password: "{{ db_root_password }}"
+    name: korp
+    state: present
+
+- name: Create korp user for MariaDB
+  community.mysql.mysql_user:
+    login_user: root
+    login_password: "{{ db_root_password }}"
+    user: korp
+    password: "{{ korp_db_password }}"
+    priv: "korp.*:ALL"

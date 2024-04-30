@@ -5,3 +5,4 @@ collections:
   - name: git@github.com:CSCfi/Kielipankki-ansible-common.git
     type: git
     version: main
+  - name: community.mysql
