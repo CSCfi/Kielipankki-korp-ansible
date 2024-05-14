@@ -26,23 +26,32 @@
   become: true
   ignore_errors: true  # This is only possible when doing the initial install
 
-- name: Send table creation sql file to Korp
+- name: Send table creation sql files to Korp
   ansible.builtin.copy:
-    src: korp-tables.sql
-    dest: /tmp/korp-tables.sql
+    src: "{{ item }}-tables.sql"
+    dest: "/tmp/{{ item }}-tables.sql"
+  loop:
+    - korp
+    - korp_auth
 
-- name: Create korp database
+- name: Create databases
   community.mysql.mysql_db:
     login_user: root
     login_password: "{{ db_root_password }}"
-    name: korp
+    name: "{{ item }}"
     state: import
-    target: /tmp/korp-tables.sql
+    target: "/tmp/{{ item }}-tables.sql"
+  loop:
+    - korp
+    - korp_auth
 
-- name: Remove table creation sql file from Korp
+- name: Remove table creation sql files from Korp
   ansible.builtin.file:
-    path: /tmp/korp-tables.sql
+    path: "/tmp/{{ item }}-tables.sql"
     state: absent
+  loop:
+    - korp
+    - korp_auth
 
 - name: Create korp user for MariaDB
   community.mysql.mysql_user:
@@ -50,4 +59,4 @@
     login_password: "{{ db_root_password }}"
     user: korp
     password: "{{ korp_db_password }}"
-    priv: "korp.*:ALL"
+    priv: "korp.*:ALL/korp_auth.*:ALL"
