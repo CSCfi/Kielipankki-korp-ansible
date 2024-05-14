@@ -4,7 +4,7 @@
   ansible.builtin.import_playbook: pouta-vm.yml
 
 - name: Install Korp software
-  ansible.builtin.import_playbook: korp-software-vm.yml
+  ansible.builtin.import_playbook: korp-software.yml
 
 - name: Postprocessing unique to Pouta
   ansible.builtin.import_playbook: pouta-postprocess.yml

@@ -1,0 +1,7 @@
+---
+
+- name: Install Korp software
+  ansible.builtin.import_playbook: korp-software.yml
+
+- name: Postprocessing unique to production instance
+  ansible.builtin.import_playbook: production-postprocess.yml

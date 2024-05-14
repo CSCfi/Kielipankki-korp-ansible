@@ -1,0 +1,11 @@
+---
+
+- name: Production-only provisioning steps for Korp
+  hosts: korp
+  become: true
+
+  roles:
+      - role: fetch_backup
+        tags: fetch_backup
+      - role: csc_backup
+        tags: csc_backup
