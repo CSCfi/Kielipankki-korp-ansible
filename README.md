@@ -67,7 +67,7 @@ $ ansible-playbook korp-pouta.yml -i inventories/korp-dev
 Run the provisioning playbook.
 
 ```
-$  ansible-playbook korp-software.yml -i inventories/korp-prod
+$  ansible-playbook korp-production.yml -i inventories/korp-prod
 ```
 
 By default, some files are downloaded locally into `~/Downloads`. If you do not
@@ -79,10 +79,10 @@ wish to use that directory, specify an alternative using `--extra-vars
 The script will recompile the frontend in case of changes (including new news). You can force the recompilation and reinstallation of the frontend using
 the `force_compile` parameter, e.g.:
 
-$ ansible-playbook -vi inventories/korp-prod korp-software.yml -t korp-frontend -e force_compile=true
+$ ansible-playbook -vi inventories/korp-prod korp-production.yml -t korp-frontend -e force_compile=true
 
 ### Install only new news
 
 To just update the news information you can start later in the script:
 
-$ ansible-playbook -vi inventories/korp-prod korp-software.yml -t korp-frontend --start-at="update worktrees" -e force_compile=true
+$ ansible-playbook -vi inventories/korp-prod korp-production.yml -t korp-frontend --start-at="update worktrees" -e force_compile=true
