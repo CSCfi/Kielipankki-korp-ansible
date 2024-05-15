@@ -56,7 +56,7 @@ Modify the `IdentityFile` path if needed. Establishing a connection to korp2.csc
 
 ### Development instance
 
-Development instance is created on Pouta and uses a local database and minimal test set of corpora.
+Development instance is created on Pouta and uses a local database. No corpora are included out of the box.
 
 ```
 $ ansible-playbook korp-pouta.yml -i inventories/korp-dev
