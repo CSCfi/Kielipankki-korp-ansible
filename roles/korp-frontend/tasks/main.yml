@@ -97,11 +97,6 @@
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
-- name: Update browserlist
-  ansible.builtin.command:
-    cmd: npx browserslist@latest
-    chdir: "{{ korp_frontend_home }}"
-
 - name: Build frontend
   shell:
     cmd: yarn build
