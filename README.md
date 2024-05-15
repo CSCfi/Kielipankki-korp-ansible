@@ -62,6 +62,8 @@ Development instance is created on Pouta and uses a local database. No corpora a
 $ ansible-playbook korp-pouta.yml -i inventories/korp-dev
 ```
 
+Accessing a newly created instance requires updating the IP in (pre-prod) proxy settings: see [proxy repo](https://github.com/cscfi/kielipankki-proxy?tab=readme-ov-file#updating-ips-of-proxied-vms-like-portal-webanno-etc) for more details.
+
 ### Production isntance
 
 Run the provisioning playbook.
