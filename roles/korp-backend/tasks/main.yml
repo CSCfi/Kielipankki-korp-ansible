@@ -241,6 +241,15 @@
     group: apache
     mode: "640"
 
+- name: Configure CGI script location for Apache
+  ansible.builtin.lineinfile:
+    path: /etc/httpd/conf.d/cgi.conf
+    line: "ScriptAlias /korp/cgi-bin/ {{ korp_static_frontend_cgi_dir }}/"
+    state: present
+    create: true
+    mode: 0644
+  notify: restart korp-backend
+
 - name: configure logrotate for backend
   template:
     src: "korp_logrotate"
