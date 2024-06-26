@@ -6,7 +6,7 @@
     src: download-style
     dest: "{{ style_dir }}"
 
-- name: Create directories
+- name: Create directory
   file:
     path: "{{ item }}"
     state: directory
@@ -16,7 +16,16 @@
   loop:
     - "{{ style_dir }}"
 
-- name: Copy conf.d template files
+- name: Copy download UI template files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ style_dir }}/{{ item }}"
+  loop:
+    - download_error403.html
+    - header.html
+    - html_header.inc
+
+- name: Generate and copy download_autoindex.conf
   template:
     src: "{{ item }}.conf.j2"
     dest: /etc/httpd/conf.d/{{ item }}.conf

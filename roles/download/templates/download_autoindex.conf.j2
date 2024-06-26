@@ -1,4 +1,4 @@
-<Directory /var/www/html/download-style>
+<Directory {{ style_dir }} >
       Options -Indexes +Includes
       XbitHack on
 </Directory>
@@ -29,8 +29,8 @@
       IndexOptions +SuppressLastModified
       IndexOptions -SuppressSize
       IndexOrderDefault Ascending Name
-      HeaderName /download-style/header.html
-      ReadmeName /download-style/footer.html
+      HeaderName {{ style_path }}/header.html
+      ReadmeName {{ style_path }}/footer.html
 
 AddDescription "More information" "README*.txt"
 AddDescription "Licence information" "license*.txt"
@@ -50,8 +50,8 @@ AddDescription '<div>{{ item.text }}</div>' "{{ item.regex }}"
 AddDescription "compressed file" "*.zip"
 AddDescription "text document" "*.txt"
 
-ErrorDocument 403 /download-style/download_error403.html
-ErrorDocument 401 /download-style/download_error403.html
+ErrorDocument 403 {{ style_path }}/download_error403.html
+ErrorDocument 401 {{ style_path }}/download_error403.html
 
 </Directory>
 
