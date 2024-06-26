@@ -15,7 +15,7 @@ korp_backend_venv: "{{ korp_git_root }}/{{ korp_backend_name }}/venv"
 timezone: "Europe/Helsinki"
 
 korp_db_name: "korp"
-korp_db_server: "kielipankkidb.csc.fi"
+korp_db_server: "kielipankkidb9.csc.fi"
 korp_db_port: 3306
 korp_db_user: "korp"
 korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp/korp_db_user_password') }}"
