@@ -297,7 +297,7 @@ autoindex_info:
     url: 'http://urn.fi/urn:nbn:fi:lb-2023082921'
 
   - regex: 'digitala-yki'
-    text: "DigiTala's YKI data"
+    text: "DigiTala\\'s YKI data"
     url: 'http://urn.fi/urn:nbn:fi:lb-2023012629'
 
   - regex: 'digitala'
@@ -709,11 +709,11 @@ autoindex_info:
     url: 'https://creativecommons.org/licenses/by/4.0/'
 
   - regex: 'lonnrot/lonnrot-src'
-    text: "Elias Lönnrot's letters, source"
+    text: "Elias Lönnrot\\'s letters, source"
     url: 'http://urn.fi/urn:nbn:fi:lb-2022040501'
 
   - regex: 'lonnrot'
-    text: "Elias Lönnrot's letters"
+    text: "Elias Lönnrot\\'s letters"
 
   - regex: 'nlfcl/*/vrt/nlfcl*vrt.zip'
     text: 'CC BY'
@@ -1031,7 +1031,7 @@ autoindex_info:
     url: 'https://creativecommons.org/publicdomain/zero/1.0/'
 
   - regex: 'tallvocabl2fi'
-    text: "Measurements of 15 L2 Finnish learners' vocabularies"
+    text: "Measurements of 15 L2 Finnish learners\\' vocabularies"
     url: 'http://urn.fi/urn:nbn:fi:lb-2022041921'
 
   - regex: 'tboneslim/tboneslim-src/tboneslim-src.zip'
@@ -1184,6 +1184,9 @@ autoindex_info:
   - regex: 'Wanca/2016/2016-vrt'
     text: 'Wanca 2016, VRT'
     url: 'http://urn.fi/urn:nbn:fi:lb-2020030501'
+
+  - regex: 'Wanca'
+    text: 'Collection of Uralic Languages'
 
   - regex: 'wikipedia-fi/wikipedia-fi-2017-src/*.zip'
     text: 'CC BY'
