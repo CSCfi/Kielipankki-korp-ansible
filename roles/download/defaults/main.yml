@@ -1,2 +1,3 @@
-style_dir: "/var/www/html/download-style"
+style_path: "/download/.download-style"
+style_dir: "/var/www/html/{{ style_path }}"
 
