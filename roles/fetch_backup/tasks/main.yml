@@ -6,13 +6,24 @@
    shell: /bin/bash
    groups: nobody
 
-- name: Create Backup Dir
+- name: Install s5cmd for backups
+  pip:
+    name: s5cmd
+    virtualenv: "{{ backup_venv }}"
+    virtualenv_python: python3
+  become: true
+  become_user: backup
+
+- name: Create backup directories
   file:
-   path: "{{ backup_dir }}"
+   path: "{{ item }}"
    state: directory
    owner: backup
    group: backup
    mode: 0770
+  loop:
+    - "{{ backup_dir }}"
+    - "{{ backup_dir }}/signbank"
 
 - name: Ensure .ssh
   file:
@@ -31,6 +42,16 @@
   loop:
    - get_pouta_webserver_vm_backup
    - sync_korp_servers
+
+- name: Set up weekly backups
+  template:
+   src: "{{ item }}.j2"
+   dest: "/etc/cron.weekly/{{ item }}"
+   owner: root
+   group: backup
+   mode: 0750
+  loop:
+   - get_signbank_backup
 
 - name: Setup SSH keys
   copy:
