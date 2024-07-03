@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# restart as user backup (from root)
+if [ "$(id -u)" -eq 0 ]; then
+    exec sudo -H -u backup $0 "$@"
+fi
+
+source {{ backup_venv }}/bin/activate
+
+BACKUP_DIR="{{ backup_dir }}/signbank"
+LOG_MESSAGE_FILE=/tmp/get_signbank_backup.txt
+
+# remove possible last log file
+rm -f $LOG_MESSAGE_FILE
+
+# stderr to stdout:
+exec > $LOG_MESSAGE_FILE
+exec 2>&1
+
+
+if ! [ -d $BACKUP_DIR/ ]; then
+  echo "Backup of Signbank failed."
+  echo "Local backup directory \"$BACKUP_DIR\" does not exist."
+else
+  s5cmd --endpoint-url "https://a3s.fi" --no-sign-request sync s3://signbank_data/* $BACKUP_DIR
+fi # ! [ -d $BACKUP_DIR/ ]
+
+# mails error message and optionally log file
+# $1: Error message
+# $2: Path to file
+mail_log() {
+RECIPIENT=root # Use .forward to forward root's mail if needed.
+   if [ -n $2 ]; then # mail the file content
+       cat $2 | mail -s "$0 @ `hostname -f`: $1" $RECIPIENT
+   else
+       echo "(No mail content)"  | mail -s "$0 @ `hostname -f`: $1"  $RECIPIENT
+   fi
+}
+
+# mail error if logfile does not exist
+if [ ! -e $LOG_MESSAGE_FILE ]; then
+   mail_log "No logfile!" "In normal operation, an empty logfile should have been created."
+fi
+
+# mail errors if the logfile is not empty
+if [ -s $LOG_MESSAGE_FILE ]; then
+   mail_log "Error. See mail body for details" $LOG_MESSAGE_FILE
+fi

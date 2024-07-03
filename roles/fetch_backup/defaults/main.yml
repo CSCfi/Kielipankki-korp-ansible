@@ -1,3 +1,5 @@
 backup_id_pub: "lb_passwords/backup/id_rsa.pub"
 backup_id_key: "lb_passwords/backup/id_rsa"
 anacron_hours: "8-9" # run cron-* after Pouta VMs.
+
+backup_venv: "/home/backup/.backup_venv"
