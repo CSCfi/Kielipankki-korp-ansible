@@ -22,7 +22,7 @@ if ! [ -d $BACKUP_DIR/ ]; then
   echo "Backup of Signbank failed."
   echo "Local backup directory \"$BACKUP_DIR\" does not exist."
 else
-  s5cmd --endpoint-url "https://a3s.fi" --no-sign-request sync s3://signbank_data/* $BACKUP_DIR
+  s5cmd --numworkers 8 --endpoint-url "https://a3s.fi" --no-sign-request sync s3://signbank_data/* $BACKUP_DIR
 fi # ! [ -d $BACKUP_DIR/ ]
 
 # mails error message and optionally log file
