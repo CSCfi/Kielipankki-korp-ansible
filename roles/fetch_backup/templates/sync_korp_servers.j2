@@ -1,6 +1,6 @@
-# This script syncs korp.csc.fi to korp2.csc.fi
+# This script syncs korp-old-janiemi to korp2.csc.fi
 # Assumptions:
-# - korp.csc.fi contains the master data
+# - old korp found at IP 195.148.22.239 contains the master data
 # - root's .ssh/authorized_keys file on both servers allows for passwordless login
 
 
@@ -27,7 +27,7 @@ exec > $LOG_MESSAGE_FILE
 exec 2>&1
 
 # Download
-rsync -av --delete                      korp.csc.fi:/var/www/html/download /data2
+rsync -av --delete                      195.148.22.239:/var/www/html/download /data2
 ERROR_CODE=$(($ERROR_CODE+$?))
 
 # CWB data
@@ -36,18 +36,18 @@ rsync -av \
   --exclude corpora/tmp \
   --exclude corpora/vrt \
   --exclude corpora/sql \
-  korp.csc.fi:/mnt/cwbdata /data1
+  195.148.22.239:/mnt/cwbdata /data1
 ERROR_CODE=$(($ERROR_CODE+$?))
 
 # Apache config
 # sync korp:/etc/httpd/conf.d to korp2:/root/korp_apache_conf_bak
-rsync -av --delete                      korp.csc.fi:/etc/httpd/conf.d/     /root/korp_apache_conf_bak
+rsync -av --delete                      195.148.22.239:/etc/httpd/conf.d/     /root/korp_apache_conf_bak
 ERROR_CODE=$(($ERROR_CODE+$?))
 
 
 # mail error if logfile does not exist
 if [ ! -e $LOG_MESSAGE_FILE ]; then
-    mail_log "No logfile!" "Something went wrong with syncing korp.csc.fi to korp2. At least a very short logfile should have been produced."
+    mail_log "No logfile!" "Something went wrong with syncing korp-old-janiemi to korp2. At least a very short logfile should have been produced."
     exit 1
 fi
 
@@ -58,4 +58,3 @@ else
     mail_log "Error. See mail body for details" $LOG_MESSAGE_FILE
     exit 2
 fi
-
