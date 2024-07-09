@@ -23,6 +23,7 @@ if ! [ -d $BACKUP_DIR/ ]; then
   echo "Local backup directory \"$BACKUP_DIR\" does not exist."
 else
   s5cmd --numworkers 8 --endpoint-url "https://a3s.fi" --no-sign-request sync s3://signbank_data/* $BACKUP_DIR
+  EXIT_CODE=$?
 fi # ! [ -d $BACKUP_DIR/ ]
 
 # mails error message and optionally log file
@@ -43,6 +44,6 @@ if [ ! -e $LOG_MESSAGE_FILE ]; then
 fi
 
 # mail errors if the logfile is not empty
-if [ -s $LOG_MESSAGE_FILE ]; then
+if [ $EXIT_CODE -ne 0 ]; then
    mail_log "Error. See mail body for details" $LOG_MESSAGE_FILE
 fi
