@@ -27,7 +27,7 @@ exec > $LOG_MESSAGE_FILE
 exec 2>&1
 
 # Download
-rsync -av --delete                      195.148.22.239:/var/www/html/download /data2
+rsync -av --delete                      root@195.148.22.239:/var/www/html/download /data2
 ERROR_CODE=$(($ERROR_CODE+$?))
 
 # CWB data
@@ -36,12 +36,12 @@ rsync -av \
   --exclude corpora/tmp \
   --exclude corpora/vrt \
   --exclude corpora/sql \
-  195.148.22.239:/mnt/cwbdata /data1
+  root@195.148.22.239:/mnt/cwbdata /data1
 ERROR_CODE=$(($ERROR_CODE+$?))
 
 # Apache config
 # sync korp:/etc/httpd/conf.d to korp2:/root/korp_apache_conf_bak
-rsync -av --delete                      195.148.22.239:/etc/httpd/conf.d/     /root/korp_apache_conf_bak
+rsync -av --delete                      root@195.148.22.239:/etc/httpd/conf.d/     /root/korp_apache_conf_bak
 ERROR_CODE=$(($ERROR_CODE+$?))
 
 
