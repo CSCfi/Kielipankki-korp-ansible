@@ -8,7 +8,7 @@ fi
 # backs up lamp/tomcat servers, (e.g. portal, metashare, webanno, specified by $SERVER_IPS) using $BACKUP_GLOB to $LOCAL_BACKUP_DIR
 
 # One way to get IPs: openstack server list|egrep "webanno|portal|metashare"|cut -f 5 -d"|"|cut -f3 -d " "
-SERVER_IPS="{{ portal_server_ip }} {{ metashare_server_ip }} {{ webanno_server_ip}}"
+SERVER_IPS="{{ portal_server_ip }} {{ webanno_server_ip}}"
 
 # on Korp2:
 LOCAL_BACKUP_DIR="/var/backup"
