@@ -34,7 +34,7 @@ else
       SERVER_NAME=`ssh backup@$IP hostname`
 
       NEWEST_BACKUP=`ssh backup@$IP "ls -rt $BACKUP_GLOB |tail -n 1"`
-      BACKUP_FILE=`basename $NEWEST_BACKUP` 
+      BACKUP_FILE=`basename $NEWEST_BACKUP`
       LOCAL_BACKUP_FILE=$LOCAL_BACKUP_DIR/$BACKUP_FILE
 
       if [ -f $LOCAL_BACKUP_FILE ]; then
