@@ -9,7 +9,6 @@
       tags: create_instances
   vars:
     instance_name: 'korp'
-    vm_name_postfix: 'dev'
     pouta_instance_name: "{{ instance_name }}-{{ vm_name_postfix }}"
     std_image: "AlmaLinux-9"
     project_key: "kielipouta"
