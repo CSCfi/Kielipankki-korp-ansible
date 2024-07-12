@@ -12,7 +12,7 @@
     pouta_instance_name: "{{ instance_name }}-{{ vm_name_postfix }}"
     std_image: "AlmaLinux-9"
     project_key: "kielipouta"
-    project_sg: "portal-sg"
+    project_sg: "korp-dev-sg"
     project_security_groups: "default,{{ project_sg }}" # don't add spaces here!
     network: "project_2000680"
 
