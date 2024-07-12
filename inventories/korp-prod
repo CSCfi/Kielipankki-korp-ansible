@@ -1,1 +1,1 @@
-korp ansible_host=korp2.csc.fi
+korp ansible_host=korp2.csc.fi ansible_user=cloud-user
