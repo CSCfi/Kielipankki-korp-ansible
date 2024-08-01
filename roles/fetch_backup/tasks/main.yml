@@ -40,7 +40,6 @@
    mode: 0750
   loop:
    - get_pouta_webserver_vm_backup
-   - sync_korp_servers
 
 - name: Set up weekly backups
   template:
