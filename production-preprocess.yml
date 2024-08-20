@@ -1,0 +1,16 @@
+---
+
+- name: Production-only provisioning steps for Korp
+  hosts: korp
+  become: true
+
+  tasks:
+    - name: Disable SELinux
+      selinux:
+        policy: targeted
+        state: permissive
+      register: sestatus
+
+    - name: Restart server if needed
+      reboot:
+      when: sestatus.changed|default(false)
