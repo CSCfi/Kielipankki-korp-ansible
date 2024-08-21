@@ -2,7 +2,7 @@
 # Setup korp frontend
 
 - name: Add yarn repository
-  yum_repository:
+  ansible.builtin.yum_repository:
     name: yarn
     description: Yarn YUM repo
     baseurl: https://dl.yarnpkg.com/rpm/
@@ -10,18 +10,12 @@
     gpgkey: https://dl.yarnpkg.com/rpm/pubkey.gpg
 
 - name: Add nodejs repository
-  shell:
+  ansible.builtin.shell:
     cmd: curl -sL https://rpm.nodesource.com/setup_12.x | bash -
     creates: /etc/yum.repos.d/nodesource-el7.repo
 
-- name: install CentOS IUS release package
-  yum:
-    name: "https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm"
-    state: present
-  when: ansible_distribution == 'CentOS'
-
 - name: Install basics
-  yum:
+  ansible.builtin.dnf:
     name:
       - nodejs
       - yarn
@@ -35,7 +29,7 @@
     cmd: npm install yarn
 
 - name: Ensure directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: 0755
@@ -46,23 +40,24 @@
     - "{{ korp_frontend_annlab_dir }}"
 
 - name: Clone frontend
-  git:
+  ansible.builtin.git:
     repo: "{{ korp_frontend_repo  }}"
     version: "{{ korp_frontend_version }}"
     dest: "{{ korp_frontend_home }}"
     force: true
+    umask: "0022"
   register: frontend_clone
 
 - name: Set compile_frontend
   # Request recompilation (compile_frontend = true) if an actual change has
   # happened, not if a local change has been overwritten, but nothing else
   # changed.
-  set_fact:
+  ansible.builtin.set_fact:
     compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) ) }}"
 
 - name: checkout worktrees
-  shell:
-    cmd: "git worktree add -f {{ item }}"
+  ansible.builtin.shell:
+    cmd: "umask 0022 && git worktree add -f {{ item }}"
     chdir: "{{ korp_frontend_home }}"
     creates: "{{ item.split(' ')[0] }}/.git"
   loop:
@@ -71,7 +66,7 @@
     - "{{ korp_frontend_news_home }} news/{{ korp_frontend_version }}"
 
 - name: update worktrees
-  shell:
+  ansible.builtin.shell:
     cmd: "git pull"
     chdir: "{{ item }}"
   register: worktree
@@ -81,39 +76,41 @@
     - "{{ korp_frontend_news_home }}"
 
 - name: Skip this if all up to date
-  set_fact:
+  ansible.builtin.set_fact:
     compile_frontend: true
   when: (item.stdout != "Already up to date.") or ( force_compile | default(false))
   loop: "{{ worktree.results }}"
 
 - name: Install run_config
-  template:
+  ansible.builtin.template:
     src: run_config.json.j2
     dest: "{{ korp_frontend_home }}/run_config.json"
+    mode: "0644"
 
 - name: Install dependencies for frontend
   ansible.builtin.command:
-    cmd: yarn install
+    cmd: "umask 0022 && yarn install"
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
 - name: Build frontend
-  shell:
-    cmd: yarn build
+  ansible.builtin.shell:
+    cmd: "umask 0022 && yarn build"
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
 - name: Create news directories
-  file:
+  ansible.builtin.file:
     dest: "{{ item }}"
     state: directory
+    mode: "0755"
   loop:
     - "{{ korp_frontend_news_home }}/json"
     - "{{ korp_frontend_home }}/dist/news"
 
 - name: Compile News
-  shell:
-    cmd: "./compile.bash"
+  ansible.builtin.shell:
+    cmd: "umask 0022 && ./compile.bash"
     chdir: "{{ korp_frontend_news_home }}"
   when: compile_frontend == true
 

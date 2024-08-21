@@ -1,28 +1,22 @@
 ---
 # Setup korp backend
 
-- name: install CentOS IUS release package
-  yum:
-    name: "https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm"
-    state: present
-  when: ansible_distribution == 'CentOS'
-
 - name: Set timezone
   community.general.timezone:
     name: "{{ timezone }}"
 
 - name: Add gunicorn user
-  user:
+  ansible.builtin.user:
     name: gunicorn
     state: present
 
 - name: "add clarin group"
-  group:
+  ansible.builtin.group:
     name: clarin
     state: present
 
 - name: Install CWB compile environment
-  yum:
+  ansible.builtin.dnf:
     name:
       - subversion
       - make
@@ -37,7 +31,7 @@
     state: present
 
 - name: Install korp backend packages
-  yum:
+  ansible.builtin.dnf:
     name:
       - git
       - python3
@@ -52,7 +46,7 @@
       - python-xlwt # for korp_download.cgi
 
 - name: Create directories
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
     mode: "{{ item.mode }}"
@@ -61,7 +55,7 @@
   loop: "{{ mk_directories }}"
 
 - name: symlink /v/korp to /data1/korp
-  file:
+  ansible.builtin.file:
     src: /data1/korp
     dest: /v/korp
     owner: root
@@ -69,24 +63,26 @@
     state: link
 
 - name: Clone backend
-  git:
+  ansible.builtin.git:
     repo: "{{ korp_backend_repo  }}"
     version: "{{ korp_backend_version }}"
     dest: "{{ korp_backend_home }}"
+    umask: "0022"
 
 - name: Clone CWB subversion
-  subversion:
+  ansible.builtin.subversion:
     repo: "{{ cwb_svn_repo }}"
     dest: "{{ cwb_compile_root }}"
     revision: "{{ cwb_revision }}"
 
 - name: Copy cwb site config
-  template:
+  ansible.builtin.template:
     src: cwb_korp
     dest: "{{ cwb_compile_root }}/config/site/cwb_korp"
+    mode: "0644"
 
 - name: Compile/Install cwb
-  make:
+  community.general.make:
     chdir: "{{ cwb_compile_root }}"
     target: "{{ item }}"
     params:
@@ -100,21 +96,23 @@
   become: true
 
 - name: Install pip
-  pip:
+  ansible.builtin.pip:
     name: pip
     state: latest
     virtualenv: "{{ korp_backend_venv }}"
     virtualenv_python: python3
+    umask: "0022"
 
 - name: Install requirements
-  pip:
+  ansible.builtin.pip:
     requirements: "{{ korp_backend_home }}/requirements.txt"
     virtualenv: "{{ korp_backend_venv }}"
     virtualenv_python: python3
+    umask: "0022"
 
 - name: checkout worktrees
-  shell:
-    cmd: "git worktree add -f {{ item }}"
+  ansible.builtin.shell:
+    cmd: "umask 0022 && git worktree add -f {{ item }}"
     chdir: "{{ korp_backend_home }}"
     creates: "{{ item.split(' ')[0] }}/.git"
   loop:
@@ -122,8 +120,8 @@
     - "{{ korp_backend_plugin_home }} plugins/{{ korp_backend_version }}"
 
 - name: remove local changes in worktrees
-  shell:
-    cmd: "git checkout -f && git pull"
+  ansible.builtin.shell:
+    cmd: "umask 0022 && git checkout -f && git pull"
     chdir: "{{ item }}"
   loop:
     - "{{ korp_backend_auth_home }}"
@@ -133,10 +131,11 @@
     - restart korp-authserver
 
 - name: Enable default configs for some plugins
-  file:
+  ansible.builtin.file:
     src: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py.template"
     dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
     state: link
+    mode: "0644"
   loop:
     - charcoder
     - contenthider
@@ -145,9 +144,10 @@
     - restart korp-backend
 
 - name: Install custom configs for other plugins
-  template:
+  ansible.builtin.template:
     src: "{{ item }}_plugin_config.py"
     dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
+    mode: "0644"
   loop:
     - logger
     - protectedcorporadb
@@ -155,35 +155,39 @@
     - restart korp-backend
 
 - name: Install backend config
-  template:
+  ansible.builtin.template:
     src: backend_config.py
     dest: "{{ korp_backend_home }}/config.py"
+    mode: "0644"
   notify:
     - restart korp-backend
 
 - name: Install auth server config
-  template:
+  ansible.builtin.template:
     src: authserver_config.py
     dest: "{{ korp_backend_auth_home }}/auth/config.py"
+    mode: "0644"
   notify:
     - restart korp-authserver
 
 - name: Install latest gevent
-  pip:
+  ansible.builtin.pip:
     name: gevent
     state: latest
     virtualenv: "{{ korp_backend_venv }}"
     virtualenv_python: python3
+    umask: "0022"
   notify:
     - restart korp-backend
     - restart korp-authserver
 
 - name: Install gunicorn / start backend
-  pip:
+  ansible.builtin.pip:
     name: gunicorn
     state: latest
     virtualenv: "{{ korp_backend_venv }}"
     virtualenv_python: python3
+    umask: "0022"
   notify:
     - restart korp-backend
     - restart korp-authserver
@@ -194,6 +198,7 @@
     dest: "/etc/systemd/system/{{ item }}"
     owner: root
     group: root
+    mode: "0640"
   loop:
     - korp-backend.socket
     - korp-backend.service
@@ -216,7 +221,7 @@
     dest: "/etc/cron.daily/"
     owner: root
     group: root
-    mode: "755"
+    mode: "0755"
   loop:
     - clear_korp_cache
 
@@ -226,7 +231,7 @@
     dest: "{{ korp_backend_cgibin_dir }}"
     owner: root
     group: apache
-    mode: "755"
+    mode: "0755"
 
 - name: Precompile python files
   ansible.builtin.shell:
@@ -239,7 +244,7 @@
     dest: "{{ korp_backend_cgibin_dir }}/korp_config.py"
     owner: root
     group: apache
-    mode: "640"
+    mode: "0640"
 
 - name: Configure CGI script location for Apache
   ansible.builtin.lineinfile:
@@ -247,10 +252,10 @@
     line: "ScriptAlias /korp/cgi-bin/ {{ korp_static_frontend_cgi_dir }}/"
     state: present
     create: true
-    mode: 0644
+    mode: "0644"
   notify: restart korp-backend
 
 - name: configure logrotate for backend
-  template:
+  ansible.builtin.template:
     src: "korp_logrotate"
     dest: "/etc/logrotate.d/korp"
