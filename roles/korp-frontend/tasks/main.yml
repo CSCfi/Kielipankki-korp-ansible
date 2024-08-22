@@ -89,7 +89,7 @@
 
 - name: Install dependencies for frontend
   ansible.builtin.command:
-    cmd: "umask 0022 && yarn install"
+    cmd: "yarn install"
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
