@@ -15,6 +15,7 @@
     project_key: "kielipouta"
     project_sg: "portal-sg"
     project_security_groups: "default,{{ project_sg }}" # don't add spaces here!
+    network: "project_2000680"
 
     servers:
       - name: "{{ pouta_instance_name }}"
@@ -22,8 +23,10 @@
         flavor: standard.medium
         key_name: "{{ project_key }}"
         security_groups: "{{ project_security_groups }}"
+        network: "{{ network }}"
         meta:
-          group: default
+          hostname: "{{ pouta_instance_name }}"
+          group: "{{ instance_name }}"
 
     security_group_rules:
       - name: ping
