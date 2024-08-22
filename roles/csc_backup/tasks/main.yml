@@ -9,6 +9,7 @@
     group: root
   loop:
     - "{{ tmp_dir }}"
+    - "{{ tmp_dir }}/{{ cv_basedir }}"
 
 - name: "add {{ cv_unix_group }} group"
   group:
@@ -45,6 +46,8 @@
     dest: "{{ tmp_dir }}/{{ cv_basedir }}/{{ cv_config }}"
 
 - name: extract backup tool to client
+  vars:
+    ansible_remote_tmp: "{{ tmp_dir }}"
   unarchive:
     src: "{{ local_download_dir }}/{{ cv_package }}"
     dest: "{{ tmp_dir }}"
