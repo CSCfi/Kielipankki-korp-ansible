@@ -342,6 +342,14 @@ autoindex_info:
   - regex: 'eduskunta'
     text: 'Plenary Sessions of the Parliament of Finland'
 
+  - regex: 'eduskunta/eduskunta2015-2023-src'
+    text: 'Plenary Sessions of the Parliament of Finland 2015-2023, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024071601'
+
+  - regex: 'eduskunta/eduskunta2015-2023-src/eduskunta2015-2023-src.zip'
+    text: 'CLARIN PUB +BY +PRIV +OTHER v2.1'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019112823'
+
   - regex: 'ELFA_xml.zip'
     text: 'CC BY'
     url: 'https://creativecommons.org/licenses/by/4.0/'
