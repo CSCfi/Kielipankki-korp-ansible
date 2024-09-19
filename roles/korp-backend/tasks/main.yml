@@ -54,13 +54,16 @@
     group: "{{ item.group }}"
   loop: "{{ mk_directories }}"
 
-- name: symlink /v/korp to /data1/korp
+- name: symlink /v subdirs to /data1
   ansible.builtin.file:
-    src: /data1/korp
+    src: "/data1/{{ item }}"
     dest: /v/korp
     owner: root
     group: root
     state: link
+  loop:
+    - korp
+    - corpora
 
 - name: Clone backend
   ansible.builtin.git:
