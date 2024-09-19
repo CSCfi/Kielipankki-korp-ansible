@@ -192,7 +192,7 @@
 - name: Install korp-authdb.py configuration
   ansible.builtin.template:
     src: korp_authdb_config.py.j2
-    dest: /usr/local/bin/korp-authdb/
+    dest: /usr/local/bin/korp-authdb/korp_authdb_config.py
     mode: "0644"
 
 - name: Symlink korp-authdb.py to $PATH
