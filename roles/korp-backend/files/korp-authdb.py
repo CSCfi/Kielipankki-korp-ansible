@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- mode: Python; -*-
 
 # A simple authentication and authorization database management tool
