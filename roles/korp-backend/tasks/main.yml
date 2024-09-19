@@ -170,7 +170,7 @@
   notify:
     - restart korp-authserver
 
-- name: Install authing dependencies
+- name: Install korp-authdb.py dependencies
   ansible.builtin.dnf:
     name:
       - python3-mysqlclient
