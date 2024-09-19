@@ -181,6 +181,13 @@
       - python3-mysqlclient
     state: present
 
+- name: Set up korp-authdb.py directory
+  ansible.builtin.file:
+    path: /usr/local/bin/korp-authdb/
+    state: directory
+    owner: root
+    mode: "0755"
+
 - name: Install korp-authdb.py script
   ansible.builtin.copy:
     src: korp-authdb.py
