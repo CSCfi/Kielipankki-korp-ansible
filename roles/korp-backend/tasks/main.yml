@@ -170,6 +170,32 @@
   notify:
     - restart korp-authserver
 
+- name: Install authing dependencies
+  ansible.builtin.dnf:
+    name:
+      - python3-mysqlclient
+    state: present
+
+- name: Install korp-authdb.py script
+  ansible.builtin.copy:
+    src: korp-authdb.py
+    dest: /usr/local/bin/korp-authdb/
+    mode: "0755"
+
+- name: Install korp-authdb.py configuration
+  ansible.builtin.template:
+    src: korp_authdb_config.py.j2
+    dest: /usr/local/bin/korp-authdb/
+    mode: "0644"
+
+- name: Symlink korp-authdb.py to $PATH
+  ansible.builtin.file:
+    src: /usr/local/bin/korp-authdb/korp-authdb.py
+    dest: /usr/local/bin/korp-authdb.py
+    owner: root
+    group: root
+    state: link
+
 - name: Install latest gevent
   ansible.builtin.pip:
     name: gevent
