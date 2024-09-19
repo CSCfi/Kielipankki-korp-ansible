@@ -9,19 +9,19 @@
 
 # MySQL/MariaDB database connection parameters
 DBCONNECT = {
-    host: "{{ korp_db_server }}",
-    port: {{ korp_db_port }},
-    user: 'korp_db_user',
-    passwd: '{{ korp_db_password }}',
-    db: 'korp_auth',
-    charset: 'utf8mb4',
+    "host": "{{ korp_db_server }}",
+    "port": {{korp_db_port}},
+    "user": "{{ korp_db_user }}",
+    "passwd": "{{ korp_db_password }}",
+    "db": "korp_auth",
+    "charset": "utf8mb4",
 }
 
 # For testing whether there is a compatible limited_access setting
 # (and no incompatible limited_access settings) in the frontend.
 KORP_CONFIG = [
-    '/var/www/html/korp/modes/default_mode.js',
-    '/var/www/html/korp/modes/parallel_mode.js',
-    '/var/www/html/korp/modes/swedish_mode.js',
-    '/var/www/html/korp/modes/other_languages_mode.js',
-}
+    "/var/www/html/korp/modes/default_mode.js",
+    "/var/www/html/korp/modes/parallel_mode.js",
+    "/var/www/html/korp/modes/swedish_mode.js",
+    "/var/www/html/korp/modes/other_languages_mode.js",
+]
