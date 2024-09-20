@@ -188,11 +188,16 @@
     owner: root
     mode: "0755"
 
-- name: Install korp-authdb.py script
+- name: Install korp-authdb.py scripts
   ansible.builtin.copy:
-    src: korp-authdb.py
+    src: "{{ item.filename }}"
     dest: /usr/local/bin/korp-authdb/
-    mode: "0755"
+    mode: "{{ item.mode }}"
+  loop:
+    - filename: "korp-authdb.py"
+      mode: "0755"
+    - filename: "create-new-korp-authdb-DANGER-ERASES-EXISTING.sql"
+      mode: "0644"
 
 - name: Install korp-authdb.py configuration
   ansible.builtin.template:
