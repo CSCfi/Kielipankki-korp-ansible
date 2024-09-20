@@ -56,14 +56,16 @@
 
 - name: symlink /v subdirs to /data1
   ansible.builtin.file:
-    src: "/data1/{{ item }}"
-    dest: /v/korp
+    src: "/data1/{{ item.src }}"
+    dest: "/v/{{ item.dest }}"
     owner: root
     group: root
     state: link
   loop:
-    - korp
-    - corpora
+    - src: korp
+      dest: korp
+    - src: cwbdata/corpora
+      dest: corpora
 
 - name: Clone backend
   ansible.builtin.git:
