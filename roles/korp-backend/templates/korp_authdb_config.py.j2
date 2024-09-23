@@ -11,8 +11,8 @@
 DBCONNECT = {
     "host": "{{ korp_db_server }}",
     "port": {{korp_db_port}},
-    "user": "{{ korp_db_user }}",
-    "passwd": "{{ korp_db_password }}",
+    "user": "korp_admin",
+    "passwd": "{{ lookup('passwordstore', 'lb_passwords/korp/korp_db_admin_password') }}",
     "db": "korp_auth",
     "charset": "utf8mb4",
 }
