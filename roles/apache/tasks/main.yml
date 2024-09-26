@@ -61,6 +61,16 @@
     dest: /var/www/html/favicon.ico
     mode: 0444
 
+- name: Make korp-shortname symlink
+  ansible.builtin.file:
+    src: /var/www/html/korp
+    dest: /var/www/html/korp3
+    owner: root
+    group: root
+    state: link
+
+  when: ansible_host == "korp3.csc.fi"
+    
 - name: http service state
   service:
     name: httpd
