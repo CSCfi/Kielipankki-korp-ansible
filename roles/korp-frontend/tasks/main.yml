@@ -134,3 +134,16 @@
   with_items:
     - {src: "{{ korp_static_frontend_cgi_dir }}", dest: "{{ korp_frontend_www_home }}/cgi-bin"}
     - {src: "{{ korp_frontend_annlab_dir }}/deptrees", dest: "{{ korp_frontend_www_home }}/lib/annlab_deptrees"}
+
+- name: Create media directory
+  file:
+    path: "{{ media_dir }}"
+    owner: root
+    mode: '0733'
+    state: directory
+
+- name: Symlink media directory to /var/www/html
+  file:
+    src: "{{ media_dir }}"
+    dest: "/var/www/html/media"
+    state: link
