@@ -28,6 +28,7 @@ korp_frontend_annlab_dir: "{{ korp_static_frontend_cgi_dir }}/annlab"
 korp_backend_cgibin_dir: "{{ korp_static_frontend_cgi_dir }}/korp"
 korp_backend_download_cgi: "{{ korp_url }}/cgi-bin/korp/korp_download.cgi"
 
+media_dir: "/data2/media"
 
 # WP-Cli specific
 remote_deploy_user: 'apache'
