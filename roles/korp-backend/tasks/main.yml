@@ -129,17 +129,9 @@
     - "{{ korp_backend_auth_home }} {{ korp_backend_auth_version }}"
     - "{{ korp_backend_plugin_home }} {{ korp_backend_plugin_version }}"
 
-- name: Remove local worktree changes
+- name: Remove local changes and switch to correct branch for worktrees
   ansible.builtin.shell:
-    cmd: "git checkout - ."
-    chdir: "{{ item }}"
-  loop:
-     - "{{ korp_backend_auth_home }}"
-     - "{{ korp_backend_plugin_home }}"
-
-- name: Switch to correct branch for worktrees in case they were locally changed
-  ansible.builtin.shell:
-    cmd: "git checkout {{ item.branch }} && git pull"
+    cmd: "git fetch && git reset --hard @{upstream} && git checkout {{ item.branch }}"
     chdir: "{{ item.worktree_dir }}"
   loop:
     - {
