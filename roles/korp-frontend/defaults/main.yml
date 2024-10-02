@@ -1,6 +1,11 @@
+---
+
 korp_frontend_name: "Kielipankki-korp-frontend"
 korp_frontend_repo: https://github.com/CSCfi/Kielipankki-korp-frontend.git
 korp_frontend_version: master
+korp_frontend_config_version: "config/{{ korp_frontend_version }}"
+korp_frontend_plugin_version: "plugins/{{ korp_frontend_version }}"
+korp_frontend_news_version: "news/{{ korp_frontend_version }}"
 korp_git_root: /v/appl/korp
 korp_frontend_home: "{{ korp_git_root }}/{{ korp_frontend_name }}"
 
