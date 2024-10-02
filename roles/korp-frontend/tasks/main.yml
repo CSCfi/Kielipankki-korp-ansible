@@ -65,6 +65,24 @@
     - "{{ korp_frontend_plugin_home }} plugins/{{ korp_frontend_version }}"
     - "{{ korp_frontend_news_home }} news/{{ korp_frontend_version }}"
 
+- name: Switch to correct branch for worktrees even if branch has changed since first install
+  ansible.builtin.shell:
+    cmd: "git checkout {{ item.branch }}"
+    chdir: "{{ item.worktree_dir }}"
+  loop:
+    - {
+      worktree_dir: "{{ korp_frontend_config_home }}",
+      branch: "config/{{ korp_frontend_version }}"
+    }
+    - {
+      worktree_dir: "{{  korp_frontend_plugin_home }}",
+      branch: "plugins/{{ korp_frontend_version }}"
+    }
+    - {
+      worktree_dir: "{{ korp_frontend_news_home }}",
+      branch: "news/{{ korp_frontend_version }}"
+    }
+
 - name: update worktrees
   ansible.builtin.shell:
     cmd: "git pull"
