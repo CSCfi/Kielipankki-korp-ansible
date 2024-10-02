@@ -115,7 +115,7 @@
     virtualenv_python: python3
     umask: "0022"
 
-- name: checkout worktrees
+- name: Checkout worktrees
   ansible.builtin.shell:
     cmd: "umask 0022 && git worktree add -f {{ item }}"
     chdir: "{{ korp_backend_home }}"
@@ -138,7 +138,7 @@
       branch: "authserver/{{ korp_backend_version }}"
     }
 
-- name: remove local changes in worktrees
+- name: Remove local changes in worktrees
   ansible.builtin.shell:
     cmd: "umask 0022 && git checkout -f && git pull"
     chdir: "{{ item }}"

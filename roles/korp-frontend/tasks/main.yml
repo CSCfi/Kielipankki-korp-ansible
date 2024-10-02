@@ -55,7 +55,7 @@
   ansible.builtin.set_fact:
     compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) ) }}"
 
-- name: checkout worktrees
+- name: Checkout worktrees
   ansible.builtin.shell:
     cmd: "umask 0022 && git worktree add -f {{ item }}"
     chdir: "{{ korp_frontend_home }}"
@@ -83,7 +83,7 @@
       branch: "news/{{ korp_frontend_version }}"
     }
 
-- name: update worktrees
+- name: Update worktrees
   ansible.builtin.shell:
     cmd: "git pull"
     chdir: "{{ item }}"
