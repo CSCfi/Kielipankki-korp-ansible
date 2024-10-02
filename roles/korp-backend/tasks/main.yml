@@ -124,9 +124,9 @@
     - "{{ korp_backend_auth_home }} authserver/{{ korp_backend_version }}"
     - "{{ korp_backend_plugin_home }} plugins/{{ korp_backend_version }}"
 
-- name: remove local changes in worktrees
+- name: Clean and update worktrees
   ansible.builtin.shell:
-    cmd: "umask 0022 && git checkout -f && git pull"
+    cmd: "umask 0022; git reset --hard @{upstream} && git pull"
     chdir: "{{ item }}"
   loop:
     - "{{ korp_backend_auth_home }}"

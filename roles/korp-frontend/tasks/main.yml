@@ -55,7 +55,7 @@
   ansible.builtin.set_fact:
     compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) ) }}"
 
-- name: checkout worktrees
+- name: Checkout worktrees
   ansible.builtin.shell:
     cmd: "umask 0022 && git worktree add -f {{ item }}"
     chdir: "{{ korp_frontend_home }}"
@@ -65,15 +65,22 @@
     - "{{ korp_frontend_plugin_home }} plugins/{{ korp_frontend_version }}"
     - "{{ korp_frontend_news_home }} news/{{ korp_frontend_version }}"
 
-- name: update worktrees
+- name: Clean and update worktrees
   ansible.builtin.shell:
-    cmd: "git pull"
+    cmd: "git reset --hard @{upstream}; git pull"
     chdir: "{{ item }}"
   register: worktree
   loop:
     - "{{ korp_frontend_config_home }}"
     - "{{ korp_frontend_plugin_home }}"
     - "{{ korp_frontend_news_home }}"
+
+- name: Make our own config edits
+  ansible.builtin.replace:
+    path: "{{ korp_frontend_config_home }}/app/config.js"
+    regexp: "/korp/api8"
+    replace: "/korp3/api8"
+  when: ansible_host == "korp3.csc.fi"
 
 - name: Skip this if all up to date
   ansible.builtin.set_fact:
