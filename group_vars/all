@@ -40,7 +40,7 @@ korp_certificate: korp.csc.fi.pem
 intermediate_chain: GEANT_OV_RSA_CA4.pem
 
 # Backup settings
-backup_dir: "/var/backup"
+backup_dir: "/data2/backup"
 #Server IPs for getting backups:
 portal_server_ip: 195.148.21.204
 webanno_server_ip: 195.148.31.151
