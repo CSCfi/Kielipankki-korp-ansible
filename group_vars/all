@@ -18,8 +18,9 @@ korp_backend_socket: "/run/{{ korp_backend_name }}.sock"
 
 korp_shib_spoof_key: "{{ lookup('passwordstore', 'lb_passwords/portal/wp_shib_spoof_key') }}"
 
-
-korp_url: https://www.kielipankki.fi/korp
+korp_domain: https://www.kielipankki.fi
+korp_path: "/korp"
+korp_url: "{{ korp_domain }}/{{ korp_path }}"
 korp_backend_url: "{{ korp_url }}/api8/"
 
 # static hacks for annlab + download_cgi
