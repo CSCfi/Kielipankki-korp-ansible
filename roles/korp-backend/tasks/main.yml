@@ -124,9 +124,17 @@
     - "{{ korp_backend_auth_home }} {{ korp_backend_auth_version }}"
     - "{{ korp_backend_plugin_home }} {{ korp_backend_plugin_version }}"
 
-- name: Switch to correct branch for worktrees even if branch has changed since first install
+- name: Remove local worktree changes
   ansible.builtin.shell:
-    cmd: "git checkout {{ item.branch }}"
+    cmd: "git checkout - ."
+    chdir: "{{ item }}"
+  loop:
+     - "{{ korp_backend_auth_home }}"
+     - "{{ korp_backend_plugin_home }}"
+
+- name: Switch to correct branch for worktrees in case they were locally changed
+  ansible.builtin.shell:
+    cmd: "git checkout {{ item.branch }} && git pull"
     chdir: "{{ item.worktree_dir }}"
   loop:
     - {
@@ -137,17 +145,6 @@
       worktree_dir: "{{ korp_backend_plugin_home }}",
       branch: "{{ korp_backend_plugin_version }}"
     }
-
-- name: Remove local changes in worktrees
-  ansible.builtin.shell:
-    cmd: "umask 0022 && git checkout -f && git pull"
-    chdir: "{{ item }}"
-  loop:
-    - "{{ korp_backend_auth_home }}"
-    - "{{ korp_backend_plugin_home }}"
-  notify:
-    - restart korp-backend
-    - restart korp-authserver
 
 - name: Enable default configs for some plugins
   ansible.builtin.file:

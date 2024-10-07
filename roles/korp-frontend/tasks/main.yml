@@ -65,7 +65,26 @@
     - "{{ korp_frontend_plugin_home }} {{ korp_frontend_plugin_version }}"
     - "{{ korp_frontend_news_home }} {{ korp_frontend_news_version }}"
 
-- name: Switch to correct branch for worktrees even if branch has changed since first install
+- name: Remove local worktree changes
+  ansible.builtin.shell:
+    cmd: "git checkout - ."
+    chdir: "{{ item }}"
+  loop:
+     - "{{ korp_frontend_config_home }}"
+     - "{{ korp_frontend_plugin_home }}"
+     - "{{ korp_frontend_news_home }}"
+
+- name: Update worktrees and check for recompilation need
+  ansible.builtin.shell:
+    cmd: "git pull"
+    chdir: "{{ item }}"
+  register: worktree_pull
+  loop:
+    - "{{ korp_frontend_config_home }}"
+    - "{{ korp_frontend_plugin_home }}"
+    - "{{ korp_frontend_news_home }}"
+
+- name: Switch to correct branch for worktrees in case they were locally changed
   ansible.builtin.shell:
     cmd: "git checkout {{ item.branch }}"
     chdir: "{{ item.worktree_dir }}"
@@ -83,21 +102,18 @@
       branch: "{{ korp_frontend_news_version }}"
     }
 
-- name: Update worktrees
-  ansible.builtin.shell:
-    cmd: "git pull"
-    chdir: "{{ item }}"
-  register: worktree
-  loop:
-    - "{{ korp_frontend_config_home }}"
-    - "{{ korp_frontend_plugin_home }}"
-    - "{{ korp_frontend_news_home }}"
+- name: Make our own local config edits
+  ansible.builtin.replace:
+    path: "{{ korp_frontend_config_home }}/app/config.js"
+    regexp: "/korp/api8"
+    replace: "/korp3/api8"
+  when: ansible_host == "korp3.csc.fi"
 
 - name: Skip this if all up to date
   ansible.builtin.set_fact:
     compile_frontend: true
   when: (item.stdout != "Already up to date.") or ( force_compile | default(false))
-  loop: "{{ worktree.results }}"
+  loop: "{{ worktree_pull.results }}"
 
 - name: Install run_config
   ansible.builtin.template:
