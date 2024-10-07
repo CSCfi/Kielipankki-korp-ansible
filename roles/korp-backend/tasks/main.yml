@@ -145,6 +145,10 @@
       worktree_dir: "{{ korp_backend_plugin_home }}",
       branch: "{{ korp_backend_plugin_version }}"
     }
+  # This will be always triggered, but better do it to be safe, since we have a few shell-operated git commands here
+  notify:
+    - restart korp-backend
+    - restart korp-authserver
 
 - name: Enable default configs for some plugins
   ansible.builtin.file:
