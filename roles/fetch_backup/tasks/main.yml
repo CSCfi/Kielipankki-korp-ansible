@@ -21,8 +21,14 @@
    group: backup
    mode: 0770
   loop:
-    - "{{ backup_dir }}"
-    - "{{ backup_dir }}/signbank"
+    - "{{ real_backup_dir }}"
+    - "{{ real_backup_dir }}/signbank"
+
+- name: Symlink physical backup directory to apparent backup directory
+  ansible.builtin.file:
+    src: "{{ real_backup_dir }}"
+    dest: "{{ backup_dir }}"
+    state: link
 
 - name: Ensure .ssh
   file:
