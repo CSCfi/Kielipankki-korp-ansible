@@ -86,7 +86,7 @@
 
 - name: Switch to correct branch for worktrees in case they were locally changed
   ansible.builtin.shell:
-    cmd: "git fetch && git checkout {{ item.branch }}"
+    cmd: "git checkout {{ item.branch }}"
     chdir: "{{ item.worktree_dir }}"
   loop:
     - {
