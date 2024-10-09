@@ -79,6 +79,11 @@
     dest: "{{ korp_backend_home }}"
     umask: "0022"
 
+- name: Clone Kielipankki scripts
+  ansible.builtin.git:
+    repo: "{{ kp_util_scripts_repo }}"
+    dest: "{{ kp_util_scripts_home }}"
+
 - name: Clone CWB subversion
   ansible.builtin.subversion:
     repo: "{{ cwb_svn_repo }}"
