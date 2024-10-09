@@ -6,6 +6,8 @@ korp_backend_version: master
 korp_backend_auth_version: "authserver/{{ korp_backend_version }}"
 korp_backend_plugin_version: "plugins/{{ korp_backend_version }}"
 korp_backend_socket: "/run/{{ korp_backend_name }}.sock"
+kp_util_scripts_name: Kielipankki-utilities
+kp_util_scripts_repo: "https://github.com/CSCfi/{{ kp_util_scripts_name }}"
 cwb_svn_repo: https://svn.code.sf.net/p/cwb/code/cwb/trunk
 cwb_revision: "r1732"
 cwb_registry: /v/corpora/registry
@@ -14,6 +16,7 @@ korp_git_root: /v/appl/korp
 korp_backend_home: "{{ korp_git_root }}/{{ korp_backend_name }}"
 korp_backend_auth_home: "{{ korp_git_root }}/Kielipankki-korp-backend-auth"
 korp_backend_plugin_home: "{{ korp_git_root }}/Kielipankki-korp-backend-plugins"
+kp_util_scripts_home: "/v/appl/utils/{{ kp_util_scripts_name }}"
 
 korp_backend_venv: "{{ korp_git_root }}/{{ korp_backend_name }}/venv"
 timezone: "Europe/Helsinki"
