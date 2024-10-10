@@ -222,13 +222,18 @@
     dest: /usr/local/bin/korp-authdb/korp_authdb_config.py
     mode: "0644"
 
-- name: Symlink korp-authdb.py to $PATH
+- name: Symlink utility scripts to $PATH
   ansible.builtin.file:
-    src: /usr/local/bin/korp-authdb/korp-authdb.py
-    dest: /usr/local/bin/korp-authdb.py
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     state: link
+  loop:
+    - src: /usr/local/bin/korp-authdb/korp-authdb.py
+      dest: /usr/local/bin/korp-authdb.py
+    - src: "{{ kp_util_scripts_home }}/scripts/korp-install-corpora.sh"
+      dest: /usr/local/sbin/korp-install-corpora.sh # sbin because root has that in $PATH
 
 - name: Install latest gevent
   ansible.builtin.pip:
