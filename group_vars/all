@@ -44,8 +44,8 @@ intermediate_chain: GEANT_OV_RSA_CA4.pem
 real_backup_dir: "/data2/backup"
 backup_dir: "/var/backup"
 #Server IPs for getting backups:
-portal_server_ip: 195.148.21.204
-webanno_server_ip: 195.148.31.151
+portal_server_ip: 128.214.253.151
+sanat_server_name: sanat.csc.fi
 
 # access control from proxy
 allowed_ips:
