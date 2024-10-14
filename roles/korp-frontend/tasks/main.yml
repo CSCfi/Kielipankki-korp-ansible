@@ -70,9 +70,9 @@
     cmd: "git reset --hard"
     chdir: "{{ item }}"
   loop:
-     - "{{ korp_frontend_config_home }}"
-     - "{{ korp_frontend_plugin_home }}"
-     - "{{ korp_frontend_news_home }}"
+    - "{{ korp_frontend_config_home }}"
+    - "{{ korp_frontend_plugin_home }}"
+    - "{{ korp_frontend_news_home }}"
 
 - name: Update worktrees and check for recompilation need
   ansible.builtin.shell:
