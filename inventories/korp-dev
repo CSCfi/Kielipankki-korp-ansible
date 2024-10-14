@@ -10,6 +10,7 @@ all:
       ansible_user: almalinux
       allowed_ips:
         - 192.168.1
+        - 195.148.30.109
       korp_db_server: localhost
       korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp/dev_korp_db_user_password') }}"
       db_root_password: "{{ lookup('passwordstore', 'lb_passwords/korp/dev_korp_db_root_password') }}"
