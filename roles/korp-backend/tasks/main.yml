@@ -45,27 +45,32 @@
       - mariadb-devel
       - python-xlwt # for korp_download.cgi
 
-- name: Create directories
+- name: Create base directories
   ansible.builtin.file:
     path: "{{ item.path }}"
-    state: directory
-    mode: "{{ item.mode }}"
+    state: "{{ item.state }}"
+    mode: directory
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-  loop: "{{ mk_directories }}"
+  loop: "{{ mk_base_directories }}"
 
 - name: symlink /v subdirs to /data1
   ansible.builtin.file:
-    src: "/data1/{{ item.src }}"
-    dest: "/v/{{ item.dest }}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     state: link
-  loop:
-    - src: korp
-      dest: korp
-    - src: cwbdata/corpora
-      dest: corpora
+  loop: "{{ v_to_data1_symlinks }}"
+
+- name: Create additional directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+    mode: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  loop: "{{ mk_additional_directories }}"
 
 - name: Clone backend
   ansible.builtin.git:

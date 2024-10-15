@@ -25,12 +25,22 @@ korp_db_user: "korp"
 korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp/korp_db_user_password') }}"
 backend_cache_dir: "/data1/korp/cache"
 
-mk_directories:
+mk_base_directories:
+  - {path: /data1/, owner: root, group: root, mode: "u+rwx,g+rxs,o+rx"}
+  - {path: /data2/, owner: root, group: root, mode: "u+rwx,g+rx,o+rx"}
   - {path: /v/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx"}
+  - {path: /data1/cwbdata/corpora, owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
+  - {path: /data1/korp/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx"}
+
+v_to_data1_symlinks:
+  - {src: /data1/korp, dest: /v/korp}
+  - {src: /data1/cwbdata/corpora, dest: /v/corpora}
+
+mk_additional_directories:
+  - {path: /data1/cwbdata/korp, owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
   - {path: /v/appl/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx"}
   - {path: /v/corpora/data, owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
   - {path: "{{ cwb_registry }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
-  - {path: /data1/korp/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx"}
   - {path: /data1/korp/log/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rwx"}
   - {path: /data1/korp/log/korp-py, owner: gunicorn, group: root, mode: "u+rwx,g+rwxs,o+rwx"}
   - {path: "{{ backend_cache_dir }}", owner: gunicorn, group: apache, mode: "u+rwx,g+rwxs,o-rwx"}
