@@ -1,21 +1,14 @@
 ---
 # Set firewall in CSC compatible way
 
+- name: Install iptables
+  ansible.builtin.dnf:
+    name:
+      - iptables-legacy
+
 - name: test for PATA VM
   stat: path=/etc/csc/host.info
   register: pata_host
-
-- name: uninstall firewalld
-  yum:
-    name: firewalld
-    state: absent
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-
-- name: install iptables-services
-  yum:
-    name: iptables-services
-    state: present
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
 
 - name: copy IP4/6 firewall statup scripts (if not already present)
   template:
