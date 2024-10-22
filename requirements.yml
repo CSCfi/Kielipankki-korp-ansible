@@ -4,5 +4,5 @@ roles:
 collections:
   - name: git@github.com:CSCfi/Kielipankki-ansible-common.git
     type: git
-    version: KP-8706_PaloAltoVPN
+    version: main
   - name: community.mysql
