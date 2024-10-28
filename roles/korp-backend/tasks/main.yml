@@ -232,8 +232,20 @@
   loop:
     - src: /usr/local/bin/korp-authdb/korp-authdb.py
       dest: /usr/local/bin/korp-authdb.py
-    - src: "{{ kp_util_scripts_home }}/scripts/korp-install-corpora.sh"
-      dest: /usr/local/sbin/korp-install-corpora.sh # sbin because root has that in $PATH
+
+- name: Fetch public corpus packages
+  ansible.builtin.get_url:
+    dest: "{{ package_cache_dir }}"
+    mode: "0664"
+    group: "clarin"
+    url: "https://a3s.fi/korp_corpus_packages_pub/{{ item }}"
+  loop: "{{ korp_pub_packages }}"
+
+- name: Install public corpus packages
+  ansible.builtin.shell:
+    chdir: "{{ kp_util_scripts_home }}/scripts"
+    cmd: "./korp-install-corpora.sh {{ package_cache_dir }}/{{ item }}"
+  loop: "{{ korp_pub_packages }}"
 
 - name: Install latest gevent
   ansible.builtin.pip:

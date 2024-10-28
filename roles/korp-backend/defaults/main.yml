@@ -17,6 +17,7 @@ korp_backend_home: "{{ korp_git_root }}/{{ korp_backend_name }}"
 korp_backend_auth_home: "{{ korp_git_root }}/Kielipankki-korp-backend-auth"
 korp_backend_plugin_home: "{{ korp_git_root }}/Kielipankki-korp-backend-plugins"
 kp_util_scripts_home: "/v/appl/utils/{{ kp_util_scripts_name }}"
+package_cache_dir: "/data1/package_cache"
 
 korp_backend_venv: "{{ korp_git_root }}/{{ korp_backend_name }}/venv"
 timezone: "Europe/Helsinki"
@@ -50,3 +51,8 @@ mk_additional_directories:
   - {path: "{{ korp_git_root }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
   - {path: /v/appl/utils/, owner: root, group: clarin, mode: "u+rwx,g+rwxs,o-rwx"}
   - {path: "{{ korp_backend_cgibin_dir }}", owner: root, group: apache, mode: "u+rwx,g+rx,o-rx"}  # for old backend korp.cgi
+  - {path: "{{ package_cache_dir }}", owner: root, group: clarin, mode: "u+rwx,g+rwx,o+rx"}
+
+# Should contain list if file names, eg. Sananparsikokoelma_korp_20160725.tgz
+korp_pub_packages: []
+korp_non_pub_packages: []
