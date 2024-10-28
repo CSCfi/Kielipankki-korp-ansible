@@ -2,7 +2,7 @@
 
 opsview_rpm: opsview-agent-6.7.3.202206170928-1.ct7.x86_64.rpm
 
-# settigs for pass
+# settings for pass
 password_store: "lb_passwords/"  # relative to .password-store root
 
 local_user: "{{ lookup('env','USER') }}"
