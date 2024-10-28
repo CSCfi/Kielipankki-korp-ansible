@@ -12,7 +12,7 @@
 - name: Add nodejs repository
   ansible.builtin.shell:
     cmd: curl -sL https://rpm.nodesource.com/setup_12.x | bash -
-    creates: /etc/yum.repos.d/nodesource-el7.repo
+    creates: /etc/yum.repos.d/nodesource-el9.repo
 
 - name: Install basics
   ansible.builtin.dnf:
