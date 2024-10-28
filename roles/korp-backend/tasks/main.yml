@@ -48,8 +48,8 @@
 - name: Create base directories
   ansible.builtin.file:
     path: "{{ item.path }}"
-    state: "{{ item.state }}"
-    mode: directory
+    state: directory
+    mode: "{{ item.mode }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
   loop: "{{ mk_base_directories }}"
@@ -66,8 +66,8 @@
 - name: Create additional directories
   ansible.builtin.file:
     path: "{{ item.path }}"
-    state: "{{ item.state }}"
-    mode: directory
+    state: directory
+    mode: "{{ item.mode }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
   loop: "{{ mk_additional_directories }}"
