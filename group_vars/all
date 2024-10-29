@@ -215,25 +215,48 @@ autoindex_info:
     text: 'ceal-dl'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017011301'
 
-  - regex: 'cfinsl/elicit/*.zip'
+  - regex: 'cfinsl/cfinsl/elicit/*.zip'
     text: 'CC BY NC SA'
     url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
 
-  - regex: 'cfinsl/elicit'
+  - regex: 'cfinsl/cfsts/elicit/*.zip'
+    text: 'CC BY NC SA +PRIV'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090323'
+
+  - regex: 'cfinsl/cfinsl/elicit'
     text: 'CFinSL Elicited Narratives'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019092710'
 
-  - regex: 'cfinsl/conv/*.zip'
+  - regex: 'cfinsl/cfsts/elicit'
+    text: 'CFSTS Elicited Narratives'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090322'
+
+  - regex: 'cfinsl/cfinsl/conv/*.zip'
     text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019012325'
 
-  - regex: 'cfinsl/conv'
+  - regex: 'cfinsl/cfsts/conv/*.zip'
+    text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090325'
+
+  - regex: 'cfinsl/cfinsl/conv'
     text: 'CFinSL Conversations'
     url: 'http://urn.fi/urn:nbn:fi:lb-201910041'
 
-  - regex: 'cfinsl'
+  - regex: 'cfinsl/cfsts/conv'
+    text: 'CFSTS Conversations'
+    url: 'https://urn.fi/urn:nbn:fi:lb-2024090321'
+
+  - regex: 'cfinsl/cfinsl'
     text: 'Corpus of Finnish Sign Language'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019012321'
+
+  - regex: 'cfinsl/cfsts'
+    text: 'Corpus of Finland-Swedish Sign Language'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090327'
+
+  - regex: 'cfinsl'
+    text: 'Sign Language Corpora (in Finland)'
 
   - regex: 'coronavirus-ecorg/*.zip'
     text: 'CLARIN RES +ND +OTHER v2.1'
