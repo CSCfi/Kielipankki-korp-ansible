@@ -5,10 +5,10 @@ if [ "$(id -u)" -eq 0 ]; then
     exec sudo -H -u backup $0 "$@"
 fi
 
-# backs up lamp/tomcat servers, (e.g. portal, webanno, specified by $SERVER_IPS) using $BACKUP_GLOB to $LOCAL_BACKUP_DIR
+# backs up lamp/tomcat servers, (e.g. portal, sanat, specified by $SERVER_LIST) using $BACKUP_GLOB to $LOCAL_BACKUP_DIR
 
-# One way to get IPs: openstack server list|egrep "webanno|portal"|cut -f 5 -d"|"|cut -f3 -d " "
-SERVER_IPS="{{ portal_server_ip }} {{ sanat_server_name }}"
+# One way to get IPs: openstack server list|egrep "portal"|cut -f 5 -d"|"|cut -f3 -d " "
+SERVER_LIST="{{ portal_server_ip }} {{ sanat_server_name }}"
 
 # on Korp2:
 LOCAL_BACKUP_DIR="/var/backup"
@@ -30,17 +30,17 @@ if ! [ -d $LOCAL_BACKUP_DIR/ ]; then
   echo "Backup of cPouta failed."
   echo "Local backup directory \"$LOCAL_BACKUP_DIR\" does not exist."
 else
-  for IP in $SERVER_IPS; do
-      SERVER_NAME=`ssh backup@$IP hostname`
+  for SERVER in $SERVER_LIST; do
+      SERVER_NAME=`ssh backup@$SERVER hostname`
 
-      NEWEST_BACKUP=`ssh backup@$IP "ls -rt $BACKUP_GLOB |tail -n 1"`
+      NEWEST_BACKUP=`ssh backup@$SERVER "ls -rt $BACKUP_GLOB |tail -n 1"`
       BACKUP_FILE=`basename $NEWEST_BACKUP`
       LOCAL_BACKUP_FILE=$LOCAL_BACKUP_DIR/$BACKUP_FILE
 
       if [ -f $LOCAL_BACKUP_FILE ]; then
         if [ -n "$(find $LOCAL_BACKUP_FILE -mtime -1)" ]; then
           echo
-	  echo "When backing up \"$SERVER_NAME\" ($IP):"
+	  echo "When backing up \"$SERVER_NAME\" ($SERVER):"
 	  echo "Local copy of \"$LOCAL_BACKUP_FILE\" is too recent."
 	  echo "Output of stat:"
 	  echo
@@ -48,11 +48,11 @@ else
 	fi
       fi
 
-      scp -qp backup@$IP:$NEWEST_BACKUP $LOCAL_BACKUP_DIR
+      scp -qp backup@$SERVER:$NEWEST_BACKUP $LOCAL_BACKUP_DIR
 
       if ! [ -n "$(find $LOCAL_BACKUP_FILE -mtime -1)" ]; then
         echo
-        echo "When backing up \"$SERVER_NAME\" ($IP):"
+        echo "When backing up \"$SERVER_NAME\" ($SERVER):"
         echo "Backup \"$LOCAL_BACKUP_FILE\" is too old."
         echo "Output of stat:"
         echo
@@ -63,7 +63,7 @@ else
       # check integrity once more
       if ! tar tfz $LOCAL_BACKUP_FILE > /dev/null; then
         echo
-        echo "Error when backing up \"$SERVER_NAME\" ($IP)."
+        echo "Error when backing up \"$SERVER_NAME\" ($SERVER)."
         echo
       fi
   done;
