@@ -7,5 +7,5 @@
   roles:
       - role: fetch_backup
         tags: fetch_backup
-      - role: csc_backup
-        tags: csc_backup
+      - role: install_csc_commvault_backup
+        tags: install_csc_commvault_backup
