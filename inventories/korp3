@@ -1,5 +1,0 @@
-all:
-  hosts:
-    korp:
-      ansible_host: korp3.csc.fi
-      korp_path: "korp3"
