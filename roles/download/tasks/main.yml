@@ -1,11 +1,6 @@
 ---
 # Setup apache
 
-- name: Copy style static files
-  copy:
-    src: download-style
-    dest: "{{ style_dir }}"
-
 - name: Create directory
   file:
     path: "{{ item }}"
@@ -14,12 +9,27 @@
     owner: root
     group: root
   loop:
+    - "{{ download_dir }}"
     - "{{ style_dir }}"
+
+- name: Link from wwwroot
+  file:
+    src:  "{{ download_dir }}"
+    dest: "{{ download_wwwroot }}"
+    state: link
+
+- name: Copy style static files
+  copy:
+    src: "download-style/"
+    dest: "{{ style_dir }}/"
+    group: apache
+
 
 - name: Copy download UI template files
   template:
     src: "{{ item }}.j2"
     dest: "{{ style_dir }}/{{ item }}"
+    mode: "0755"
   loop:
     - download_error403.html
     - header.html
