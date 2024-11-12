@@ -106,8 +106,8 @@
   ansible.builtin.replace:
     path: "{{ korp_frontend_config_home }}/app/config.js"
     regexp: "/korp/api8"
-    replace: "/korp3/api8"
-  when: ansible_host == "korp3.csc.fi"
+    replace: "/{{ korp_path }}/api8"
+  when: korp_path != "korp"
 
 - name: Skip this if all up to date
   ansible.builtin.set_fact:
