@@ -1,3 +1,6 @@
-style_path: "/download/.download-style"
-style_dir: "/var/www/html/{{ style_path }}"
+download_path: "download"
+download_dir: "/data2/{{ download_path }}"
+download_wwwroot: "/var/www/html/{{ download_path }}"
+style_path: "/{{ download_path }}/.download-style"
+style_dir: "/data2{{ style_path }}"
 
