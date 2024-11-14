@@ -9,6 +9,12 @@
     state: present
   become: true
 
+- name: Install MariaDB configuration
+  ansible.builtin.copy:
+    src: "korp_charset.cnf"
+    dest: "/etc/my.cnf.d/"
+  become: true
+
 - name: Start MariaDB service
   ansible.builtin.systemd_service:
     name: mariadb
