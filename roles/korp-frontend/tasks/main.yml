@@ -12,7 +12,7 @@
 - name: Add nodejs repository
   ansible.builtin.shell:
     cmd: curl -sL https://rpm.nodesource.com/setup_12.x | bash -
-    creates: /etc/yum.repos.d/nodesource-el7.repo
+    creates: /etc/yum.repos.d/nodesource-el9.repo
 
 - name: Install basics
   ansible.builtin.dnf:
@@ -55,31 +55,65 @@
   ansible.builtin.set_fact:
     compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) ) }}"
 
-- name: checkout worktrees
+- name: Checkout worktrees
   ansible.builtin.shell:
     cmd: "umask 0022 && git worktree add -f {{ item }}"
     chdir: "{{ korp_frontend_home }}"
     creates: "{{ item.split(' ')[0] }}/.git"
   loop:
-    - "{{ korp_frontend_config_home }} config/{{ korp_frontend_version }}"
-    - "{{ korp_frontend_plugin_home }} plugins/{{ korp_frontend_version }}"
-    - "{{ korp_frontend_news_home }} news/{{ korp_frontend_version }}"
+    - "{{ korp_frontend_config_home }} {{ korp_frontend_config_version }}"
+    - "{{ korp_frontend_plugin_home }} {{ korp_frontend_plugin_version }}"
+    - "{{ korp_frontend_news_home }} {{ korp_frontend_news_version }}"
 
-- name: update worktrees
+- name: Remove local worktree changes
   ansible.builtin.shell:
-    cmd: "git pull"
+    cmd: "git reset --hard"
     chdir: "{{ item }}"
-  register: worktree
   loop:
     - "{{ korp_frontend_config_home }}"
     - "{{ korp_frontend_plugin_home }}"
     - "{{ korp_frontend_news_home }}"
 
+- name: Update worktrees and check for recompilation need
+  ansible.builtin.shell:
+    cmd: "git pull"
+    chdir: "{{ item }}"
+  register: worktree_pull
+  loop:
+    - "{{ korp_frontend_config_home }}"
+    - "{{ korp_frontend_plugin_home }}"
+    - "{{ korp_frontend_news_home }}"
+
+- name: Switch to correct branch for worktrees in case they were locally changed
+  ansible.builtin.shell:
+    cmd: "git checkout {{ item.branch }}"
+    chdir: "{{ item.worktree_dir }}"
+  loop:
+    - {
+      worktree_dir: "{{ korp_frontend_config_home }}",
+      branch: "{{ korp_frontend_config_version }}"
+    }
+    - {
+      worktree_dir: "{{  korp_frontend_plugin_home }}",
+      branch: "{{ korp_frontend_plugin_version }}"
+    }
+    - {
+      worktree_dir: "{{ korp_frontend_news_home }}",
+      branch: "{{ korp_frontend_news_version }}"
+    }
+
+- name: Make our own local config edits
+  ansible.builtin.replace:
+    path: "{{ korp_frontend_config_home }}/app/config.js"
+    regexp: "/korp/api8"
+    replace: "/{{ korp_path }}/api8"
+  when: korp_path != "korp"
+
 - name: Skip this if all up to date
   ansible.builtin.set_fact:
     compile_frontend: true
   when: (item.stdout != "Already up to date.") or ( force_compile | default(false))
-  loop: "{{ worktree.results }}"
+  loop: "{{ worktree_pull.results }}"
 
 - name: Install run_config
   ansible.builtin.template:
@@ -89,7 +123,7 @@
 
 - name: Install dependencies for frontend
   ansible.builtin.command:
-    cmd: "umask 0022 && yarn install"
+    cmd: "yarn install"
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
@@ -134,3 +168,16 @@
   with_items:
     - {src: "{{ korp_static_frontend_cgi_dir }}", dest: "{{ korp_frontend_www_home }}/cgi-bin"}
     - {src: "{{ korp_frontend_annlab_dir }}/deptrees", dest: "{{ korp_frontend_www_home }}/lib/annlab_deptrees"}
+
+- name: Create media directory
+  file:
+    path: "{{ media_dir }}"
+    owner: root
+    mode: '0733'
+    state: directory
+
+- name: Symlink media directory to /var/www/html
+  file:
+    src: "{{ media_dir }}"
+    dest: "/var/www/html/media"
+    state: link

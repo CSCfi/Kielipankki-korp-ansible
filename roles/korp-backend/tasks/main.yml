@@ -45,22 +45,32 @@
       - mariadb-devel
       - python-xlwt # for korp_download.cgi
 
-- name: Create directories
+- name: Create base directories
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
     mode: "{{ item.mode }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-  loop: "{{ mk_directories }}"
+  loop: "{{ mk_base_directories }}"
 
-- name: symlink /v/korp to /data1/korp
+- name: symlink /v subdirs to /data1
   ansible.builtin.file:
-    src: /data1/korp
-    dest: /v/korp
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     state: link
+  loop: "{{ v_to_data1_symlinks }}"
+
+- name: Create additional directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  loop: "{{ mk_additional_directories }}"
 
 - name: Clone backend
   ansible.builtin.git:
@@ -68,6 +78,11 @@
     version: "{{ korp_backend_version }}"
     dest: "{{ korp_backend_home }}"
     umask: "0022"
+
+- name: Clone Kielipankki scripts
+  ansible.builtin.git:
+    repo: "{{ kp_util_scripts_repo }}"
+    dest: "{{ kp_util_scripts_home }}"
 
 - name: Clone CWB subversion
   ansible.builtin.subversion:
@@ -110,22 +125,29 @@
     virtualenv_python: python3
     umask: "0022"
 
-- name: checkout worktrees
+- name: Checkout worktrees
   ansible.builtin.shell:
     cmd: "umask 0022 && git worktree add -f {{ item }}"
     chdir: "{{ korp_backend_home }}"
     creates: "{{ item.split(' ')[0] }}/.git"
   loop:
-    - "{{ korp_backend_auth_home }} authserver/{{ korp_backend_version }}"
-    - "{{ korp_backend_plugin_home }} plugins/{{ korp_backend_version }}"
+    - "{{ korp_backend_auth_home }} {{ korp_backend_auth_version }}"
+    - "{{ korp_backend_plugin_home }} {{ korp_backend_plugin_version }}"
 
-- name: remove local changes in worktrees
+- name: Remove local changes and switch to correct branch for worktrees
   ansible.builtin.shell:
-    cmd: "umask 0022 && git checkout -f && git pull"
-    chdir: "{{ item }}"
+    cmd: "git fetch && git reset --hard @{upstream} && git checkout {{ item.branch }}"
+    chdir: "{{ item.worktree_dir }}"
   loop:
-    - "{{ korp_backend_auth_home }}"
-    - "{{ korp_backend_plugin_home }}"
+    - {
+      worktree_dir: "{{ korp_backend_auth_home }}",
+      branch: "{{ korp_backend_auth_version }}"
+    }
+    - {
+      worktree_dir: "{{ korp_backend_plugin_home }}",
+      branch: "{{ korp_backend_plugin_version }}"
+    }
+  # This will be always triggered, but better do it to be safe, since we have a few shell-operated git commands here
   notify:
     - restart korp-backend
     - restart korp-authserver
@@ -169,6 +191,61 @@
     mode: "0644"
   notify:
     - restart korp-authserver
+
+- name: Install korp-authdb.py dependencies
+  ansible.builtin.dnf:
+    name:
+      - python3-mysqlclient
+    state: present
+
+- name: Set up korp-authdb.py directory
+  ansible.builtin.file:
+    path: /usr/local/bin/korp-authdb/
+    state: directory
+    owner: root
+    mode: "0755"
+
+- name: Install korp-authdb.py scripts
+  ansible.builtin.copy:
+    src: "{{ item.filename }}"
+    dest: /usr/local/bin/korp-authdb/
+    mode: "{{ item.mode }}"
+  loop:
+    - filename: "korp-authdb.py"
+      mode: "0755"
+    - filename: "create-new-korp-authdb-DANGER-ERASES-EXISTING.sql"
+      mode: "0644"
+
+- name: Install korp-authdb.py configuration
+  ansible.builtin.template:
+    src: korp_authdb_config.py.j2
+    dest: /usr/local/bin/korp-authdb/korp_authdb_config.py
+    mode: "0644"
+
+- name: Symlink utility scripts to $PATH
+  ansible.builtin.file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    state: link
+  loop:
+    - src: /usr/local/bin/korp-authdb/korp-authdb.py
+      dest: /usr/local/bin/korp-authdb.py
+
+- name: Fetch public corpus packages
+  ansible.builtin.get_url:
+    dest: "{{ package_cache_dir }}"
+    mode: "0664"
+    group: "clarin"
+    url: "https://a3s.fi/korp_corpus_packages_pub/{{ item }}"
+  loop: "{{ korp_pub_packages }}"
+
+- name: Install public corpus packages
+  ansible.builtin.shell:
+    chdir: "{{ kp_util_scripts_home }}/scripts"
+    cmd: "./korp-install-corpora.sh {{ package_cache_dir }}/{{ item }}"
+  loop: "{{ korp_pub_packages }}"
 
 - name: Install latest gevent
   ansible.builtin.pip:

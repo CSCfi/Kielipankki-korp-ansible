@@ -1,1 +1,4 @@
-korp ansible_host=korp2.csc.fi
+all:
+  hosts:
+    korp:
+      ansible_host: korp3.csc.fi

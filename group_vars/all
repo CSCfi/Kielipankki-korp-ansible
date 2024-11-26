@@ -2,7 +2,7 @@
 
 opsview_rpm: opsview-agent-6.7.3.202206170928-1.ct7.x86_64.rpm
 
-# settigs for pass
+# settings for pass
 password_store: "lb_passwords/"  # relative to .password-store root
 
 local_user: "{{ lookup('env','USER') }}"
@@ -18,8 +18,9 @@ korp_backend_socket: "/run/{{ korp_backend_name }}.sock"
 
 korp_shib_spoof_key: "{{ lookup('passwordstore', 'lb_passwords/portal/wp_shib_spoof_key') }}"
 
-
-korp_url: https://www.kielipankki.fi/korp
+korp_domain: https://www.kielipankki.fi
+korp_path: "korp"
+korp_url: "{{ korp_domain }}/{{ korp_path }}"
 korp_backend_url: "{{ korp_url }}/api8/"
 
 # static hacks for annlab + download_cgi
@@ -28,6 +29,7 @@ korp_frontend_annlab_dir: "{{ korp_static_frontend_cgi_dir }}/annlab"
 korp_backend_cgibin_dir: "{{ korp_static_frontend_cgi_dir }}/korp"
 korp_backend_download_cgi: "{{ korp_url }}/cgi-bin/korp/korp_download.cgi"
 
+media_dir: "/data2/media"
 
 # WP-Cli specific
 remote_deploy_user: 'apache'
@@ -39,10 +41,11 @@ korp_certificate: korp.csc.fi.pem
 intermediate_chain: GEANT_OV_RSA_CA4.pem
 
 # Backup settings
+real_backup_dir: "/data2/backup"
 backup_dir: "/var/backup"
 #Server IPs for getting backups:
-portal_server_ip: 195.148.21.204
-webanno_server_ip: 195.148.31.151
+portal_server_ip: 128.214.253.151
+sanat_server_name: sanat.csc.fi
 
 # access control from proxy
 allowed_ips:
@@ -212,25 +215,48 @@ autoindex_info:
     text: 'ceal-dl'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017011301'
 
-  - regex: 'cfinsl/elicit/*.zip'
+  - regex: 'cfinsl/cfinsl/elicit/*.zip'
     text: 'CC BY NC SA'
     url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
 
-  - regex: 'cfinsl/elicit'
+  - regex: 'cfinsl/cfsts/elicit/*.zip'
+    text: 'CC BY NC SA +PRIV'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090323'
+
+  - regex: 'cfinsl/cfinsl/elicit'
     text: 'CFinSL Elicited Narratives'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019092710'
 
-  - regex: 'cfinsl/conv/*.zip'
+  - regex: 'cfinsl/cfsts/elicit'
+    text: 'CFSTS Elicited Narratives'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090322'
+
+  - regex: 'cfinsl/cfinsl/conv/*.zip'
     text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019012325'
 
-  - regex: 'cfinsl/conv'
+  - regex: 'cfinsl/cfsts/conv/*.zip'
+    text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090325'
+
+  - regex: 'cfinsl/cfinsl/conv'
     text: 'CFinSL Conversations'
     url: 'http://urn.fi/urn:nbn:fi:lb-201910041'
 
-  - regex: 'cfinsl'
+  - regex: 'cfinsl/cfsts/conv'
+    text: 'CFSTS Conversations'
+    url: 'https://urn.fi/urn:nbn:fi:lb-2024090321'
+
+  - regex: 'cfinsl/cfinsl'
     text: 'Corpus of Finnish Sign Language'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019012321'
+
+  - regex: 'cfinsl/cfsts'
+    text: 'Corpus of Finland-Swedish Sign Language'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090327'
+
+  - regex: 'cfinsl'
+    text: 'Sign Language Corpora (in Finland)'
 
   - regex: 'coronavirus-ecorg/*.zip'
     text: 'CLARIN RES +ND +OTHER v2.1'
@@ -342,10 +368,13 @@ autoindex_info:
   - regex: 'eduskunta/eduskunta2015-2023-src/eduskunta2015-2023-src.zip'
     text: 'CLARIN PUB +BY +PRIV +OTHER v2.1'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019112823'
-
+    
   - regex: 'eduskunta/eduskunta2015-2023-src'
     text: 'Plenary Sessions of the Parliament of Finland 2015-2023, source'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024071601'
+
+  - regex: 'eduskunta'
+    text: 'Plenary Sessions of the Parliament of Finland'
 
   - regex: 'eduskunta'
     text: 'Plenary Sessions of the Parliament of Finland'
