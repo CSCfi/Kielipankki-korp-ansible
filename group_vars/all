@@ -376,9 +376,6 @@ autoindex_info:
   - regex: 'eduskunta'
     text: 'Plenary Sessions of the Parliament of Finland'
 
-  - regex: 'eduskunta'
-    text: 'Plenary Sessions of the Parliament of Finland'
-
   - regex: 'ELFA_xml.zip'
     text: 'CC BY'
     url: 'https://creativecommons.org/licenses/by/4.0/'
