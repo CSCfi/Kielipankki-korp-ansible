@@ -980,6 +980,18 @@ autoindex_info:
   - regex: 'semfinlex'
     text: 'Finnish parliament and court documents'
 
+  - regex: 'seuruu'
+    text: 'Follow-up Study of Dialects of Finnish, downloadable version'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2015041307'
+
+  - regex: 'seuruu/seuruu_1/*.zip'
+    text: 'CLARIN RES +PRIV +OTHER v2.1'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2015041307'
+
+  - regex: 'seuruu/seuruu_2/*.zip'
+    text: 'CLARIN RES +PRIV +OTHER v2.1'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2015041307'
+
   - regex: 'sfnet*'
     text: 'CLARIN ACA +NC'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017022206'
