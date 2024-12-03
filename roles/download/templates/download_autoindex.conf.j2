@@ -37,6 +37,9 @@ AddDescription "Licence information" "license*.txt"
 AddDescription "Licence information" "LICENSE*.txt"
 AddDescription "Licence information" "licence*.txt"
 AddDescription "Licence information" "LICENCE*.txt"
+# md5 is before the autoindex_info loop so that eg. .zip.md5 gets this description.
+# Ideally the autoindex templates would have regexes like '*.zip$' but they might not.
+AddDescription "Integrity checksum" "*.md5"
 
 {% for item in autoindex_info %}
 {% if item.url is defined %}
@@ -47,7 +50,6 @@ AddDescription '<div>{{ item.text }}</div>' "{{ item.regex }}"
 {% endfor %}
 
 # General
-AddDescription "Integrity checksum" "*.md5"
 AddDescription "compressed file" "*.zip"
 AddDescription "text document" "*.txt"
 
