@@ -1183,7 +1183,7 @@ autoindex_info:
     text: 'Terminology Forum Glossaries (selection), source'
     url: 'http://urn.fi/urn:nbn:fi:lb-2021051911'
 
-  - regex: 'textreuse-sv/*.zip'
+  - regex: 'textreuse-sv-src/*.zip'
     text: 'CC BY'
     url: 'http://urn.fi/urn:nbn:fi:lb-2023092723'
 
