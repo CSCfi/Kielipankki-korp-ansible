@@ -7,10 +7,10 @@
       - mod_proxy_html
     state: present
 
-- name: remove defaults
-  file:
-    path: "/etc/httpd/conf.d/{{ item }}"
-    state: absent
+- name: Blank defaults
+  copy:
+    src: blank.conf
+    dest: "/etc/httpd/conf.d/{{ item }}"
   loop:
     - welcome.conf
     - userdir.conf
