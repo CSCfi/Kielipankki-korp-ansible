@@ -850,6 +850,14 @@ autoindex_info:
     text: 'Psycholinguistic Descriptives'
     url: 'http://urn.fi/urn:nbn:fi:lb-2018081601'
 
+  - regex: 'pcsc/*.zip'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024070603'
+
+  - regex: 'pcsc'
+    text: 'The Parsed Corpus of Scottish Correspondence, source'
+    url: 'https://urn.fi/urn:nbn:fi:lb-2024070601'
+
   - regex: 'puhelahjat/complete'
     text: 'Donate Speech Corpus 1.0'
     url: 'http://urn.fi/urn:nbn:fi:lb-2020090321'
