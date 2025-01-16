@@ -332,6 +332,13 @@
     mode: "0644"
   notify: restart korp-backend
 
+- name: Install rsyslog configuration
+  ansible.builtin.copy:
+    src: 11-korp-py.conf
+    dest: /etc/rsyslogd.d/11-korp-py.conf
+    mode: "0644"
+  notify: restart rsyslogd
+
 - name: configure logrotate for backend
   ansible.builtin.template:
     src: "korp_logrotate"

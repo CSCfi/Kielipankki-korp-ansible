@@ -25,3 +25,9 @@
     name: korp-authserver
     state: restarted
   become: yes
+
+- name: restart rsyslogd
+  systemd:
+    name: rsyslogd
+    state: restarted
+  become: yes
