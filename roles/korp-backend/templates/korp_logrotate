@@ -1,3 +1,19 @@
+/var/log/korp/*.log {
+    monthly
+    rotate 15
+    # to delete old logfiles even if there aren't new ones coming in, due
+    # to changes in naming or whatever. 455 days ~= 15 months.
+    maxage 455
+    compress
+    delaycompress
+    postrotate
+        systemctl restart rsyslog
+    endscript
+    # no missingok, we want to know if log files don't exist
+    # no notifempty, then leave an empty rotated file, we want to know
+    # no sharedscripts, wait as little as possible before restarting rsyslogd
+}
+
 /v/korp/log/*log {
     monthly
     rotate 6
