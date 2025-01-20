@@ -7,18 +7,8 @@ Configuration module for korpplugins.logger.
 
 import logging
 
-
-# Base directory for log files
-LOG_BASEDIR = "/v/korp/log"
-
-# Log filename format string (for str.format()), which may include a
-# directory part, to be appended to LOG_BASEDIR to get the full log
-# file path. The supported format keys are: year, mon, mday, hour,
-# min, sec (the corresponding tm_X values returned by
-# time.localtime()), and pid (process id), which should be included to
-# avoid having multiple processes writing to the same log file when
-# using a WSGI server with multiple worker processes.
-LOG_FILENAME_FORMAT = "korp-py.log"
+LOG_USING_NATIVE_PYTHON = False
+LOG_USING_SYSLOG = True
 
 # Default log level
 LOG_LEVEL = logging.INFO
