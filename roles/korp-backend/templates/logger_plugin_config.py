@@ -41,7 +41,7 @@ LOG_ENABLE_DEBUG_PARAM = True
 #   since the epoch
 # %(message)s contains the actual message of the form "Item: Value".
 LOG_FORMAT = (
-    "[korp.py %(levelname)s %(process)d:%(request)d @ %(asctime)s]" " %(message)s"
+    "[korp.py %(levelname)s %(request)d @ %(asctime)s]" " %(message)s"
 )
 
 # The maximum length of a log message, including the fixed part; 0 for
