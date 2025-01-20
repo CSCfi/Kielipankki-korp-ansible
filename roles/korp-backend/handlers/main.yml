@@ -26,8 +26,8 @@
     state: restarted
   become: yes
 
-- name: restart rsyslogd
+- name: restart rsyslog
   systemd:
-    name: rsyslogd
+    name: rsyslog
     state: restarted
   become: yes
