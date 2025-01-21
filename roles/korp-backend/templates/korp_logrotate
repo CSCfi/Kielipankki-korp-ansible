@@ -14,16 +14,14 @@
     # no sharedscripts, wait as little as possible before restarting rsyslogd
 }
 
+# This is now just for legacy cgi-based download stuff
 /v/korp/log/*log {
     monthly
-    rotate 6
+    rotate 15
+    maxage 455
     compress
-
     missingok
     notifempty
     sharedscripts
     delaycompress
-    postrotate
-        /bin/systemctl restart korp-backend.service
-    endscript
 }
