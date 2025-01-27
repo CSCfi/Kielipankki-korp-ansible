@@ -73,7 +73,7 @@ fi # ! [ -d $LOCAL_BACKUP_DIR/ ]
 # $1: Error message
 # $2: Path to file
 mail_log() {
-RECIPIENT=root # Use .forward to forward root's mail if needed.
+RECIPIENT=root@localhost # Use .forward to forward root's mail if needed.
    if [ -n $2 ]; then # mail the file content
        cat $2 | mail -s "$0 @ `hostname -f`: $1" $RECIPIENT
    else
