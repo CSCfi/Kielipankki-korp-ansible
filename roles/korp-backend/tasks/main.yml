@@ -334,8 +334,8 @@
 
 - name: Install rsyslog configuration and logging README
   ansible.builtin.copy:
-    src: "{{ item.src }}" 11-korp-py.conf
-    dest: "{{ item.dest }}" /etc/rsyslog.d/11-korp-py.conf
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     mode: "0644"
   loop:
     - src: 11-korp-py.conf
