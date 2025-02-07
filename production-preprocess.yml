@@ -23,3 +23,10 @@
         validate: postfix check
       become: true
       tags: postfix-vmware-configuration
+      notify: Reload postfix
+
+  handlers:
+    - name: Reload postfix
+      ansible.builtin.service:
+        name: postfix.service
+        state: reloaded
