@@ -26,3 +26,12 @@
     - name: Restart server if needed
       reboot:
       when: sestatus.changed|default(false)
+
+    - name: Fix sent mail origin to korp.csc.fi
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^myorigin = "
+        line: "myorigin = $myhostname"
+        validate: postfix check
+      become: true
+      tags: postfix-vmware-configuration
