@@ -26,4 +26,3 @@
     - name: Restart server if needed
       reboot:
       when: sestatus.changed|default(false)
-
