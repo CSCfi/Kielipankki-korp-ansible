@@ -11,16 +11,19 @@
         state: disabled
       register: sestatus
 
-    - name: Read /etc/fstab
-      ansible.builtin.slurp:
-        src: /etc/fstab
-      register: fstab_content
+    - name: Disable swap devices
+      ansible.builtin.replace:
+        path: /etc/fstab
+        regexp: '^([^#\n]+\bswap\b[^\n]+)'
+        replace: '# Commented out by Ansible\n# \1'
+      register: swap_in_fstab
 
     - name: Warn if swap device appears active
       ansible.builtin.fail:
-        msg: "Warning: /etc/fstab appears to have active swap device"
-      when: fstab_content['content'] | b64decode is search("^[^#]+swap", multiline=true)
+        msg: "Warning: /etc/fstab appeared to have active swap device, device disabled, please check"
+      when: swap_in_fstab.changed
 
     - name: Restart server if needed
       reboot:
       when: sestatus.changed|default(false)
+
