@@ -1048,29 +1048,6 @@ autoindex_info:
     text: 'Skolt Saami Documentation Corpus'
     url: 'http://urn.fi/urn:nbn:fi:lb-2014073037'
 
-  - regex: 'STT/*/*.zip'
-    text: 'CLARIN RES +NC +OTHER'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2019052705'
-
-  - regex: 'STT'
-    text: 'Finnish News Agency'
-
-  - regex: 'STT/stt-fi-1992-2018-src'
-    text: 'Finnish News Agency Archive 1992-2018, source'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2018121004'
-
-  - regex: 'STT/stt-fi-2019-2021-src'
-    text: 'Finnish News Agency Archive 2019-2021, source'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2022030202'
-
-  - regex: 'STT/stt-fi-1992-2018-conllu-src'
-    text: 'Finnish News Agency Archive 1992-2018, CoNLL-U, source'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2020031201'
-
-  - regex: 'STT/stt-fi-2022-2023-src'
-    text: 'Finnish News Agency Archive 2022-2023, source'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2024051001'
-
   - regex: 'Suomi24/*/*.zip'
     text: 'CLARIN ACA +NC'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017021630'
