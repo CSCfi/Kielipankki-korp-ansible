@@ -45,7 +45,7 @@ mk_additional_directories:
   - {path: /v/appl/, owner: root, group: root, mode: "u+rwx,g+rwxs,o+rx"}
   - {path: /v/corpora/data, owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
   - {path: "{{ cwb_registry }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
-  - {path: /var/log/korp/, owner: root, group: root, mode: "u=rwx,g=rwxs,o=x"}
+  - {path: /var/log/korp/, owner: root, group: root, mode: "u=rwx,g=rwxs,o="}
   - {path: /data1/korp/log/, owner: root, group: root, mode: "u=rwx,g=rwxs,o=x"} # just because of old cgi stuff
   - {path: "{{ backend_cache_dir }}", owner: gunicorn, group: apache, mode: "u+rwx,g+rwxs,o-rwx"}
   - {path: "{{ korp_git_root }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
