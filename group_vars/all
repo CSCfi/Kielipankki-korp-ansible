@@ -23,9 +23,8 @@ korp_path: "korp"
 korp_url: "{{ korp_domain }}/{{ korp_path }}"
 korp_backend_url: "{{ korp_url }}/api8/"
 
-# static hacks for annlab + download_cgi
+# static hacks for download_cgi
 korp_static_frontend_cgi_dir: "/data1/korp/frontend_static/cgi-bin"
-korp_frontend_annlab_dir: "{{ korp_static_frontend_cgi_dir }}/annlab"
 korp_backend_cgibin_dir: "{{ korp_static_frontend_cgi_dir }}/korp"
 korp_backend_download_cgi: "{{ korp_url }}/cgi-bin/korp/korp_download.cgi"
 
