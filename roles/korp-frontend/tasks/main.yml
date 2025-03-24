@@ -21,7 +21,6 @@
       - yarn
       - git
       - gcc-c++
-      - java-11-openjdk  # annlab only
     state: present
 
 - name: Install yarn
@@ -37,7 +36,6 @@
   loop:
     - "{{ korp_git_root }}"
     - "{{ korp_frontend_www_home }}"
-    - "{{ korp_frontend_annlab_dir }}"
 
 - name: Clone frontend
   ansible.builtin.git:
@@ -159,7 +157,7 @@
     cmd: rsync -av --delete  "{{ korp_frontend_home }}/dist/" "{{ korp_frontend_www_home }}"
   when: compile_frontend == true
 
-- name: Hardcode annlab+korp_download
+- name: Hardcode korp_download
   file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -167,7 +165,6 @@
     force: true
   with_items:
     - {src: "{{ korp_static_frontend_cgi_dir }}", dest: "{{ korp_frontend_www_home }}/cgi-bin"}
-    - {src: "{{ korp_frontend_annlab_dir }}/deptrees", dest: "{{ korp_frontend_www_home }}/lib/annlab_deptrees"}
 
 - name: Create media directory
   file:
