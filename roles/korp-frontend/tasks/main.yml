@@ -53,65 +53,10 @@
   ansible.builtin.set_fact:
     compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) ) }}"
 
-- name: Checkout worktrees
-  ansible.builtin.shell:
-    cmd: "umask 0022 && git worktree add -f {{ item }}"
-    chdir: "{{ korp_frontend_home }}"
-    creates: "{{ item.split(' ')[0] }}/.git"
-  loop:
-    - "{{ korp_frontend_config_home }} {{ korp_frontend_config_version }}"
-    - "{{ korp_frontend_plugin_home }} {{ korp_frontend_plugin_version }}"
-    - "{{ korp_frontend_news_home }} {{ korp_frontend_news_version }}"
-
-- name: Remove local worktree changes
-  ansible.builtin.shell:
-    cmd: "git reset --hard"
-    chdir: "{{ item }}"
-  loop:
-    - "{{ korp_frontend_config_home }}"
-    - "{{ korp_frontend_plugin_home }}"
-    - "{{ korp_frontend_news_home }}"
-
-- name: Update worktrees and check for recompilation need
-  ansible.builtin.shell:
-    cmd: "git pull"
-    chdir: "{{ item }}"
-  register: worktree_pull
-  loop:
-    - "{{ korp_frontend_config_home }}"
-    - "{{ korp_frontend_plugin_home }}"
-    - "{{ korp_frontend_news_home }}"
-
-- name: Switch to correct branch for worktrees in case they were locally changed
-  ansible.builtin.shell:
-    cmd: "git checkout {{ item.branch }}"
-    chdir: "{{ item.worktree_dir }}"
-  loop:
-    - {
-      worktree_dir: "{{ korp_frontend_config_home }}",
-      branch: "{{ korp_frontend_config_version }}"
-    }
-    - {
-      worktree_dir: "{{  korp_frontend_plugin_home }}",
-      branch: "{{ korp_frontend_plugin_version }}"
-    }
-    - {
-      worktree_dir: "{{ korp_frontend_news_home }}",
-      branch: "{{ korp_frontend_news_version }}"
-    }
-
-- name: Make our own local config edits
-  ansible.builtin.replace:
-    path: "{{ korp_frontend_config_home }}/app/config.js"
-    regexp: "/korp/api8"
-    replace: "/{{ korp_path }}/api8"
-  when: korp_path != "korp"
-
-- name: Skip this if all up to date
-  ansible.builtin.set_fact:
-    compile_frontend: true
-  when: (item.stdout != "Already up to date.") or ( force_compile | default(false))
-  loop: "{{ worktree_pull.results }}"
+- name: Set up Kielipankki-korp structure
+  when: korp_frontend_repo is not search('spraakbanken')
+  include_tasks:
+    file: kielipankki-korp-frontend-code.yaml
 
 - name: Install run_config
   ansible.builtin.template:
@@ -139,18 +84,6 @@
   loop:
     - "{{ korp_frontend_news_home }}/json"
     - "{{ korp_frontend_home }}/dist/news"
-
-- name: Compile News
-  ansible.builtin.shell:
-    cmd: "umask 0022 && ./compile.bash"
-    chdir: "{{ korp_frontend_news_home }}"
-  when: compile_frontend == true
-
-- name: Link news
-  file:
-    src: "{{ korp_frontend_news_home }}/json"
-    dest: "{{ korp_frontend_home }}/dist/news/json"
-    state: link
 
 - name: Install frontend
   shell:
