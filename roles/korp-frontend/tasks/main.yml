@@ -1,6 +1,10 @@
 ---
 # Setup korp frontend
 
+- name: Check if we're doing a Språkbanken build
+  ansible.builtin.set_fact:
+    spraakbanken_build: korp_frontend_repo is search("spraakbanken")
+
 - name: Add yarn repository
   ansible.builtin.yum_repository:
     name: yarn
@@ -59,6 +63,7 @@
     file: kielipankki-korp-frontend-code.yaml
 
 - name: Install run_config
+  when: not spraakbanken_build
   ansible.builtin.template:
     src: run_config.json.j2
     dest: "{{ korp_frontend_home }}/run_config.json"

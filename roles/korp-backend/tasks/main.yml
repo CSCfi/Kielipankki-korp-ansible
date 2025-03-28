@@ -179,6 +179,7 @@
     - korp-authserver.service
   notify:
     - restart systemd
+  when: not spraakbanken_build or item is not search("authserver")
 
 - name: Enable korp services
   ansible.builtin.systemd_service:
@@ -188,6 +189,7 @@
   loop:
     - korp-backend.service
     - korp-authserver.service
+  when: not spraakbanken_build or item is not search("authserver")
 
 - name: Install daily crontab scripts
   ansible.builtin.template:
@@ -200,6 +202,7 @@
     - clear_korp_cache
 
 - name: Install old API / korp_download.cgi
+  when: not spraakbanken_build
   ansible.builtin.copy:
     src: korp_download/
     dest: "{{ korp_backend_cgibin_dir }}"
@@ -208,11 +211,13 @@
     mode: "0755"
 
 - name: Precompile python files
+  when: not spraakbanken_build
   ansible.builtin.shell:
     cmd: find -name \*.py -exec python3 -m py_compile  {} \;
     chdir: "{{ korp_backend_cgibin_dir }}/korpexport"
 
 - name: Install old API config
+  when: not spraakbanken_build
   ansible.builtin.template:
     src: korp_cgi_config.py
     dest: "{{ korp_backend_cgibin_dir }}/korp_config.py"
@@ -221,6 +226,7 @@
     mode: "0640"
 
 - name: Configure CGI script location for Apache
+  when: not spraakbanken_build
   ansible.builtin.lineinfile:
     path: /etc/httpd/conf.d/cgi.conf
     line: "ScriptAlias /korp/cgi-bin/ {{ korp_static_frontend_cgi_dir }}/"

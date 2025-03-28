@@ -9,6 +9,7 @@
   become: yes
 
 - name: start korp-authserver
+  when: not spraakbanken_build
   systemd:
     name: korp-authserver
     state: started
