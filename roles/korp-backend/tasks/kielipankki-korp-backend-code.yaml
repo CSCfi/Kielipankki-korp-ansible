@@ -1,0 +1,107 @@
+- name: Checkout worktrees
+  ansible.builtin.shell:
+    cmd: "umask 0022 && git worktree add -f {{ item }}"
+    chdir: "{{ korp_backend_home }}"
+    creates: "{{ item.split(' ')[0] }}/.git"
+  loop:
+    - "{{ korp_backend_auth_home }} {{ korp_backend_auth_version }}"
+    - "{{ korp_backend_plugin_home }} {{ korp_backend_plugin_version }}"
+
+- name: Remove local changes and switch to correct branch for worktrees
+  ansible.builtin.shell:
+    cmd: "git fetch && git reset --hard @{upstream} && git checkout {{ item.branch }}"
+    chdir: "{{ item.worktree_dir }}"
+  loop:
+    - {
+      worktree_dir: "{{ korp_backend_auth_home }}",
+      branch: "{{ korp_backend_auth_version }}"
+    }
+    - {
+      worktree_dir: "{{ korp_backend_plugin_home }}",
+      branch: "{{ korp_backend_plugin_version }}"
+    }
+  # This will be always triggered, but better do it to be safe, since we have a few shell-operated git commands here
+  notify:
+    - restart korp-backend
+    - restart korp-authserver
+
+- name: Enable default configs for some plugins
+  ansible.builtin.file:
+    src: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py.template"
+    dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
+    state: link
+    mode: "0644"
+  loop:
+    - charcoder
+    - contenthider
+    - lemgramcompleter
+  notify:
+    - restart korp-backend
+
+- name: Install custom configs for other plugins
+  ansible.builtin.template:
+    src: "{{ item }}_plugin_config.py"
+    dest: "{{ korp_backend_plugin_home }}/korpplugins/{{ item }}/config.py"
+    mode: "0644"
+  loop:
+    - logger
+    - protectedcorporadb
+  notify:
+    - restart korp-backend
+
+- name: Install backend config
+  ansible.builtin.template:
+    src: backend_config.py
+    dest: "{{ korp_backend_home }}/config.py"
+    mode: "0644"
+  notify:
+    - restart korp-backend
+
+- name: Install auth server config
+  ansible.builtin.template:
+    src: authserver_config.py
+    dest: "{{ korp_backend_auth_home }}/auth/config.py"
+    mode: "0644"
+  notify:
+    - restart korp-authserver
+
+- name: Install korp-authdb.py dependencies
+  ansible.builtin.dnf:
+    name:
+      - python3-mysqlclient
+    state: present
+
+- name: Set up korp-authdb.py directory
+  ansible.builtin.file:
+    path: /usr/local/bin/korp-authdb/
+    state: directory
+    owner: root
+    mode: "0755"
+
+- name: Install korp-authdb.py scripts
+  ansible.builtin.copy:
+    src: "{{ item.filename }}"
+    dest: /usr/local/bin/korp-authdb/
+    mode: "{{ item.mode }}"
+  loop:
+    - filename: "korp-authdb.py"
+      mode: "0755"
+    - filename: "create-new-korp-authdb-DANGER-ERASES-EXISTING.sql"
+      mode: "0644"
+
+- name: Install korp-authdb.py configuration
+  ansible.builtin.template:
+    src: korp_authdb_config.py.j2
+    dest: /usr/local/bin/korp-authdb/korp_authdb_config.py
+    mode: "0644"
+
+- name: Symlink utility scripts to $PATH
+  ansible.builtin.file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    state: link
+  loop:
+    - src: /usr/local/bin/korp-authdb/korp-authdb.py
+      dest: /usr/local/bin/korp-authdb.py
