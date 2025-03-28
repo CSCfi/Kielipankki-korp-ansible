@@ -1,10 +1,6 @@
 ---
 # Setup korp frontend
 
-- name: Check if we're doing a Språkbanken build
-  ansible.builtin.set_fact:
-    spraakbanken_build: korp_frontend_repo is search("spraakbanken")
-
 - name: Add yarn repository
   ansible.builtin.yum_repository:
     name: yarn
