@@ -22,6 +22,7 @@
   become: yes
 
 - name: restart korp-authserver
+  when: not spraakbanken_build
   systemd:
     name: korp-authserver
     state: restarted
