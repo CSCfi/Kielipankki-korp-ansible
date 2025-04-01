@@ -1,0 +1,3 @@
+---
+- name: restart nftables
+  command: systemctl restart nftables

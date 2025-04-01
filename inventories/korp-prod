@@ -2,3 +2,4 @@ all:
   hosts:
     korp:
       ansible_host: korp3.csc.fi
+      is_vmware: yes
