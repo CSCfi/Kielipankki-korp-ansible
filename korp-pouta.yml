@@ -7,7 +7,8 @@
   hosts: korp
   become: true
   roles:
-    ansible.builtin.import_playbook: pouta-firewall
+    - role: pouta-firewall
+      tags: firewall
 
 - name: Install Korp software
   ansible.builtin.import_playbook: korp-software.yml
