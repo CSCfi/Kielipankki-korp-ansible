@@ -4,4 +4,3 @@ all:
       ansible_host: korp3.csc.fi
       korp_db_server: kielipankkidb9.csc.fi
       db_root_password: "{{ lookup('passwordstore', 'lb_passwords/korp/korp_db_admin_password') }}"
-      is_vmware: yes
