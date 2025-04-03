@@ -3,6 +3,12 @@
 - name: Create Pouta VM
   ansible.builtin.import_playbook: pouta-vm.yml
 
+- name: Set up Pouta firewall
+  hosts: korp
+  become: true
+  roles:
+    ansible.builtin.import_playbook: pouta-firewall
+
 - name: Install Korp software
   ansible.builtin.import_playbook: korp-software.yml
 
