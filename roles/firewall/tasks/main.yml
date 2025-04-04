@@ -10,6 +10,38 @@
   stat: path=/etc/csc/host.info
   register: pata_host
 
+- name: Ensure /etc/iptables
+  ansible.builtin.file:
+    path: /etc/iptables
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  
+- name: Install rules and scripts
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: "0640"
+  loop:
+    - src: iptables.rules
+      dest: /etc/iptables/
+      mode: 0640
+    - src: flush-iptables.sh
+      dest: /etc/iptables
+      mode: 0750
+    - src: iptables.service
+      dest: /etc/systemd/system/
+      mode: 0640
+  notify:
+    - restart systemd
+  
 - name: copy IP4/6 firewall statup scripts (if not already present)
   template:
     src: firewall.j2
