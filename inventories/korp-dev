@@ -5,11 +5,12 @@ all:
       floating_ip: 195.148.21.64
       vm_name_postfix: dev
       ansible_python_interpreter: python
+      network: clarin
     korp:
       ansible_host: 195.148.21.64
       ansible_user: almalinux
       allowed_ips:
-        - 192.168.1
+        - 195.148.30.210
         - 127.0.0.1
       korp_db_server: localhost
       korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp/dev_korp_db_user_password') }}"
