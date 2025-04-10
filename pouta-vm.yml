@@ -14,12 +14,12 @@
     project_key: "kielipouta"
     project_sg: "korp-dev-sg"
     project_security_groups: "default,{{ project_sg }}" # don't add spaces here!
-    network: "project_2000680"
+    network: clarin #"project_2000680"
 
     servers:
       - name: "{{ pouta_instance_name }}"
         image: "{{ std_image }}"
-        flavor: standard.medium
+        flavor: standard.large
         key_name: "{{ project_key }}"
         security_groups: "{{ project_security_groups }}"
         network: "{{ network }}"
