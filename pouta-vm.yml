@@ -14,7 +14,7 @@
     project_key: "kielipouta"
     project_sg: "korp-dev-sg"
     project_security_groups: "default,{{ project_sg }}" # don't add spaces here!
-    network: clarin #"project_2000680"
+    network: "{{ network | default('project_2000680') }}"
 
     servers:
       - name: "{{ pouta_instance_name }}"
@@ -40,10 +40,10 @@
         allowed_ips:
           - "192.168.1.0/24" # pouta local network
 
-    authorized_users:
+    base_authorized_users:
       - ktegel
       - ajarven
       - matthies
       - shardwic
-      - janiemi
-      - eaxelson
+
+    authorized_users: "{{ base_authorized_users + (additional_authorized_users | default([])) }}"

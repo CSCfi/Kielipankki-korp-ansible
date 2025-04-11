@@ -6,6 +6,9 @@ all:
       vm_name_postfix: dev
       ansible_python_interpreter: python
       network: clarin
+      additional_authorized_users:
+        - janiemi
+        - eaxelson
     korp:
       ansible_host: 195.148.21.64
       ansible_user: almalinux
