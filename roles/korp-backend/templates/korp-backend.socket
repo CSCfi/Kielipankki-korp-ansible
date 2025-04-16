@@ -6,7 +6,7 @@ ListenStream={{ korp_backend_socket }}
 # Our service won't need permissions for the socket, since it
 # inherits the file descriptor by socket activation
 # only the nginx daemon will need access to the socket
-SocketUser={{ korp_backend_socket_user }}
+SocketUser=apache
 # Optionally restrict the socket permissions even more.
 # SocketMode=600
 
