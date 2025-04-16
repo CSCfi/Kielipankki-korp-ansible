@@ -1,0 +1,28 @@
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+      floating_ip: 86.50.169.164
+      vm_name_postfix: future
+      ansible_python_interpreter: python
+    korp:
+      korp_backend_name: korp-backend
+      korp_backend_repo: https://github.com/spraakbanken/{{ korp_backend_name }}.git
+      korp_backend_version: master
+      korp_frontend_name: korp-frontend
+      korp_frontend_repo: https://github.com/spraakbanken/{{ korp_frontend_name }}.git
+      korp_frontend_version: master
+      ansible_host: 86.50.169.164
+      ansible_user: almalinux
+      allowed_ips:
+        - "193.166.1.0/24"    # CSC Office
+        - "193.166.2.0/24"    # CSC Office
+        - "193.166.83.192/28" # CSC PaloAlto VPN Staff
+        - "193.166.85.0/24"   # CSC Cisco VPN Staff
+        - 195.148.30.210 # proxy prod
+        - 195.148.30.109 # proxy pre-prod
+        - "127.0.0.1"
+      korp_db_server: localhost
+      korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp/dev_korp_db_user_password') }}"
+      db_root_password: "{{ lookup('passwordstore', 'lb_passwords/korp/dev_korp_db_root_password') }}"
+      korp_pub_packages: ["Sananparsikokoelma_korp_20160725.tgz"]
