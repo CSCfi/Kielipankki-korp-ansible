@@ -1,0 +1,12 @@
+label:
+  swe: Moderna
+  eng: Modern
+order: 10
+folders:
+  test:
+    title:
+      swe: Test (swe)
+      eng: Test (eng)
+    description: Testity test test
+map_enabled: false
+preselected_corpora: []
