@@ -37,6 +37,10 @@
       tags: postfix-vmware-configuration
       notify: Reload postfix
 
+  roles:
+    - role: vmware-firewall
+      tags: firewall
+      
   handlers:
     - name: Reload postfix
       ansible.builtin.service:

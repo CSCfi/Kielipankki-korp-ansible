@@ -1,10 +1,4 @@
 ---
-# Set firewall in CSC compatible way
-
-- name: Install iptables
-  ansible.builtin.dnf:
-    name:
-      - iptables-legacy
 
 - name: test for PATA VM
   stat: path=/etc/csc/host.info

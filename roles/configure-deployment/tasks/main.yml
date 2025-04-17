@@ -1,0 +1,7 @@
+---
+
+- name: Check if we're doing a Språkbanken build & set related facts
+  ansible.builtin.set_fact:
+    spraakbanken_build: korp_frontend_repo is search("spraakbanken")
+  tags:
+    - always

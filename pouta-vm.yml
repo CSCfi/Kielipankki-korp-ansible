@@ -14,7 +14,7 @@
     project_key: "kielipouta"
     project_sg: "korp-dev-sg"
     project_security_groups: "default,{{ project_sg }}" # don't add spaces here!
-    network: "{{ network | default('project_2000680') }}"
+    network: "{{ own_network | default('project_2000680') }}"
 
     servers:
       - name: "{{ pouta_instance_name }}"
