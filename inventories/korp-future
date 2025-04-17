@@ -5,6 +5,9 @@ all:
       floating_ip: 86.50.169.164
       vm_name_postfix: future
       ansible_python_interpreter: python
+      additional_authorized_users:
+        - janiemi
+        - eaxelson
     korp:
       korp_backend_name: korp-backend
       korp_backend_repo: https://github.com/spraakbanken/{{ korp_backend_name }}.git
