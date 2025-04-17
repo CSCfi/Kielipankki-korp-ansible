@@ -59,15 +59,53 @@
     file: kielipankki-korp-frontend-code.yaml
 
 - name: Install run_config
-  when: not spraakbanken_build
   ansible.builtin.template:
     src: run_config.json.j2
     dest: "{{ korp_frontend_home }}/run_config.json"
     mode: "0644"
 
+- name: Set up Språkbanken config dir
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: gunicorn
+  when: spraakbanken_build
+  loop:
+    - "{{ korp_frontend_config_home }}"
+    - "{{ korp_frontend_config_home }}/app"
+    - "{{ korp_frontend_config_home }}/app/translations"
+    - "{{ korp_frontend_config_home }}/app/modes"
+
+- name: Install Språkbanken config.yml and translations
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ korp_frontend_config_home }}/app/{{ item.dest }}"
+    mode: "0644"
+    owner: gunicorn
+  when: spraakbanken_build
+  loop:
+    - src: config.yml.j2
+      dest: "config.yml"
+
+- name: Install Språkbanken mode & translation files
+  when: spraakbanken_build
+  ansible.builtin.copy:
+    mode: "0644"
+    owner: gunicorn
+    src: "{{ item.src }}"
+    dest: "{{ korp_frontend_config_home }}/app/{{ item.dest }}"
+  loop:
+    - src: corpora-eng.json
+      dest: /translations/corpora-eng.json
+    - src: corpora-swe.json
+      dest: /translations/corpora-swe.json
+    - src: default_mode.js
+      dest: /modes/default_mode.js
+
 - name: Install dependencies for frontend
   ansible.builtin.command:
-    cmd: "yarn install"
+    cmd: "yarn {{ 'install' if not spraakbanken_build }}"
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
@@ -85,6 +123,7 @@
   loop:
     - "{{ korp_frontend_news_home }}/json"
     - "{{ korp_frontend_home }}/dist/news"
+  when: spraakbanken_build
 
 - name: Install frontend
   shell:
