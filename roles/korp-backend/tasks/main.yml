@@ -143,6 +143,10 @@
     chdir: "{{ kp_util_scripts_home }}/scripts"
     cmd: "./korp-install-corpora.sh {{ package_cache_dir }}/{{ item }}"
   loop: "{{ korp_pub_packages }}"
+  register: result
+  failed_when:
+    - result.rc != 0
+    - '"skipping" not in result.stderr'
 
 - name: Install latest gevent
   ansible.builtin.pip:
