@@ -126,7 +126,7 @@
     umask: "0022"
 
 - name: Set up Kielipankki-korp structure
-  when: korp_backend_repo is not search("spraakbanken")
+  when: not spraakbanken_build
   include_tasks:
     file: kielipankki-korp-backend-code.yaml
     
