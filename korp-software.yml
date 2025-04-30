@@ -5,8 +5,6 @@
   become: true
 
   roles:
-      - role: configure-deployment
-        tags: configure-deployment
       - role: kielipankki.common.opsview
         tags: opsview
       - role: kielipankki.common.mail_forward
