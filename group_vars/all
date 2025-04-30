@@ -65,6 +65,7 @@ shib_cert_contents:
 korp_db_user: "korp"
 korp_db_port: 3306
 
+spraakbanken_build: False
 
 autoindex_info:
   - regex: 'acquis-ftb3/*.zip'
