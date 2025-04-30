@@ -1,0 +1,16 @@
+---
+
+- name: Install a (cwb) corpus package
+  hosts: korp
+  become: true
+
+  tasks:
+    - name: Run korp-install-corpora.sh
+      ansible.builtin.command:
+        cmd: "korp-install-corpora.sh {{ item }}"
+        chdir: "{{ korp_utils_root }}/{{ kp_utils_name }}/scripts"
+      loop: "{{ corpus_package_paths_to_install }}"
+      environment:
+        MYSQL_USER: "root"
+        MYSQL_HOST: "{{ korp_db_server }}"
+        MYSQL_PASSWORD: "{{ db_root_password }}"

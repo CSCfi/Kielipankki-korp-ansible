@@ -13,8 +13,14 @@ vm_name_postfix: "{{ local_user }}"
 sg_custom_ssh_ips:
   - "86.50.31.6/32"  #Korp2
 
+media_dir: "/data2/media"
+korp_appl_root: /v/appl
+korp_git_root: "{{ korp_appl_root }}/korp"
+korp_utils_root: "{{ korp_appl_root }}/utils"
+
 korp_backend_name: Kielipankki-korp-backend
 korp_backend_socket: "/run/{{ korp_backend_name }}.sock"
+kp_utils_name: Kielipankki-utilities
 
 korp_shib_spoof_key: "{{ lookup('passwordstore', 'lb_passwords/portal/wp_shib_spoof_key') }}"
 
@@ -27,8 +33,6 @@ korp_backend_url: "{{ korp_url }}/api8/"
 korp_static_frontend_cgi_dir: "/data1/korp/frontend_static/cgi-bin"
 korp_backend_cgibin_dir: "{{ korp_static_frontend_cgi_dir }}/korp"
 korp_backend_download_cgi: "{{ korp_url }}/cgi-bin/korp/korp_download.cgi"
-
-media_dir: "/data2/media"
 
 # WP-Cli specific
 remote_deploy_user: 'apache'

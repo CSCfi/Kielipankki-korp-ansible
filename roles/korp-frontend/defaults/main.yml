@@ -6,7 +6,6 @@ korp_frontend_version: master
 korp_frontend_config_version: "config/{{ korp_frontend_version }}"
 korp_frontend_plugin_version: "plugins/{{ korp_frontend_version }}"
 korp_frontend_news_version: "news/{{ korp_frontend_version }}"
-korp_git_root: /v/appl/korp
 korp_frontend_home: "{{ korp_git_root }}/{{ korp_frontend_name }}"
 
 korp_frontend_config_dir: "Kielipankki-korp-frontend-config"  # needed in run_config.json.j2
