@@ -61,7 +61,7 @@
     compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) ) }}"
 
 - name: Set up Kielipankki-korp structure
-  when: korp_frontend_repo is not search('spraakbanken')
+  when: not spraakbanken_build
   include_tasks:
     file: kielipankki-korp-frontend-code.yaml
 
