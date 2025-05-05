@@ -122,16 +122,6 @@
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
-- name: Create news directories
-  ansible.builtin.file:
-    dest: "{{ item }}"
-    state: directory
-    mode: "0755"
-  loop:
-    - "{{ korp_frontend_news_home }}/json"
-    - "{{ korp_frontend_home }}/dist/news"
-  when: spraakbanken_build
-
 - name: Install frontend
   shell:
     cmd: rsync -av --delete  "{{ korp_frontend_home }}/dist/" "{{ korp_frontend_www_home }}"
