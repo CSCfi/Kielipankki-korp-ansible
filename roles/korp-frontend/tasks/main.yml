@@ -9,10 +9,17 @@
     gpgcheck: true
     gpgkey: https://dl.yarnpkg.com/rpm/pubkey.gpg
 
-- name: Add nodejs repository
+- name: Add nodejs repository (KP variant)
+  ansible.builtin.shell:
+    cmd: curl -sL https://rpm.nodesource.com/setup_12.x | bash -
+    creates: /etc/yum.repos.d/nodesource-el9.repo
+  when: not spraakbanken_build
+
+- name: Add nodejs repository (SB variant)
   ansible.builtin.shell:
     cmd: curl -sL https://rpm.nodesource.com/setup_18.x | bash -
     creates: /etc/yum.repos.d/nodesource-nodejs.repo
+  when: spraakbanken_build
 
 - name: Install basics
   ansible.builtin.dnf:
