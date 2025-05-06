@@ -129,7 +129,7 @@
   when: not spraakbanken_build
   include_tasks:
     file: kielipankki-korp-backend-code.yaml
-    
+
 - name: Install latest gevent
   ansible.builtin.pip:
     name: gevent
