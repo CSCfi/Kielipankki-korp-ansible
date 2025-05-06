@@ -78,7 +78,7 @@
 
 - name: Install dependencies for frontend
   ansible.builtin.command:
-    cmd: "yarn {{ 'install' if not spraakbanken_build|bool }}"
+    cmd: yarn install
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
