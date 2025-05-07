@@ -26,6 +26,6 @@ all:
         - 195.148.30.109 # proxy pre-prod
         - "127.0.0.1"
       korp_db_server: localhost
-      korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp/dev_korp_db_user_password') }}"
-      db_root_password: "{{ lookup('passwordstore', 'lb_passwords/korp/dev_korp_db_root_password') }}"
+      korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp-dev/dev_korp_db_user_password') }}"
+      db_root_password: "{{ lookup('passwordstore', 'lb_passwords/korp-dev/dev_korp_db_root_password') }}"
       korp_pub_packages: ["Sananparsikokoelma_korp_20160725.tgz"]
