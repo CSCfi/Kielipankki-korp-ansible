@@ -5,8 +5,6 @@
   become: true
 
   roles:
-      - role: kielipankki.common.opsview
-        tags: opsview
       - role: kielipankki.common.mail_forward
         tags: mail_forward
       - role: apache
@@ -15,7 +13,5 @@
         tags: korp-frontend
       - role: korp-backend
         tags: korp-backend
-      - role: download
-        tags: download
       - role: geerlingguy.memcached
         tags: memcached
