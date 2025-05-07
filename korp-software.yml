@@ -17,7 +17,5 @@
         tags: korp-backend
       - role: download
         tags: download
-      - role: firewall
-        tags: firewall
       - role: geerlingguy.memcached
         tags: memcached
