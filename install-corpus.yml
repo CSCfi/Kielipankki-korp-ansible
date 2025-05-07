@@ -25,3 +25,7 @@
         MYSQL_USER: "root"
         MYSQL_HOST: "{{ korp_db_server }}"
         MYSQL_PASSWORD: "{{ db_root_password }}"
+      register: result
+      failed_when:
+        - result.rc != 0
+        - '"skipping" not in result.stderr'
