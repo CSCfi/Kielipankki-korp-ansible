@@ -1,20 +1,6 @@
 ---
 # Setup korp backend
 
-- name: Set timezone
-  community.general.timezone:
-    name: "{{ timezone }}"
-
-- name: Add gunicorn user
-  ansible.builtin.user:
-    name: gunicorn
-    state: present
-
-- name: "add clarin group"
-  ansible.builtin.group:
-    name: clarin
-    state: present
-
 - name: Install CWB compile environment
   ansible.builtin.dnf:
     name:

@@ -3,6 +3,9 @@
 - name: Create Pouta VM
   ansible.builtin.import_playbook: pouta-vm.yml
 
+- name: Common preprocessing
+  ansible.builtin.import_playbook: common-preprocess.yml
+
 - name: Set up Pouta firewall
   hosts: korp
   become: true

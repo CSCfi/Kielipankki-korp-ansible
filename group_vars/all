@@ -66,6 +66,7 @@ korp_db_user: "korp"
 korp_db_port: 3306
 
 spraakbanken_build: False
+timezone: "Europe/Helsinki"
 
 autoindex_info:
   - regex: 'acquis-ftb3/*.zip'

@@ -1,0 +1,22 @@
+---
+
+- role: kielipankki.common.mail_forward
+  tags: mail_forward
+
+- name: Configure server settings, users, groups etc.
+  hosts: korp
+  become: true
+  tasks:
+    - name: Set timezone
+      community.general.timezone:
+        name: "{{ timezone }}"
+
+    - name: Add gunicorn user
+      ansible.builtin.user:
+        name: gunicorn
+        state: present
+
+    - name: "add clarin group"
+      ansible.builtin.group:
+        name: clarin
+        state: present
