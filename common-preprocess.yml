@@ -1,8 +1,5 @@
 ---
 
-- role: kielipankki.common.mail_forward
-  tags: mail_forward
-
 - name: Configure server settings, users, groups etc.
   hosts: korp
   become: true
@@ -20,3 +17,7 @@
       ansible.builtin.group:
         name: clarin
         state: present
+
+  roles:
+    - role: kielipankki.common.mail_forward
+      tags: mail_forward
