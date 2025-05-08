@@ -3,6 +3,9 @@
 - name: Preprocessing unique to production instance
   ansible.builtin.import_playbook: production-preprocess.yml
 
+- name: Common preprocessing
+  ansible.builtin.import_playbook: common-preprocess.yml
+
 - name: Install Korp software
   ansible.builtin.import_playbook: korp-software.yml
 
