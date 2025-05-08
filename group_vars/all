@@ -16,7 +16,7 @@ sg_custom_ssh_ips:
 korp_backend_name: Kielipankki-korp-backend
 korp_backend_socket: "/run/{{ korp_backend_name }}.sock"
 
-korp_shib_spoof_key: "{{ lookup('passwordstore', 'lb_passwords/portal/wp_shib_spoof_key') }}"
+korp_shib_spoof_key: "{{ lookup('passwordstore', 'lb_passwords/korp-dev/wp_shib_spoof_key') }}"
 
 korp_domain: https://www.kielipankki.fi
 korp_path: "korp"
