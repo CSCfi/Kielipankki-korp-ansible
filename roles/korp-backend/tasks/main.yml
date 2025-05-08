@@ -1,20 +1,6 @@
 ---
 # Setup korp backend
 
-- name: Set timezone
-  community.general.timezone:
-    name: "{{ timezone }}"
-
-- name: Add gunicorn user
-  ansible.builtin.user:
-    name: gunicorn
-    state: present
-
-- name: "add clarin group"
-  ansible.builtin.group:
-    name: clarin
-    state: present
-
 - name: Install CWB compile environment
   ansible.builtin.dnf:
     name:
@@ -175,9 +161,9 @@
     mode: "0640"
   loop:
     - src: "future/config.py.j2"
-      dest: "{{ korp_backend_home }}/instance"
+      dest: "{{ korp_backend_home }}/instance/config.py"
     - src: "future/modes/default.yaml"
-      dest: "{{ korp_backend_home }}/modes"
+      dest: "{{ korp_backend_home }}/modes/default.yaml"
 
 - name: Install systemd templates
   template:

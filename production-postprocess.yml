@@ -5,6 +5,8 @@
   become: true
 
   roles:
+      - role: download
+        tags: download
       - role: fetch_backup
         tags: fetch_backup
       - role: install_csc_commvault_backup

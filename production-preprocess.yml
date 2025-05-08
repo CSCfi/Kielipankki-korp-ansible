@@ -40,6 +40,8 @@
   roles:
     - role: vmware-firewall
       tags: firewall
+    - role: kielipankki.common.opsview
+      tags: opsview
       
   handlers:
     - name: Reload postfix
