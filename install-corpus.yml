@@ -1,0 +1,31 @@
+---
+
+# Run like:
+# ansible-playbook -i inventories/dev/ install-corpus.yml --extra-vars '{"corpus_packages_to_install": ["eduskunta_korp_20190312.tgz"]}'
+
+- name: Install a (cwb) corpus package
+  hosts: korp
+  become: true
+
+  tasks:
+    - name: Fetch packages if necessary
+      ansible.builtin.get_url:
+        dest: "{{ package_cache_dir }}/{{ item }}"
+        mode: "0664"
+        group: "clarin"
+        url: "https://a3s.fi/korp_corpus_packages_pub/{{ item }}"
+      loop: "{{ corpus_packages_to_install }}"
+
+    - name: Run korp-install-corpora.sh
+      ansible.builtin.command:
+        cmd: "./korp-install-corpora.sh {{ package_cache_dir }}/{{ item }}"
+        chdir: "{{ korp_utils_root }}/{{ kp_utils_name }}/scripts"
+      loop: "{{ corpus_packages_to_install }}"
+      environment:
+        MYSQL_USER: "root"
+        MYSQL_HOST: "{{ korp_db_server }}"
+        MYSQL_PASSWORD: "{{ db_root_password }}"
+      register: result
+      failed_when:
+        - result.rc != 0
+        - '"skipping" not in result.stderr'

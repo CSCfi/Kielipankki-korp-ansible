@@ -129,24 +129,6 @@
   when: not spraakbanken_build
   include_tasks:
     file: kielipankki-korp-backend-code.yaml
-    
-- name: Fetch public corpus packages
-  ansible.builtin.get_url:
-    dest: "{{ package_cache_dir }}"
-    mode: "0664"
-    group: "clarin"
-    url: "https://a3s.fi/korp_corpus_packages_pub/{{ item }}"
-  loop: "{{ korp_pub_packages }}"
-
-- name: Install public corpus packages
-  ansible.builtin.shell:
-    chdir: "{{ kp_util_scripts_home }}/scripts"
-    cmd: "./korp-install-corpora.sh {{ package_cache_dir }}/{{ item }}"
-  loop: "{{ korp_pub_packages }}"
-  register: result
-  failed_when:
-    - result.rc != 0
-    - '"skipping" not in result.stderr'
 
 - name: Install latest gevent
   ansible.builtin.pip:
