@@ -5,8 +5,6 @@
   become: true
 
   roles:
-      - role: kielipankki.common.mail_forward
-        tags: mail_forward
       - role: apache
         tags: apache
       - role: korp-frontend
