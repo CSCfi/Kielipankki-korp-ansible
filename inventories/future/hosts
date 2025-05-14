@@ -1,8 +1,10 @@
 all:
+  vars:
+    ip_address: 195.148.21.52
   hosts:
     localhost:
       ansible_connection: local
-      floating_ip: 86.50.169.164
+      floating_ip: "{{ ip_address }}"
       vm_name_postfix: future
       ansible_python_interpreter: python
       additional_authorized_users:
@@ -15,7 +17,7 @@ all:
       korp_frontend_name: korp-frontend
       korp_frontend_repo: https://github.com/spraakbanken/{{ korp_frontend_name }}.git
       korp_frontend_version: master
-      ansible_host: 86.50.169.164
+      ansible_host: "{{ ip_address }}"
       ansible_user: almalinux
       allowed_ips:
         - "193.166.1.0/24"    # CSC Office
