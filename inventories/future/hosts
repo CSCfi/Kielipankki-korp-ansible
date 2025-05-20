@@ -11,12 +11,9 @@ all:
         - janiemi
         - eaxelson
     korp:
-      korp_backend_name: korp-backend
-      korp_backend_repo: https://github.com/spraakbanken/{{ korp_backend_name }}.git
-      korp_backend_version: master
-      korp_frontend_name: korp-frontend
-      korp_frontend_repo: https://github.com/spraakbanken/{{ korp_frontend_name }}.git
-      korp_frontend_version: master
+      korp_backend_version: future
+      korp_backend_auth_version: "authserver/master"
+      korp_frontend_version: future
       ansible_host: "{{ ip_address }}"
       ansible_user: almalinux
       allowed_ips:
