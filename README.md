@@ -59,7 +59,7 @@ Modify the `IdentityFile` path if needed. Establishing a connection to korp2.csc
 Development instance is created on Pouta and uses a local database. No corpora are included out of the box.
 
 ```
-$ ansible-playbook korp-pouta.yml -i inventories/korp-dev
+$ ansible-playbook korp-pouta.yml -i inventories/dev/hosts
 ```
 
 Accessing a newly created instance requires updating the IP in (pre-prod) proxy settings: see [proxy repo](https://github.com/cscfi/kielipankki-proxy?tab=readme-ov-file#updating-ips-of-proxied-vms-like-portal-webanno-etc) for more details.
@@ -69,7 +69,7 @@ Accessing a newly created instance requires updating the IP in (pre-prod) proxy 
 Run the provisioning playbook.
 
 ```
-$  ansible-playbook korp-production.yml -i inventories/korp-prod
+$  ansible-playbook korp-production.yml -i inventories/prod/hosts
 ```
 
 By default, some files are downloaded locally into `~/Downloads`. If you do not
@@ -81,10 +81,10 @@ wish to use that directory, specify an alternative using `--extra-vars
 The script will recompile the frontend in case of changes (including new news). You can force the recompilation and reinstallation of the frontend using
 the `force_compile` parameter, e.g.:
 
-$ ansible-playbook -vi inventories/korp-prod korp-production.yml -t korp-frontend -e force_compile=true
+$ ansible-playbook -vi inventories/prod/hosts korp-production.yml -t korp-frontend -e force_compile=true
 
 ### Install only new news
 
 To just update the news information you can start later in the script:
 
-$ ansible-playbook -vi inventories/korp-prod korp-production.yml -t korp-frontend --start-at="update worktrees" -e force_compile=true
+$ ansible-playbook -vi inventories/prod/hosts korp-production.yml -t korp-frontend --start-at="update worktrees" -e force_compile=true
