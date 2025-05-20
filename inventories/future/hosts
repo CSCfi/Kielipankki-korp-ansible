@@ -13,7 +13,13 @@ all:
     korp:
       korp_backend_version: future
       korp_backend_auth_version: "authserver/master"
+      korp_backend_corpusconfigs_version: "corpusconfigs/{{ korp_backend_version }}"
+      korp_backend_corpusconfigs_home: "{{ korp_git_root }}/Kielipankki-korp-backend-corpusconfigs"
+      korp_backend_worktrees:
+        - worktree_dir: "{{ korp_backend_corpusconfigs_home }}"
+          branch: "{{ korp_backend_corpusconfigs_version }}"
       korp_frontend_version: future
+      korp_corpus_config_dir: "/v/corpora/config"
       ansible_host: "{{ ip_address }}"
       ansible_user: almalinux
       allowed_ips:
@@ -27,4 +33,12 @@ all:
       korp_db_server: localhost
       korp_db_password: "{{ lookup('passwordstore', 'lb_passwords/korp-dev/dev_korp_db_user_password') }}"
       db_root_password: "{{ lookup('passwordstore', 'lb_passwords/korp-dev/dev_korp_db_root_password') }}"
+      # The corpora whose configurations are to be installed: only
+      # corpora whose data is also installed. (Currently, the Korp
+      # frontend produces an error if the configuration refers to an
+      # inaccessible corpus.) Would it be better to have these in a
+      # separate file, possibly listed together with the corresponding
+      # corpus packages?
+      korp_corpora:
+        - kotus_sp
       korp_pub_packages: ["Sananparsikokoelma_korp_20160725.tgz"]
