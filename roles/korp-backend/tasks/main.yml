@@ -161,7 +161,7 @@
   notify:
     - restart korp-backend
 
-- name: Make new-style configuration dirs
+- name: Make new-style instance configuration dir
   when: spraakbanken_build
   ansible.builtin.file:
     state: directory
@@ -170,11 +170,8 @@
     group: gunicorn
   loop:
     - instance
-    - modes
-    - corpora
-    - attributes
 
-- name: Install backend configurations
+- name: Install backend configuration
   when: spraakbanken_build
   template:
     src: "{{ item.src }}"
@@ -185,8 +182,43 @@
   loop:
     - src: "future/config.py.j2"
       dest: "{{ korp_backend_home }}/instance/config.py"
-    - src: "future/modes/default.yaml"
-      dest: "{{ korp_backend_home }}/modes/default.yaml"
+
+- name: Make corpus configuration dirs
+  when: spraakbanken_build
+  ansible.builtin.file:
+    state: directory
+    path: "{{ korp_corpus_config_dir }}/{{ item }}"
+    owner: gunicorn
+    group: gunicorn
+  loop:
+    # Corpus configuration root directory
+    - ""
+    - modes
+    - corpora
+    - attributes
+
+- name: Install corpus configuration modes and attributes
+  when: spraakbanken_build
+  ansible.builtin.copy:
+    src: "{{ korp_backend_corpusconfigs_home }}/{{ item }}/"
+    dest: "{{ korp_corpus_config_dir }}/{{ item }}/"
+    remote_src: true
+    owner: gunicorn
+    group: gunicorn
+  loop:
+    - modes
+    - attributes
+
+- name: Install corpus configurations
+  when: spraakbanken_build
+  ansible.builtin.copy:
+    src: "{{ korp_backend_corpusconfigs_home }}/corpora/{{ item }}.yaml"
+    dest: "{{ korp_corpus_config_dir }}/corpora/"
+    remote_src: true
+    owner: gunicorn
+    group: gunicorn
+    mode: "0640"
+  loop: "{{ korp_corpora }}"
 
 - name: Install systemd templates
   template:
