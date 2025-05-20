@@ -32,17 +32,17 @@ DBHOST = "0.0.0.0"
 DBPORT = 3306
 
 # Database name
-DBNAME = ""
+DBNAME = "{{ korp_db_name }}"
 
 # Word Picture table prefix
 DBWPTABLE = "relations"
 
 # Username and password for database access
-DBUSER = ""
-DBPASSWORD = ""
+DBUSER = "{{ korp_db_user }}"
+DBPASSWORD = "{{ korp_db_password }}"
 
 # Cache path (optional). Script must have read and write access.
-CACHE_DIR = ""
+CACHE_DIR = "/v/korp/cache"
 
 # Disk cache lifespan in minutes
 CACHE_LIFESPAN = 20
