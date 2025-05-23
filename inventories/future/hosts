@@ -19,6 +19,9 @@ all:
         - worktree_dir: "{{ korp_backend_corpusconfigs_home }}"
           branch: "{{ korp_backend_corpusconfigs_version }}"
       korp_frontend_version: future
+      korp_frontend_worktrees:
+        - worktree_dir: "{{ korp_frontend_config_home }}"
+          branch: "{{ korp_frontend_config_version }}"
       korp_corpus_config_dir: "/v/corpora/config"
       ansible_host: "{{ ip_address }}"
       ansible_user: almalinux
