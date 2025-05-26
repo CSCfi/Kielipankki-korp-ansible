@@ -23,6 +23,7 @@ all:
         - worktree_dir: "{{ korp_frontend_config_home }}"
           branch: "{{ korp_frontend_config_version }}"
       korp_corpus_config_dir: "/v/corpora/config"
+      korp_url: "{{ korp_domain }}/{{ korp_frontend_version }}/{{ korp_path }}"
       ansible_host: "{{ ip_address }}"
       ansible_user: almalinux
       allowed_ips:
