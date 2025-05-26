@@ -35,4 +35,4 @@
   ansible.builtin.replace:
     path: "{{ korp_frontend_config_home }}/app/config.yml"
     regexp: "korp_backend_url: .*"
-    replace: "korp_backend_url: {{ korp_domain }}/{{ korp_path }}/api8"
+    replace: "korp_backend_url: {{ korp_backend_url }}"
