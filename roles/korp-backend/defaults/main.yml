@@ -1,11 +1,9 @@
 ---
 
-korp_backend_name: Kielipankki-korp-backend
 korp_backend_repo: https://github.com/CSCfi/{{ korp_backend_name }}.git
 korp_backend_version: master
 korp_backend_auth_version: "authserver/{{ korp_backend_version }}"
 korp_backend_plugin_version: "plugins/{{ korp_backend_version }}"
-korp_backend_socket: "/run/{{ korp_backend_name }}.sock"
 kp_util_scripts_repo: "https://github.com/CSCfi/{{ kp_utils_name }}"
 cwb_svn_repo: https://svn.code.sf.net/p/cwb/code/cwb/trunk
 cwb_revision: "r1732"
