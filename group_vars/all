@@ -70,7 +70,7 @@ shib_cert_contents:
 korp_db_user: "korp"
 korp_db_port: 3306
 
-spraakbanken_build: False
+future_build: False
 timezone: "Europe/Helsinki"
 
 autoindex_info:

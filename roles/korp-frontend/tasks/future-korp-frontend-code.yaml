@@ -1,0 +1,45 @@
+
+# The following four worktree tasks have been copied from
+# kielipankki-korp-frontend-code.yaml and modified to use variable
+# korp_frontend_worktrees; they could perhaps be moved to main.yaml
+# and used for both types of build if the variable were set
+# appropriately also for the Kielipankki build.
+
+- name: Checkout frontend worktrees
+  ansible.builtin.shell:
+    cmd: "umask 0022 && git worktree add -f {{ item.worktree_dir }} {{ item.branch }}"
+    chdir: "{{ korp_frontend_home }}"
+    creates: "{{ item.worktree_dir }}/.git"
+  loop: "{{ korp_frontend_worktrees }}"
+
+- name: Remove local worktree changes
+  ansible.builtin.shell:
+    cmd: "git reset --hard"
+    chdir: "{{ item.worktree_dir }}"
+  loop: "{{ korp_frontend_worktrees }}"
+
+- name: Update worktrees and check for recompilation need
+  ansible.builtin.shell:
+    cmd: "git pull"
+    chdir: "{{ item.worktree_dir }}"
+  register: worktree_pull
+  loop: "{{ korp_frontend_worktrees }}"
+
+- name: Switch to correct branch for worktrees in case they were locally changed
+  ansible.builtin.shell:
+    cmd: "git checkout {{ item.branch }}"
+    chdir: "{{ item.worktree_dir }}"
+  loop: "{{ korp_frontend_worktrees }}"
+
+- name: Make our own local config edits
+  ansible.builtin.replace:
+    path: "{{ korp_frontend_config_home }}/app/config.yml"
+    regexp: "korp_backend_url: .*"
+    replace: "korp_backend_url: {{ korp_backend_url }}"
+
+# Copied from kielipankki-korp-frontend-code.yaml
+- name: Skip this if all up to date
+  ansible.builtin.set_fact:
+    compile_frontend: true
+  when: (item.stdout != "Already up to date.") or ( force_compile | default(false))
+  loop: "{{ worktree_pull.results }}"

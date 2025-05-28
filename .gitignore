@@ -10,6 +10,7 @@
 
 #CSC Openstack
 project*-openrc.sh
+clarin-openrc.sh
 
 #Mac
 .DS_Store
