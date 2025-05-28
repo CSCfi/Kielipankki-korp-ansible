@@ -209,17 +209,6 @@
     - modes
     - attributes
 
-- name: Install corpus configurations
-  when: future_build
-  ansible.builtin.copy:
-    src: "{{ korp_backend_corpusconfigs_home }}/corpora/{{ item }}.yaml"
-    dest: "{{ korp_corpus_config_dir }}/corpora/"
-    remote_src: true
-    owner: gunicorn
-    group: gunicorn
-    mode: "0640"
-  loop: "{{ korp_corpora }}"
-
 - name: Install systemd templates
   template:
     src: "{{ item }}"
