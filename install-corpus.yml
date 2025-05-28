@@ -2,13 +2,25 @@
 
 # Run like:
 # ansible-playbook -i inventories/dev/ install-corpus.yml --extra-vars '{"corpus_packages_to_install": ["eduskunta_korp_20190312.tgz"]}'
+#
+# If future_build is true, (also) copy Korp backend corpus
+# configurations for the corpora with registry files in the CWB corpus
+# registry directory. This can be done without defining
+# corpus_packages_to_install. Installing the configurations requires
+# that the configuration files have already been installed under
+# {{korp_backend_corpusconfigs_home}} (in the korp-backend role).
 
-- name: Install a (cwb) corpus package
+- name: Install a Korp corpus package and backend corpus configurations
   hosts: korp
   become: true
 
   tasks:
+    - name: Include Korp backend variables
+      ansible.builtin.include_vars:
+        file: roles/korp-backend/defaults/main.yml
+
     - name: Fetch packages if necessary
+      when: corpus_packages_to_install is defined
       ansible.builtin.get_url:
         dest: "{{ package_cache_dir }}/{{ item }}"
         mode: "0664"
@@ -17,6 +29,7 @@
       loop: "{{ corpus_packages_to_install }}"
 
     - name: Run korp-install-corpora.sh
+      when: corpus_packages_to_install is defined
       ansible.builtin.command:
         cmd: "./korp-install-corpora.sh {{ package_cache_dir }}/{{ item }}"
         chdir: "{{ korp_utils_root }}/{{ kp_utils_name }}/scripts"
@@ -29,3 +42,38 @@
       failed_when:
         - result.rc != 0
         - '"skipping" not in result.stderr'
+
+    # Currently, the (future) Korp frontend produces an error if the
+    # configuration refers to an unavailable corpus, so the following
+    # two tasks install only the configurations of available corpora.
+    # If the frontend is modified to automatically filter out
+    # unavailable corpora, we could simply install all corpus
+    # configurations as a part of the Korp installation.
+
+    - name: Find installed corpora based on CWB registry files
+      when: future_build
+      ansible.builtin.find:
+        paths:
+          - "{{ cwb_registry }}"
+        patterns:
+          - "*"
+        excludes:
+          - "*~"
+          - "*.bak*"
+          - "*.old*"
+      register: installed_corpora
+
+    - name: Install backend corpus configurations for installed corpora
+      when: future_build
+      ansible.builtin.copy:
+        src: "{{ korp_backend_corpusconfigs_home }}/corpora/{{ item.split('/') | last }}.yaml"
+        dest: "{{ korp_corpus_config_dir }}/corpora/"
+        remote_src: true
+        force: false
+        owner: gunicorn
+        group: gunicorn
+        mode: "0640"
+      loop: "{{ installed_corpora.files | map(attribute='path') }}"
+      # Ignore errors from corpora with data installed but no
+      # configuration file available
+      ignore_errors: true
