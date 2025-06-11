@@ -112,7 +112,7 @@
     umask: "0022"
 
 - name: Set up Kielipankki-korp structure
-  when: not spraakbanken_build
+  when: not future_build
   include_tasks:
     file: kielipankki-korp-backend-code.yaml
 
@@ -138,8 +138,31 @@
     - restart korp-backend
     - restart korp-authserver
 
-- name: Make new-style configuration dirs
-  when: spraakbanken_build
+# The following two worktree tasks have been copied from
+# kielipankki-korp-backend-code.yaml and modified to use variable
+# korp_backend_worktrees; they could perhaps be used for both types of
+# build if the variable were set appropriately also for the
+# Kielipankki build.
+
+- name: Checkout backend worktrees
+  when: future_build
+  ansible.builtin.shell:
+    cmd: "umask 0022 && git worktree add -f {{ item.worktree_dir }} {{ item.branch }}"
+    chdir: "{{ korp_backend_home }}"
+    creates: "{{ item.worktree_dir }}/.git"
+  loop: "{{ korp_backend_worktrees }}"
+
+- name: Remove local changes and switch to correct branch for worktrees
+  when: future_build
+  ansible.builtin.shell:
+    cmd: "git fetch && git reset --hard @{upstream} && git checkout {{ item.branch }}"
+    chdir: "{{ item.worktree_dir }}"
+  loop: "{{ korp_backend_worktrees }}"
+  notify:
+    - restart korp-backend
+
+- name: Make new-style instance configuration dir
+  when: future_build
   ansible.builtin.file:
     state: directory
     path: "{{ korp_backend_home }}/{{ item }}"
@@ -147,12 +170,9 @@
     group: gunicorn
   loop:
     - instance
-    - modes
-    - corpora
-    - attributes
 
-- name: Install backend configurations
-  when: spraakbanken_build
+- name: Install backend configuration
+  when: future_build
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -162,8 +182,32 @@
   loop:
     - src: "future/config.py.j2"
       dest: "{{ korp_backend_home }}/instance/config.py"
-    - src: "future/modes/default.yaml"
-      dest: "{{ korp_backend_home }}/modes/default.yaml"
+
+- name: Make corpus configuration dirs
+  when: future_build
+  ansible.builtin.file:
+    state: directory
+    path: "{{ korp_corpus_config_dir }}/{{ item }}"
+    owner: gunicorn
+    group: gunicorn
+  loop:
+    # Corpus configuration root directory
+    - ""
+    - modes
+    - corpora
+    - attributes
+
+- name: Install corpus configuration modes and attributes
+  when: future_build
+  ansible.builtin.copy:
+    src: "{{ korp_backend_corpusconfigs_home }}/{{ item }}/"
+    dest: "{{ korp_corpus_config_dir }}/{{ item }}/"
+    remote_src: true
+    owner: gunicorn
+    group: gunicorn
+  loop:
+    - modes
+    - attributes
 
 - name: Install systemd templates
   template:
@@ -178,7 +222,7 @@
     - korp-authserver.service
   notify:
     - restart systemd
-  when: not spraakbanken_build or item is not search("authserver")
+  when: not future_build or item is not search("authserver")
 
 - name: Enable korp services
   ansible.builtin.systemd_service:
@@ -188,7 +232,7 @@
   loop:
     - korp-backend.service
     - korp-authserver.service
-  when: not spraakbanken_build or item is not search("authserver")
+  when: not future_build or item is not search("authserver")
 
 - name: Install daily crontab scripts
   ansible.builtin.template:
@@ -201,7 +245,7 @@
     - clear_korp_cache
 
 - name: Install old API / korp_download.cgi
-  when: not spraakbanken_build
+  when: not future_build
   ansible.builtin.copy:
     src: korp_download/
     dest: "{{ korp_backend_cgibin_dir }}"
@@ -210,13 +254,13 @@
     mode: "0755"
 
 - name: Precompile python files
-  when: not spraakbanken_build
+  when: not future_build
   ansible.builtin.shell:
     cmd: find -name \*.py -exec python3 -m py_compile  {} \;
     chdir: "{{ korp_backend_cgibin_dir }}/korpexport"
 
 - name: Install old API config
-  when: not spraakbanken_build
+  when: not future_build
   ansible.builtin.template:
     src: korp_cgi_config.py
     dest: "{{ korp_backend_cgibin_dir }}/korp_config.py"
@@ -225,7 +269,7 @@
     mode: "0640"
 
 - name: Configure CGI script location for Apache
-  when: not spraakbanken_build
+  when: not future_build
   ansible.builtin.lineinfile:
     path: /etc/httpd/conf.d/cgi.conf
     line: "ScriptAlias /korp/cgi-bin/ {{ korp_static_frontend_cgi_dir }}/"
