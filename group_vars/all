@@ -355,6 +355,10 @@ autoindex_info:
     text: 'DigiTala (2019–2023)'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024013001'
 
+  - regex: 'doneraprat'
+    text: 'The Corpus of Donated Finland-Swedish Speech'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024111123'
+
   - regex: 'DSPCON'
     text: 'Aalto University DSP Course Conversation Corpus'
     url: 'http://urn.fi/urn:nbn:fi:lb-2015101901'
