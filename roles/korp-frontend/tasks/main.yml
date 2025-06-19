@@ -93,18 +93,17 @@
     cmd: rsync -av --delete  "{{ korp_frontend_home }}/dist/" "{{ korp_frontend_www_home }}"
   when: compile_frontend == true
 
-# This way test_frontends doesn't need to exist, we just get an empty result
 - name: Check for presence of test frontends
-  ansible.builtin.shell: find /var/www -wholename "/var/www/test_frontends/*" -type d
+  ansible.builtin.shell: find /var/www/test_frontends -maxdepth 1 -type d -not -path /var/www/test_frontends 2>/dev/null || true
+  when: compile_frontend == true
   register: test_frontend_directories
-  changed_when: false
-  failed_when: false
 
 - name: Relink possible testing frontends
   ansible.builtin.shell:
     cmd: ln -s "{{ item }}" "{{ korp_frontend_www_home }}"
   loop:
-    "{{ frontend_directories.stdout_lines }}"
+    "{{ test_frontend_directories.stdout_lines }}"
+  when: compile_frontend == true
 
 - name: Hardcode korp_download
   file:
