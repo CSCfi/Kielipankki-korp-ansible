@@ -694,7 +694,7 @@ autoindex_info:
 
   - regex: 'iijoki'
     text: 'Iijoki Collection'
-    url: 'https://www.kielipankki.fi/aineistot/iijoki/'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2023110921'
 
   - regex: 'italian-letters/*.zip'
     text: 'CC BY SA'
