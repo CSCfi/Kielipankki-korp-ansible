@@ -41,4 +41,5 @@
     dest: /etc/httpd/conf.d/{{ item }}.conf
   loop:
     - download_autoindex
-  notify: graceful httpd
+  notify: restart httpd
+  tags: download_autoindex
