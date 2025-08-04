@@ -257,6 +257,10 @@ autoindex_info:
     text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090325'
 
+  - regex: 'cfinsl/cfsts/conv-p2/*.zip'
+    text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090325'
+
   - regex: 'cfinsl/cfinsl/conv-p2'
     text: 'CFinSL Conversations, part 2'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024060522'
@@ -265,8 +269,12 @@ autoindex_info:
     text: 'CFinSL Conversations'
     url: 'http://urn.fi/urn:nbn:fi:lb-201910041'
 
+  - regex: 'cfinsl/cfsts/conv-p2'
+    text: 'CFSTS Conversations part 2'
+    url: 'https://urn.fi/urn:nbn:fi:lb-2025013027'
+
   - regex: 'cfinsl/cfsts/conv'
-    text: 'CFSTS Conversations'
+    text: 'CFSTS Conversations part 1'
     url: 'https://urn.fi/urn:nbn:fi:lb-2024090321'
 
   - regex: 'cfinsl/cfinsl'
