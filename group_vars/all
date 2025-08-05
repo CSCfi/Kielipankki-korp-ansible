@@ -274,7 +274,7 @@ autoindex_info:
     url: 'https://urn.fi/urn:nbn:fi:lb-2025013027'
 
   - regex: 'cfinsl/cfsts/conv'
-    text: 'CFSTS Conversations part 1'
+    text: 'CFSTS Conversations'
     url: 'https://urn.fi/urn:nbn:fi:lb-2024090321'
 
   - regex: 'cfinsl/cfinsl'
