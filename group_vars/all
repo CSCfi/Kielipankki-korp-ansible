@@ -221,6 +221,10 @@ autoindex_info:
     text: 'ceal-dl'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017011301'
 
+  - regex: 'cfinsl/cfinsl/elicit-p3/*.zip'
+    text: 'CC BY NC SA'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024060523'
+
   - regex: 'cfinsl/cfinsl/elicit-p2/*.zip'
     text: 'CC BY NC SA'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024060523'
