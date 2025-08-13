@@ -245,6 +245,10 @@ autoindex_info:
     text: 'CFSTS Elicited Narratives'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090322'
 
+  - regex: 'cfinsl/cfinsl/conv-p3/*.zip'
+    text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019012325'
+
   - regex: 'cfinsl/cfinsl/conv-p2/*.zip'
     text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019012325'
