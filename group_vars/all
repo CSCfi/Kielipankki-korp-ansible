@@ -237,6 +237,10 @@ autoindex_info:
     text: 'CC BY NC SA +PRIV'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090323'
 
+  - regex: 'cfinsl/cfinsl/elicit-p3'
+    text: 'CFinSL Elicited Narratives, part 3'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025013021'
+
   - regex: 'cfinsl/cfinsl/elicit-p2'
     text: 'CFinSL Elicited Narratives, part 2'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024060521'
@@ -268,6 +272,10 @@ autoindex_info:
   - regex: 'cfinsl/cfsts/conv-p2/*.zip'
     text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090325'
+
+  - regex: 'cfinsl/cfinsl/conv-p3'
+    text: 'CFinSL Conversations, part 3'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025013023'
 
   - regex: 'cfinsl/cfinsl/conv-p2'
     text: 'CFinSL Conversations, part 2'
