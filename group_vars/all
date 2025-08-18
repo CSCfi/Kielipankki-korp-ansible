@@ -295,11 +295,14 @@ autoindex_info:
 
   - regex: 'cfinsl/cfinsl'
     text: 'Corpus of Finnish Sign Language'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2019012321'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024060525'
 
   - regex: 'cfinsl/cfsts'
     text: 'Corpus of Finland-Swedish Sign Language'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090327'
+
+  - regex: 'cfinsl/*.pdf'
+    text: 'Signer metadata'
 
   - regex: 'cfinsl'
     text: 'Sign Language Corpora (in Finland)'
