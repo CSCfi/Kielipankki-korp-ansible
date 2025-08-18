@@ -293,6 +293,12 @@ autoindex_info:
     text: 'CFSTS Conversations'
     url: 'https://urn.fi/urn:nbn:fi:lb-2024090321'
 
+  - regex: 'cfinsl/cfinsl/*.pdf'
+    text: 'Signer metadata'
+
+  - regex: 'cfinsl/cfinsl/*.pdf'
+    text: 'Signer metadata'
+
   - regex: 'cfinsl/cfinsl'
     text: 'Corpus of Finnish Sign Language'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024060525'
@@ -300,9 +306,6 @@ autoindex_info:
   - regex: 'cfinsl/cfsts'
     text: 'Corpus of Finland-Swedish Sign Language'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090327'
-
-  - regex: 'cfinsl/*.pdf'
-    text: 'Signer metadata'
 
   - regex: 'cfinsl'
     text: 'Sign Language Corpora (in Finland)'
