@@ -307,9 +307,6 @@ autoindex_info:
     text: 'Corpus of Finland-Swedish Sign Language'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090327'
 
-  - regex: 'cfinsl/*.pdf'
-    text: 'Signer metadata'
-
   - regex: 'cfinsl'
     text: 'Sign Language Corpora (in Finland)'
 
