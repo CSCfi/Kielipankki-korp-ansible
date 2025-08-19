@@ -13,13 +13,13 @@
   ansible.builtin.shell:
     cmd: curl -sL https://rpm.nodesource.com/setup_12.x | bash -
     creates: /etc/yum.repos.d/nodesource-el9.repo
-  when: not spraakbanken_build
+  when: not future_build
 
 - name: Add nodejs repository (SB variant)
   ansible.builtin.shell:
     cmd: curl -sL https://rpm.nodesource.com/setup_18.x | bash -
     creates: /etc/yum.repos.d/nodesource-nodejs.repo
-  when: spraakbanken_build
+  when: future_build
 
 - name: Install basics
   ansible.builtin.dnf:
@@ -61,14 +61,14 @@
     compile_frontend: "{{ ( frontend_clone.after != frontend_clone.before ) or ( force_compile | default(false) ) }}"
 
 - name: Set up Kielipankki-korp structure
-  when: not spraakbanken_build
+  when: not future_build
   include_tasks:
     file: kielipankki-korp-frontend-code.yaml
 
-- name: Set up Språkbanken-korp structure
-  when: spraakbanken_build
+- name: Set up future Korp structure
+  when: future_build
   include_tasks:
-    file: spraakbanken-korp-frontend-code.yaml
+    file: future-korp-frontend-code.yaml
 
 - name: Install run_config
   ansible.builtin.template:
@@ -89,8 +89,20 @@
   when: compile_frontend == true
 
 - name: Install frontend
-  shell:
+  ansible.builtin.shell:
     cmd: rsync -av --delete  "{{ korp_frontend_home }}/dist/" "{{ korp_frontend_www_home }}"
+  when: compile_frontend == true
+
+- name: Check for presence of test frontends
+  ansible.builtin.shell: find /var/www/test_frontends -maxdepth 1 -type d -not -path /var/www/test_frontends 2>/dev/null || true
+  when: compile_frontend == true
+  register: test_frontend_directories
+
+- name: Relink possible testing frontends
+  ansible.builtin.shell:
+    cmd: ln -s "{{ item }}" "{{ korp_frontend_www_home }}"
+  loop:
+    "{{ test_frontend_directories.stdout_lines }}"
   when: compile_frontend == true
 
 - name: Hardcode korp_download

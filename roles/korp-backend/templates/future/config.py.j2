@@ -13,7 +13,7 @@ CQP_EXECUTABLE = "/usr/local/bin/cqp"
 CWB_SCAN_EXECUTABLE = "/usr/local/bin/cqp-scan-corpus"
 
 # The absolute path to the CWB registry files
-CWB_REGISTRY = "/v/korp/registry"
+CWB_REGISTRY = "/v/corpora/registry"
 
 # The default encoding for the cqp binary
 CQP_ENCODING = "UTF-8"
@@ -32,17 +32,17 @@ DBHOST = "0.0.0.0"
 DBPORT = 3306
 
 # Database name
-DBNAME = ""
+DBNAME = "{{ korp_db_name }}"
 
 # Word Picture table prefix
 DBWPTABLE = "relations"
 
 # Username and password for database access
-DBUSER = ""
-DBPASSWORD = ""
+DBUSER = "{{ korp_db_user }}"
+DBPASSWORD = "{{ korp_db_password }}"
 
 # Cache path (optional). Script must have read and write access.
-CACHE_DIR = ""
+CACHE_DIR = "/v/korp/cache"
 
 # Disk cache lifespan in minutes
 CACHE_LIFESPAN = 20
@@ -57,7 +57,7 @@ CACHE_MAX_STATS = 50
 CACHE_MAX_QUERY_DATA = 0
 
 # Corpus configuration directory
-CORPUS_CONFIG_DIR = ""
+CORPUS_CONFIG_DIR = "/v/corpora/config"
 
 # Set to True to enable "lab mode", potentially enabling experimental features and access to lab-only corpora
 LAB_MODE = False

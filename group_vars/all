@@ -70,7 +70,7 @@ shib_cert_contents:
 korp_db_user: "korp"
 korp_db_port: 3306
 
-spraakbanken_build: False
+future_build: False
 timezone: "Europe/Helsinki"
 
 autoindex_info:
@@ -221,6 +221,10 @@ autoindex_info:
     text: 'ceal-dl'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017011301'
 
+  - regex: 'cfinsl/cfinsl/elicit-p3/*.zip'
+    text: 'CC BY NC SA'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024060523'
+
   - regex: 'cfinsl/cfinsl/elicit-p2/*.zip'
     text: 'CC BY NC SA'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024060523'
@@ -232,6 +236,10 @@ autoindex_info:
   - regex: 'cfinsl/cfsts/elicit/*.zip'
     text: 'CC BY NC SA +PRIV'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090323'
+
+  - regex: 'cfinsl/cfinsl/elicit-p3'
+    text: 'CFinSL Elicited Narratives, part 3'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025013021'
 
   - regex: 'cfinsl/cfinsl/elicit-p2'
     text: 'CFinSL Elicited Narratives, part 2'
@@ -245,6 +253,10 @@ autoindex_info:
     text: 'CFSTS Elicited Narratives'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090322'
 
+  - regex: 'cfinsl/cfinsl/conv-p3/*.zip'
+    text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019012325'
+
   - regex: 'cfinsl/cfinsl/conv-p2/*.zip'
     text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019012325'
@@ -257,6 +269,14 @@ autoindex_info:
     text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024090325'
 
+  - regex: 'cfinsl/cfsts/conv-p2/*.zip'
+    text: 'CLARIN RES +NC +PRIV +ND +DEP +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024090325'
+
+  - regex: 'cfinsl/cfinsl/conv-p3'
+    text: 'CFinSL Conversations, part 3'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025013023'
+
   - regex: 'cfinsl/cfinsl/conv-p2'
     text: 'CFinSL Conversations, part 2'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024060522'
@@ -265,13 +285,23 @@ autoindex_info:
     text: 'CFinSL Conversations'
     url: 'http://urn.fi/urn:nbn:fi:lb-201910041'
 
+  - regex: 'cfinsl/cfsts/conv-p2'
+    text: 'CFSTS Conversations part 2'
+    url: 'https://urn.fi/urn:nbn:fi:lb-2025013027'
+
   - regex: 'cfinsl/cfsts/conv'
     text: 'CFSTS Conversations'
     url: 'https://urn.fi/urn:nbn:fi:lb-2024090321'
 
+  - regex: 'cfinsl/cfinsl/*.pdf'
+    text: 'Signer metadata'
+
+  - regex: 'cfinsl/cfinsl/*.pdf'
+    text: 'Signer metadata'
+
   - regex: 'cfinsl/cfinsl'
     text: 'Corpus of Finnish Sign Language'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2019012321'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024060525'
 
   - regex: 'cfinsl/cfsts'
     text: 'Corpus of Finland-Swedish Sign Language'
@@ -354,6 +384,10 @@ autoindex_info:
   - regex: 'digitala'
     text: 'DigiTala (2019–2023)'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024013001'
+
+  - regex: 'doneraprat'
+    text: 'The Corpus of Donated Finland-Swedish Speech'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024111123'
 
   - regex: 'DSPCON'
     text: 'Aalto University DSP Course Conversation Corpus'
@@ -690,7 +724,7 @@ autoindex_info:
 
   - regex: 'iijoki'
     text: 'Iijoki Collection'
-    url: 'https://www.kielipankki.fi/aineistot/iijoki/'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2023110921'
 
   - regex: 'italian-letters/*.zip'
     text: 'CC BY SA'

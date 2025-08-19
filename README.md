@@ -88,3 +88,9 @@ $ ansible-playbook -vi inventories/prod/hosts korp-production.yml -t korp-fronte
 To just update the news information you can start later in the script:
 
 $ ansible-playbook -vi inventories/prod/hosts korp-production.yml -t korp-frontend --start-at="update worktrees" -e force_compile=true
+
+### Update only autoindex for Download
+
+To only update the autoindex file creating the links in "/download" run
+
+$ ansible-playbook -vi inventories/prod/hosts korp-production.yml -t download_autoindex
