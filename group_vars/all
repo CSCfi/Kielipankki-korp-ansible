@@ -296,7 +296,7 @@ autoindex_info:
   - regex: 'cfinsl/cfinsl/*.pdf'
     text: 'Signer metadata'
 
-  - regex: 'cfinsl/cfinsl/*.pdf'
+  - regex: 'cfinsl/cfsts/*.pdf'
     text: 'Signer metadata'
 
   - regex: 'cfinsl/cfinsl'
