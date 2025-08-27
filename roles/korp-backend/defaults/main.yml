@@ -13,8 +13,10 @@ korp_backend_home: "{{ korp_git_root }}/{{ korp_backend_name }}"
 korp_backend_auth_home: "{{ korp_git_root }}/Kielipankki-korp-backend-auth"
 korp_backend_plugin_home: "{{ korp_git_root }}/Kielipankki-korp-backend-plugins"
 kp_util_scripts_home: "{{ korp_utils_root }}/{{ kp_utils_name }}"
-
 korp_backend_venv: "{{ korp_git_root }}/{{ korp_backend_name }}/venv"
+gunicorn_worker_max_mem_gb: 20
+zombie_hunter_logfile: /var/log/korp/zombie_hunter.log
+
 timezone: "Europe/Helsinki"
 
 korp_db_name: "korp"

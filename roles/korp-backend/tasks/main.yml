@@ -244,6 +244,16 @@
   loop:
     - clear_korp_cache
 
+- name: Install hourly crontab scripts
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/etc/cron.hourly/"
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - zombie_hunter.sh
+
 - name: Install old API / korp_download.cgi
   when: not future_build
   ansible.builtin.copy:
