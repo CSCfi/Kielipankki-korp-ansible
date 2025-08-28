@@ -5,8 +5,6 @@ After=network.target
 
 [Service]
 Type=notify
-# .
-# the specific user that our service will run as
 User=gunicorn
 Group=gunicorn
 # another option for an even more restricted service is
@@ -14,7 +12,17 @@ Group=gunicorn
 # see http://0pointer.net/blog/dynamic-users-with-systemd.html
 RuntimeDirectory=gunicorn
 WorkingDirectory={{ korp_backend_home }}
+
+# MAIN PART
+# --worker-class gevent:    see https://docs.gunicorn.org/en/stable/settings.html#worker-class
+# --max-requests 500:       intended as a mitigation strategy against resource leaks, recycle workers after 500 requests
+# --limit-request-line 0:   unlimited size HTTP requests (we might get very long requests)
 ExecStart={{ korp_backend_home }}/venv/bin/gunicorn --worker-class gevent --timeout 120 --workers 2 --max-requests 500 --limit-request-line 0 {{ 'run:create_app()' if future_build|bool else 'korp:app' }}
+
+# CACHE CLEARING
+# After restarts, try to clear the cache via the API. On failure, silently retry a couple of times.
+ExecStartPost=/bin/bash -c 'for i in {1..3}; do /usr/bin/curl -f --connect-timeout 5 --max-time 10 {{ korp_backend_url }}/cache && break || sleep 2; done'
+
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5

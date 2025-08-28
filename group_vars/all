@@ -25,11 +25,6 @@ kp_utils_name: Kielipankki-utilities
 
 korp_shib_spoof_key: "{{ lookup('passwordstore', 'lb_passwords/korp-dev/wp_shib_spoof_key') }}"
 
-korp_domain: https://www.kielipankki.fi
-korp_path: "korp"
-korp_url: "{{ korp_domain }}/{{ korp_path }}"
-korp_backend_url: "{{ korp_url }}/api8/"
-
 # static hacks for download_cgi
 korp_static_frontend_cgi_dir: "/data1/korp/frontend_static/cgi-bin"
 korp_backend_cgibin_dir: "{{ korp_static_frontend_cgi_dir }}/korp"

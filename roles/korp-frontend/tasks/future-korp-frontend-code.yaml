@@ -35,7 +35,7 @@
   ansible.builtin.replace:
     path: "{{ korp_frontend_config_home }}/app/config.yml"
     regexp: "korp_backend_url: .*"
-    replace: "korp_backend_url: {{ korp_backend_url }}"
+    replace: "korp_backend_url: {{ korp_backend_url }}/"
 
 # Copied from kielipankki-korp-frontend-code.yaml
 - name: Skip this if all up to date
