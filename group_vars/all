@@ -1372,6 +1372,10 @@ autoindex_info:
     text: 'Finnish news 2021 source'
     url: 'http://urn.fi/urn:nbn:fi:lb-2022031703'
 
+  - regex: 'YLE/fi/2022-2024-src'
+    text: 'Finnish news 2022-2024, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025081401'
+
   - regex: 'YLE/sv/2012-2018-src/ylenews-sv-2012-2018-src'
     text: 'CLARIN ACA +NC'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019032201'
