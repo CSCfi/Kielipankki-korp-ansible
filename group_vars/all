@@ -1336,6 +1336,10 @@ autoindex_info:
     text: 'CLARIN ACA +NC'
     url: 'http://urn.fi/urn:nbn:fi:lb-2020021105'
 
+  - regex: 'YLE/fi/2022-2024-src/ylenews-fi-2022-2024-src'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2020021105'
+
   - regex: 'YLE/fi/2011-2018-vrt/ylenews-fi-2011-2018-vrt'
     text: 'CLARIN ACA +NC'
     url: 'http://urn.fi/urn:nbn:fi:lb-2022050901'
