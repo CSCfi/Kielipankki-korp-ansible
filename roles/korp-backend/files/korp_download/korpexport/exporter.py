@@ -318,36 +318,36 @@ class KorpExporter(object):
         Set a private attribute to contain the result, a dictionary
         converted from the JSON returned by Korp.
         """
+        if query_params:
+            self._query_params = query_params
+        elif "query_params" in self._form:
+            self._query_params = json.loads(self._form.get("query_params"))
+        else:
+            self._query_params = self._form
+        self._rename_query_params()
+        self._decode_query_params()
+        if "debug" in self._form and "debug" not in self._query_params:
+            self._query_params["debug"] = self._form["debug"]
+        # If the format uses structural information, add the
+        # structs in param "show_struct" to "show", so that tokens
+        # are associated with information on opening and closing
+        # those structures. Param "show_struct" only gives us
+        # struct attribute values for a whole sentence.
+        if (self._formatter.structured_format
+            and self._query_params.get("show_struct")):
+            if self._query_params.get("show"):
+                self._query_params["show"] += (
+                    "," + self._query_params["show_struct"])
+            else:
+                self._query_params["show"] = self._query_params["show_struct"]
+        logging.debug("query_params: %s", self._query_params)
         if "query_result" in self._form:
             query_result_json = self._form.get("query_result", "{}")
         else:
-            if query_params:
-                self._query_params = query_params
-            elif "query_params" in self._form:
-                self._query_params = json.loads(self._form.get("query_params"))
-            else:
-                self._query_params = self._form
-            self._rename_query_params()
-            self._decode_query_params()
-            if "debug" in self._form and "debug" not in self._query_params:
-                self._query_params["debug"] = self._form["debug"]
-            # If the format uses structural information, add the
-            # structs in param "show_struct" to "show", so that tokens
-            # are associated with information on opening and closing
-            # those structures. Param "show_struct" only gives us
-            # struct attribute values for a whole sentence.
-            if (self._formatter.structured_format
-                and self._query_params.get("show_struct")):
-                if self._query_params.get("show"):
-                    self._query_params["show"] += (
-                        "," + self._query_params["show_struct"])
-                else:
-                    self._query_params["show"] = self._query_params["show_struct"]
-            logging.debug("query_params: %s", self._query_params)
             query_result_json = self._query_korp_server(korp_server_url)
-            # Support "sort" in format params even if not specified
-            if "sort" not in self._query_params:
-                self._query_params["sort"] = "none"
+        # Support "sort" in format params even if not specified
+        if "sort" not in self._query_params:
+            self._query_params["sort"] = "none"
         self._query_result = json.loads(query_result_json)
         logging.debug("query result: %s", self._query_result)
         if "ERROR" in self._query_result or "kwic" not in self._query_result:
