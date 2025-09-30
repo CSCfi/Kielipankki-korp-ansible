@@ -796,7 +796,7 @@ autoindex_info:
     text: 'Finnish Magazines and Newspapers from the 1990s and 2000s (VRT) v2'
     url: 'http://urn.fi/urn:nbn:fi:lb-201908191'
 
-  - regex: 'lilabi/*.zip'
+  - regex: 'lilabi/lilabi-src'
     text: 'CC-BY-NC'
     url: 'http://urn.fi/urn:nbn:fi:lb-2025060802'
 
