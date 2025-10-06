@@ -153,6 +153,26 @@ autoindex_info:
     text: 'Corpus of Historical American English'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017061924'
 
+  - regex: 'colage/colage-txt/*.zip'
+    text: 'CLARIN +PRIV +DEP +OTHER v2.1'
+    url: http://urn.fi/urn:nbn:fi:lb-2024030605
+
+  - regex: 'colage/colage-src/*.zip'
+    text: 'CLARIN RES +PRIV +DEP +OTHER* v2.1'
+    url: http://urn.fi/urn:nbn:fi:lb-2024030605
+
+  - regex: 'colage/colage-txt'
+    text: 'Corpus for the study of Language and Gender in Mexico and Spain (CoLaGe), text version'
+    url: http://urn.fi/urn:nbn:fi:lb-2025090323
+
+  - regex: 'colage/colage-src'
+    text: 'Corpus for the study of Language and Gender in Mexico and Spain (CoLaGe), source'
+    url: http://urn.fi/urn:nbn:fi:lb-2024030603
+
+  - regex: 'colage'
+    text: 'Corpus for the study of Language and Gender in Mexico and Spain (CoLaGe)'
+    url: http://urn.fi/urn:nbn:fi:lb-2024030607
+
   - regex: 'glowbe/glowbe-dl-2017H1/*'
     text: 'CLARIN RES +ND +OTHER'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017072511'
