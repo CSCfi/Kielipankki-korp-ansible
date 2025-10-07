@@ -154,7 +154,7 @@ autoindex_info:
     url: 'http://urn.fi/urn:nbn:fi:lb-2017061924'
 
   - regex: 'colage/colage-txt/*.zip'
-    text: 'CLARIN +PRIV +DEP +OTHER v2.1'
+    text: 'CLARIN ACA +PRIV +DEP +OTHER v2.1'
     url: http://urn.fi/urn:nbn:fi:lb-2025090321
 
   - regex: 'colage/colage-src/*.zip'
