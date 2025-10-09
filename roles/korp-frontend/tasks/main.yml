@@ -88,6 +88,29 @@
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
+- name: Create news directories
+  ansible.builtin.file:
+    dest: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ korp_frontend_news_home }}/json"
+    - "{{ korp_frontend_home }}/dist/news"
+  when: not future_build
+
+- name: Compile News
+  ansible.builtin.shell:
+    cmd: "umask 0022 && ./compile.bash"
+    chdir: "{{ korp_frontend_news_home }}"
+  when: compile_frontend == true and not future_build
+
+- name: Link news
+  file:
+    src: "{{ korp_frontend_news_home }}/json"
+    dest: "{{ korp_frontend_home }}/dist/news/json"
+    state: link
+  when: not future_build
+
 - name: Install frontend
   ansible.builtin.shell:
     cmd: rsync -av --delete  "{{ korp_frontend_home }}/dist/" "{{ korp_frontend_www_home }}"

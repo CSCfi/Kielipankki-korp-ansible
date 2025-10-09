@@ -57,24 +57,3 @@
     compile_frontend: true
   when: (item.stdout != "Already up to date.") or ( force_compile | default(false))
   loop: "{{ worktree_pull.results }}"
-
-- name: Create news directories
-  ansible.builtin.file:
-    dest: "{{ item }}"
-    state: directory
-    mode: "0755"
-  loop:
-    - "{{ korp_frontend_news_home }}/json"
-    - "{{ korp_frontend_home }}/dist/news"
-
-- name: Compile News
-  ansible.builtin.shell:
-    cmd: "umask 0022 && ./compile.bash"
-    chdir: "{{ korp_frontend_news_home }}"
-  when: compile_frontend == true
-
-- name: Link news
-  file:
-    src: "{{ korp_frontend_news_home }}/json"
-    dest: "{{ korp_frontend_home }}/dist/news/json"
-    state: link
