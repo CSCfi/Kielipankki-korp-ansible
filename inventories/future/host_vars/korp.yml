@@ -7,15 +7,14 @@ korp_backend_auth_version: "authserver/master"
 korp_backend_corpusconfigs_repo: "https://github.com/CSCfi/Kielipankki-korp-corpus-configuration.git"
 korp_backend_corpusconfigs_version: "main"
 korp_backend_corpusconfigs_home: "{{ korp_git_root }}/Kielipankki-korp-backend-corpusconfigs"
+korp_corpus_config_dir: "/v/corpora/config"
 
 korp_backend_plugin_repo: "https://github.com/CSCfi/Kielipankki-korp-backend-plugins"
 korp_backend_plugin_version: "main"
 
 korp_frontend_version: future
-korp_frontend_worktrees:
-  - worktree_dir: "{{ korp_frontend_config_home }}"
-    branch: "{{ korp_frontend_config_version }}"
-korp_corpus_config_dir: "/v/corpora/config"
+korp_frontend_config_repo: "https://github.com/CSCfi/Kielipankki-korp-frontend-configuration"
+korp_frontend_config_version: "main"
 
 korp_path: "future/korp"
 korp_url: "{{ korp_domain }}/{{ korp_frontend_version }}/{{ korp_path }}"
