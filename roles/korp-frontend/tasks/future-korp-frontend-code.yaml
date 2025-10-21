@@ -5,31 +5,17 @@
 # and used for both types of build if the variable were set
 # appropriately also for the Kielipankki build.
 
-- name: Checkout frontend worktrees
-  ansible.builtin.shell:
-    cmd: "umask 0022 && git worktree add -f {{ item.worktree_dir }} {{ item.branch }}"
-    chdir: "{{ korp_frontend_home }}"
-    creates: "{{ item.worktree_dir }}/.git"
-  loop: "{{ korp_frontend_worktrees }}"
+- name: Clone frontend config repo
+  ansible.builtin.git:
+    repo: "{{ korp_frontend_config_repo  }}"
+    version: "{{ korp_frontend_config_version }}"
+    dest: "{{ korp_frontend_config_home }}"
+    umask: "0022"
 
-- name: Remove local worktree changes
+- name: Remove local changes
   ansible.builtin.shell:
     cmd: "git reset --hard"
-    chdir: "{{ item.worktree_dir }}"
-  loop: "{{ korp_frontend_worktrees }}"
-
-- name: Update worktrees and check for recompilation need
-  ansible.builtin.shell:
-    cmd: "git pull"
-    chdir: "{{ item.worktree_dir }}"
-  register: worktree_pull
-  loop: "{{ korp_frontend_worktrees }}"
-
-- name: Switch to correct branch for worktrees in case they were locally changed
-  ansible.builtin.shell:
-    cmd: "git checkout {{ item.branch }}"
-    chdir: "{{ item.worktree_dir }}"
-  loop: "{{ korp_frontend_worktrees }}"
+    chdir: "{{ korp_frontend_config_home }}"
 
 - name: Make our own local config edits
   ansible.builtin.replace:
