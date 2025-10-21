@@ -9,10 +9,6 @@ local_user: "{{ lookup('env','USER') }}"
 # name Pouta dev instance using local user to avoid conflicts.
 vm_name_postfix: "{{ local_user }}"
 
-#Allow access from Korp2
-sg_custom_ssh_ips:
-  - "86.50.31.6/32"  #Korp2
-
 media_dir: "/data2/media"
 korp_appl_root: /v/appl
 korp_git_root: "{{ korp_appl_root }}/korp"
