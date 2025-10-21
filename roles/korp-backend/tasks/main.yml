@@ -138,28 +138,13 @@
     - restart korp-backend
     - restart korp-authserver
 
-# The following two worktree tasks have been copied from
-# kielipankki-korp-backend-code.yaml and modified to use variable
-# korp_backend_worktrees; they could perhaps be used for both types of
-# build if the variable were set appropriately also for the
-# Kielipankki build.
-
-- name: Checkout backend worktrees
+- name: Clone corpus configs repo
   when: future_build
-  ansible.builtin.shell:
-    cmd: "umask 0022 && git worktree add -f {{ item.worktree_dir }} {{ item.branch }}"
-    chdir: "{{ korp_backend_home }}"
-    creates: "{{ item.worktree_dir }}/.git"
-  loop: "{{ korp_backend_worktrees }}"
-
-- name: Remove local changes and switch to correct branch for worktrees
-  when: future_build
-  ansible.builtin.shell:
-    cmd: "git fetch && git reset --hard @{upstream} && git checkout {{ item.branch }}"
-    chdir: "{{ item.worktree_dir }}"
-  loop: "{{ korp_backend_worktrees }}"
-  notify:
-    - restart korp-backend
+  ansible.builtin.git:
+    repo: "{{ korp_backend_corpusconfigs_repo }}"
+    version: "{{ korp_backend_corpusconfigs_version }}"
+    dest: "{{ korp_backend_corpusconfigs_home }}"
+    umask: "0022"
 
 - name: Make new-style instance configuration dir
   when: future_build

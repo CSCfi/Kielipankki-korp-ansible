@@ -1,4 +1,21 @@
 ---
 
 future_build: True
+korp_backend_version: future
+korp_backend_auth_version: "authserver/master"
+
+korp_backend_corpusconfigs_repo: "https://github.com/CSCfi/Kielipankki-korp-corpus-configuration.git"
+korp_backend_corpusconfigs_version: "main"
+korp_backend_corpusconfigs_home: "{{ korp_git_root }}/Kielipankki-korp-backend-corpusconfigs"
+korp_backend_worktrees:
+  - worktree_dir: "{{ korp_backend_corpusconfigs_home }}"
+    branch: "{{ korp_backend_corpusconfigs_version }}"
+
+korp_frontend_version: future
+korp_frontend_worktrees:
+  - worktree_dir: "{{ korp_frontend_config_home }}"
+    branch: "{{ korp_frontend_config_version }}"
+korp_corpus_config_dir: "/v/corpora/config"
+
 korp_path: "future/korp"
+korp_url: "{{ korp_domain }}/{{ korp_frontend_version }}/{{ korp_path }}"
