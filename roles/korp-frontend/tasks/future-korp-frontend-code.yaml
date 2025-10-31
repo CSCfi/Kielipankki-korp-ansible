@@ -7,10 +7,11 @@
 
 - name: Clone frontend config repo
   ansible.builtin.git:
-    repo: "{{ korp_frontend_config_repo  }}"
+    repo: "{{ korp_frontend_config_repo }}"
     version: "{{ korp_frontend_config_version }}"
     dest: "{{ korp_frontend_config_home }}"
     umask: "0022"
+    force: true
 
 - name: Remove local changes
   ansible.builtin.shell:
