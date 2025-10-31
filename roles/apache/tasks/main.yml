@@ -61,6 +61,15 @@
     dest: /var/www/html/favicon.ico
     mode: 0444
 
+- name: Ensure parent directory exists for korp symlink
+  ansible.builtin.file:
+    path: "/var/www/html/{{ korp_path | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  when: korp_path != "korp"
+
 - name: Make korp-shortname symlink for non-standard paths
   ansible.builtin.file:
     src:  "/var/www/html/korp"
