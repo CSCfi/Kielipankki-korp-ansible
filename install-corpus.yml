@@ -8,7 +8,7 @@
 # registry directory. This can be done without defining
 # corpus_packages_to_install. Installing the configurations requires
 # that the configuration files have already been installed under
-# {{korp_backend_corpusconfigs_home}} (in the korp-backend role).
+# {{korp_backend_corpusconfig_home}} (in the korp-backend role).
 
 - name: Install a Korp corpus package and backend corpus configurations
   hosts: korp
@@ -66,7 +66,7 @@
     - name: Install backend corpus configurations for installed corpora
       when: future_build
       ansible.builtin.copy:
-        src: "{{ korp_backend_corpusconfigs_home }}/corpora/{{ item.split('/') | last }}.yaml"
+        src: "{{ korp_backend_corpusconfig_home }}/corpora/{{ item.split('/') | last }}.yaml"
         dest: "{{ korp_corpus_config_dir }}/corpora/"
         remote_src: true
         force: false

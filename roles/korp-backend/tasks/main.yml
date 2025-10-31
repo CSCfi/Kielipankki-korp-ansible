@@ -141,9 +141,9 @@
 - name: Clone corpus configs repo
   when: future_build
   ansible.builtin.git:
-    repo: "{{ korp_backend_corpusconfigs_repo }}"
-    version: "{{ korp_backend_corpusconfigs_version }}"
-    dest: "{{ korp_backend_corpusconfigs_home }}"
+    repo: "{{ korp_backend_corpusconfig_repo }}"
+    version: "{{ korp_backend_corpusconfig_version }}"
+    dest: "{{ korp_backend_corpusconfig_home }}"
     umask: "0022"
 
 - name: Make new-style instance configuration dir
@@ -185,7 +185,7 @@
 - name: Install corpus configuration modes and attributes
   when: future_build
   ansible.builtin.copy:
-    src: "{{ korp_backend_corpusconfigs_home }}/{{ item }}/"
+    src: "{{ korp_backend_corpusconfig_home }}/{{ item }}/"
     dest: "{{ korp_corpus_config_dir }}/{{ item }}/"
     remote_src: true
     owner: gunicorn
