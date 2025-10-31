@@ -17,7 +17,7 @@
 
 - name: Add nodejs repository (SB variant)
   ansible.builtin.shell:
-    cmd: curl -sL https://rpm.nodesource.com/setup_18.x | bash -
+    cmd: curl -sL https://rpm.nodesource.com/setup_20.x | bash -
     creates: /etc/yum.repos.d/nodesource-nodejs.repo
   when: future_build
 
@@ -28,7 +28,7 @@
       - yarn
       - git
       - gcc-c++
-    state: present
+    state: latest
 
 - name: Install yarn
   ansible.builtin.command:
