@@ -24,9 +24,8 @@
     regexp: "korp_backend_url: .*"
     replace: "korp_backend_url: {{ korp_backend_url }}/"
 
-# Copied from kielipankki-korp-frontend-code.yaml
-- name: Skip this if all up to date
+- name: Set compile_frontend to true
   ansible.builtin.set_fact:
     compile_frontend: true
-  when: (item.stdout != "Already up to date.") or ( force_compile | default(false))
-  loop: "{{ worktree_pull.results }}"
+  # when: (item.stdout != "Already up to date.") or ( force_compile | default(false))
+  # loop: "{{ worktree_pull.results }}"
