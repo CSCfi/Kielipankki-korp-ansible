@@ -1,7 +1,6 @@
 ---
 
 - name: Clone plugins repo
-  when: future_build
   ansible.builtin.git:
     repo: "{{ korp_backend_plugin_repo }}"
     version: "{{ korp_backend_plugin_version }}"
@@ -9,7 +8,6 @@
     umask: "0022"
 
 - name: Clone corpus configs repo
-  when: future_build
   ansible.builtin.git:
     repo: "{{ korp_backend_corpusconfig_repo }}"
     version: "{{ korp_backend_corpusconfig_version }}"
@@ -17,7 +15,6 @@
     umask: "0022"
 
 - name: Make new-style instance configuration dir
-  when: future_build
   ansible.builtin.file:
     state: directory
     path: "{{ korp_backend_home }}/{{ item }}"
@@ -27,7 +24,6 @@
     - instance
 
 - name: Install backend configuration
-  when: future_build
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -39,7 +35,6 @@
       dest: "{{ korp_backend_home }}/instance/config.py"
 
 - name: Make corpus configuration dirs
-  when: future_build
   ansible.builtin.file:
     state: directory
     path: "{{ korp_corpus_config_dir }}/{{ item }}"
@@ -53,7 +48,6 @@
     - attributes
 
 - name: Install corpus configuration modes and attributes
-  when: future_build
   ansible.builtin.copy:
     src: "{{ korp_backend_corpusconfig_home }}/{{ item }}/"
     dest: "{{ korp_corpus_config_dir }}/{{ item }}/"
