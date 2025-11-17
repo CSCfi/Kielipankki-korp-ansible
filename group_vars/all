@@ -1045,6 +1045,18 @@ autoindex_info:
     text: 'Easy-to-read Finnish (2014-2020), parallel corpus, sentence aligned, source'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024011703'
 
+  - regex: 'sapu/sapu-src/sapu-*'
+    text: 'RES +NC +PRIV +DEP +OTHER'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2022092122'
+
+  - regex: 'sapu/sapu-src'
+    text: 'The Corpus of Sociolinguistic Variation in the Province of Satakunta, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025091121'
+
+  - regex: 'sapu'
+    text: 'The Corpus of Sociolinguistic Variation in the Province of Satakunta'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025091121'
+
   - regex: 'semfinlex/asd/semfinlex_asd*'
     text: 'Finnish Parliament original statutes from 1734-2018'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019042611'
