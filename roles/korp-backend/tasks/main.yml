@@ -121,17 +121,6 @@
   include_tasks:
     file: korp-backend-setup-future.yaml
 
-- name: Install latest gevent
-  ansible.builtin.pip:
-    name: gevent
-    state: latest
-    virtualenv: "{{ korp_backend_venv }}"
-    virtualenv_python: python3
-    umask: "0022"
-  notify:
-    - restart korp-backend
-    - restart korp-authserver
-
 - name: Install gunicorn / start backend
   ansible.builtin.pip:
     name: gunicorn
