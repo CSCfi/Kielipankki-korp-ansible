@@ -1046,7 +1046,7 @@ autoindex_info:
     url: 'http://urn.fi/urn:nbn:fi:lb-2024011703'
 
   - regex: 'sapu/sapu-src/sapu-*.pdf'
-    text: 'Additional information'
+    text: 'Content description'
 
   - regex: 'sapu/sapu-src/sapu-*.zip'
     text: 'RES +NC +PRIV +DEP +OTHER'
