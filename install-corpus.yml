@@ -1,7 +1,10 @@
 ---
 
 # Run like:
-# ansible-playbook -i inventories/dev/ install-corpus.yml --extra-vars '{"corpus_packages_to_install": ["eduskunta_korp_20190312.tgz"]}'
+# ansible-playbook -i inventories/dev/ install-corpus.yml --extra-vars '{"corpus_packages_to_install": ["klk_fi_1881"]}'
+#
+# If the package name has an ending, like .tgz, the exact file name will
+# be installed. Otherwise, we try to find the newest one.
 #
 # If future_build is true, (also) copy Korp backend corpus
 # configurations for the corpora with registry files in the CWB corpus
@@ -14,34 +17,92 @@
   hosts: korp
   become: true
 
-  tasks:
-    - name: Include Korp backend variables
-      ansible.builtin.include_vars:
-        file: roles/korp-backend/defaults/main.yml
+  vars:
+    corpus_package_bucket: "korp_corpus_packages"
+    s3cmd: "s3cmd --host=a3s.fi --host-bucket='%(bucket)s.a3s.fi'"
+    cleanup: true
+    package_directory: "/v/corpora/pkgs"
+    cwb_registry: "/v/corpora/registry"
+  environment:
+    AWS_SECRET_ACCESS_KEY: "{{ lookup('passwordstore', 'lb_passwords/korp/allas_robot_ec2_secret') }}"
+    AWS_ACCESS_KEY_ID: "{{ lookup('passwordstore', 'lb_passwords/korp/allas_robot_ec2_access') }}"
 
-    - name: Fetch packages if necessary
-      when: corpus_packages_to_install is defined
-      ansible.builtin.get_url:
-        dest: "{{ package_cache_dir }}/{{ item }}"
-        mode: "0664"
+  tasks:
+
+    - name: Install s3cmd
+      ansible.builtin.dnf:
+        name:
+          - s3cmd
+
+    - name: Ensure pkgs directory
+      ansible.builtin.file:
+        path: "{{ package_directory }}"
+        state: directory
+        mode: "u+rwx,g+rwxs,o+rx"
+        owner: "root"
         group: "clarin"
-        url: "https://a3s.fi/korp_corpus_packages_pub/{{ item }}"
+
+    - name: List all available packages in Allas
+      command:
+        cmd: "{{ s3cmd }} ls s3://{{ corpus_package_bucket }}/"
+      register: s3_packages
+
+    - name: Parse available packages
+      set_fact:
+        available_packages: "{{ s3_packages.stdout_lines | map('regex_search', '([^/\\s]+_korp_\\d{8}_\\d{6}\\..+)$') | select('string') | list }}"
+
+    - name: Initialise package name registry
+      set_fact:
+        resolved_packages: []
+        unresolved_packages: []
+
+    - name: Determine package name for each requested corpus
+      set_fact:
+        resolved_packages: "{{ resolved_packages + [resolved] }}"
+        unresolved_packages: "{{ unresolved_packages + ([item] if resolved == '' else []) }}"
       loop: "{{ corpus_packages_to_install }}"
+      vars:
+        # Check if item already has timestamp (full filename)
+        is_full_name: "{{ item is regex('_korp_\\d{8}_\\d{6}\\.') }}"
+        # If full name, use as-is, otherwise find newest
+        resolved: "{{ item if is_full_name else (available_packages | select('match', '^' + item + '_korp_') | sort | last | default('')) }}"
+
+    - name: Fail if requests can't be met
+      fail:
+        msg: "ERROR: Could not find packages for: {{ unresolved_packages | join(', ') }}"
+      when: unresolved_packages | length > 0
+
+    - name: Check which packages already exist locally
+      stat:
+        path: "{{ package_directory }}/{{ item }}"
+      loop: "{{ resolved_packages }}"
+      register: package_stats
+      when: resolved_packages | length > 0
+
+    - name: Fetch missing packages from Allas
+      command:
+        cmd: "{{ s3cmd }} get s3://{{ corpus_package_bucket }}/{{ item.item }} {{ package_directory }}/"
+      loop: "{{ package_stats.results }}"
+      when: not item.stat.exists
+      loop_control:
+        label: "Fetched {{ item.item }}"
 
     - name: Run korp-install-corpora.sh
-      when: corpus_packages_to_install is defined
+      when: resolved_packages | length > 0
       ansible.builtin.command:
-        cmd: "./korp-install-corpora.sh {{ package_cache_dir }}/{{ item }}"
+        cmd: "./korp-install-corpora.sh {{ package_directory }}/{{ item }}"
         chdir: "{{ korp_utils_root }}/{{ kp_utils_name }}/scripts"
-      loop: "{{ corpus_packages_to_install }}"
-      environment:
-        MYSQL_USER: "root"
-        MYSQL_HOST: "{{ korp_db_server }}"
-        MYSQL_PASSWORD: "{{ db_root_password }}"
+      loop: "{{ resolved_packages }}"
+      loop_control:
+        label: "Installed {{ item }}"
       register: result
       failed_when:
         - result.rc != 0
         - '"skipping" not in result.stderr'
+      environment:
+        MYSQL_USER: "root"
+        MYSQL_HOST: "{{ korp_db_server }}"
+        MYSQL_PASSWORD: "{{ db_root_password }}"
 
     # Currently, the (future) Korp frontend produces an error if the
     # configuration refers to an unavailable corpus, so the following
@@ -63,17 +124,25 @@
           - "*.old*"
       register: installed_corpora
 
-    - name: Install backend corpus configurations for installed corpora
+    - name: Install backend corpus configurations
       when: future_build
-      ansible.builtin.copy:
-        src: "{{ korp_backend_corpusconfig_home }}/corpora/{{ item.split('/') | last }}.yaml"
-        dest: "{{ korp_corpus_config_dir }}/corpora/"
-        remote_src: true
-        force: false
-        owner: gunicorn
-        group: gunicorn
-        mode: "0640"
-      loop: "{{ installed_corpora.files | map(attribute='path') }}"
-      # Ignore errors from corpora with data installed but no
-      # configuration file available
-      ignore_errors: true
+      block:
+        - name: Check which corpus configs exist
+          stat:
+            path: "{{ korp_backend_corpusconfig_home }}/corpora/{{ item.split('/') | last }}.yaml"
+          loop: "{{ installed_corpora.files | map(attribute='path') }}"
+          register: config_stats
+
+        - name: Install backend corpus configurations for installed corpora
+          when: future_build and item.stat.exists
+          ansible.builtin.copy:
+            src: "{{ korp_backend_corpusconfig_home }}/corpora/{{ item.item.split('/') | last }}.yaml"
+            dest: "{{ korp_corpus_config_dir }}/corpora/"
+            remote_src: true
+            force: false
+            owner: gunicorn
+            group: gunicorn
+            mode: "0640"
+          loop: "{{ config_stats.results }}"
+          loop_control:
+            label: "Installed config for {{ item.item.split('/') | last }}"

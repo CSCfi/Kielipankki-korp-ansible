@@ -13,7 +13,6 @@ media_dir: "/data2/media"
 korp_appl_root: /v/appl
 korp_git_root: "{{ korp_appl_root }}/korp"
 korp_utils_root: "{{ korp_appl_root }}/utils"
-package_cache_dir: "/data1/package_cache"
 
 korp_domain: https://www.kielipankki.fi
 korp_url: "{{ korp_domain }}/{{ korp_path }}"

@@ -48,5 +48,4 @@ mk_additional_directories:
   - {path: "{{ korp_git_root }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o+rx"}
   - {path: "{{ korp_utils_root }}", owner: root, group: clarin, mode: "u+rwx,g+rwxs,o-rwx"}
   - {path: "{{ korp_backend_cgibin_dir }}", owner: root, group: apache, mode: "u+rwx,g+rx,o-rx"}  # for old backend korp.cgi
-  - {path: "{{ package_cache_dir }}", owner: root, group: clarin, mode: "u+rwx,g+rwx,o+rx"}
 
