@@ -1,0 +1,115 @@
+---
+
+# Run like:
+# ansible-playbook -i inventories/dev/ export-corpus.yml --extra-vars '{"corpus_packages_to_export": ["klk_fi_1900"]}'
+#
+
+- name: Export corpora to Allas
+  hosts: korp
+  become: true
+  vars:
+    corpus_export_dir: "/v/corpora/export_pkgs"
+    corpus_package_bucket: "korp_corpus_packages"
+    s3cmd: "s3cmd --host=a3s.fi --host-bucket='%(bucket)s.a3s.fi'"
+    cleanup: true
+    purge_old_allas_packages: true
+  environment:
+    AWS_SECRET_ACCESS_KEY: "{{ lookup('passwordstore', 'lb_passwords/korp/allas_robot_ec2_secret') }}"
+    AWS_ACCESS_KEY_ID: "{{ lookup('passwordstore', 'lb_passwords/korp/allas_robot_ec2_access') }}"
+    MYSQL_USER: "korp"
+    MYSQL_HOST: "{{ korp_db_server }}"
+    MYSQL_PASSWORD: "{{ lookup('passwordstore', 'lb_passwords/korp/korp_db_user_password') }}"
+  tasks:
+    
+    - name: Install s3cmd
+      ansible.builtin.dnf:
+        name:
+          - s3cmd
+
+    - name: Ensure export directory
+      ansible.builtin.file:
+        path: "{{ corpus_export_dir }}"
+        state: directory
+        mode: "u+rwx,g+rwxs,o+rx"
+        owner: "root"
+        group: "clarin"
+
+    - name: Run korp-make-corpus-package.sh
+      when: corpus_packages_to_export is defined
+      ansible.builtin.command:
+        cmd: "./korp-make-corpus-package.sh --export-database --package-dir {{ corpus_export_dir }} {{ item }}"
+        chdir: "{{ korp_utils_root }}/{{ kp_utils_name }}/scripts"
+      loop: "{{ corpus_packages_to_export }}"
+      loop_control:
+        label: "Built {{ item }}"
+      register: make_package_output
+      failed_when:
+        - make_package_output.rc != 0
+        - '"skipping" not in make_package_output.stderr'
+
+    - name: Extract paths from output
+      set_fact:
+        package_paths: "{{ make_package_output.results | map(attribute='stdout') | map('regex_search', 'Created corpus package (.+)', '\\1') | map('first') | list }}"
+
+    - name: Install to Allas bucket
+      ansible.builtin.command:
+        cmd: "{{ s3cmd }} put {{ item }} s3://{{ corpus_package_bucket }}"
+      loop: "{{ package_paths }}"
+      loop_control:
+        label: "Uploaded {{ item }}"
+
+    - name: Clean up
+      when: cleanup
+      block:
+        - name: Clean up packages
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: absent
+          loop: "{{ package_paths }}"
+
+        - name: Remove empty subdirectories
+          ansible.builtin.shell: |
+            find {{ corpus_export_dir }} -mindepth 1 -type d -empty -delete
+
+    - name: Purge old Allas packages
+      when: purge_old_allas_packages
+      block:
+        - name: List all objects in S3 bucket
+          ansible.builtin.command:
+            cmd: "{{ s3cmd }} ls s3://{{ corpus_package_bucket }}/"
+          register: s3_list
+
+        - name: Set package list var
+          set_fact:
+            all_packages: []
+
+        - name: Parse s3cmd ls output
+          vars:
+            match: "{{ item | regex_search('([^/\\s]+)_korp_(\\d{8}_\\d{6})([^/\\s]+)$', '\\1', '\\2', '\\3') }}"
+            # package names are like klk_fi_1881_korp_20251125_134634.tgz
+            parsed:
+              corpus: "{{ match[0] if match else '' }}"
+              timestamp: "{{ match[1] if match else '' }}"
+              full_name: "{{ match[0] }}_korp_{{ match[1] }}{{ match[2] }}"
+          when: match
+          set_fact:
+            all_packages: "{{ all_packages + [parsed] }}"
+          loop: "{{ s3_list.stdout_lines }}"
+
+        - name: Set packages by date var
+          set_fact:
+            newest_per_corpus: {}
+
+        - name: Determine newest package per corpus
+          set_fact:
+            newest_per_corpus: "{{ newest_per_corpus | combine({item.corpus: item}) }}"
+          loop: "{{ all_packages | sort(attribute='timestamp', reverse=true) }}"
+          when: item.corpus not in newest_per_corpus
+
+        - name: Delete old packages
+          ansible.builtin.command:
+            cmd: "{{ s3cmd }} rm s3://{{ corpus_package_bucket }}/{{ item.full_name }}"
+          loop: "{{ all_packages }}"
+          loop_control:
+            label: "Deleted {{ item }} from Allas"
+          when: newest_per_corpus[item.corpus].timestamp != item.timestamp
