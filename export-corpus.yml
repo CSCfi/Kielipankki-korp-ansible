@@ -49,6 +49,7 @@
 
     - name: Extract paths from output
       set_fact:
+        # Trust that the exporting script has lines like "Created corpus package klk_fi_1881_korp_20251125_134634.tgz"
         package_paths: "{{ make_package_output.results | map(attribute='stdout') | map('regex_search', 'Created corpus package (.+)', '\\1') | map('first') | list }}"
 
     - name: Install to Allas bucket
@@ -101,9 +102,12 @@
             newest_per_corpus: {}
 
         - name: Determine newest package per corpus
+          # For each corpus, store the first one in a sorted list (coming up)
           set_fact:
             newest_per_corpus: "{{ newest_per_corpus | combine({item.corpus: item}) }}"
+          # Before iteration we sort the packages by timestamp, newest first
           loop: "{{ all_packages | sort(attribute='timestamp', reverse=true) }}"
+          # Skip the ones coming later
           when: item.corpus not in newest_per_corpus
 
         - name: Delete old packages
@@ -112,4 +116,5 @@
           loop: "{{ all_packages }}"
           loop_control:
             label: "Deleted {{ item }} from Allas"
+          # If a package isn't the newest one, delete it
           when: newest_per_corpus[item.corpus].timestamp != item.timestamp
