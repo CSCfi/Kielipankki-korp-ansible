@@ -104,6 +104,13 @@
         MYSQL_HOST: "{{ korp_db_server }}"
         MYSQL_PASSWORD: "{{ db_root_password }}"
 
+    - name: Clean up package files
+      when: cleanup
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop: "{{ resolved_packages }}"
+
     # Currently, the (future) Korp frontend produces an error if the
     # configuration refers to an unavailable corpus, so the following
     # two tasks install only the configurations of available corpora.
