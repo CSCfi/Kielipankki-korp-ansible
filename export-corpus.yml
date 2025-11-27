@@ -20,7 +20,7 @@
     MYSQL_HOST: "{{ korp_db_server }}"
     MYSQL_PASSWORD: "{{ lookup('passwordstore', 'lb_passwords/korp/korp_db_user_password') }}"
   tasks:
-    
+
     - name: Install s3cmd
       ansible.builtin.dnf:
         name:
