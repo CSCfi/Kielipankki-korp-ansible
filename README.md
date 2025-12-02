@@ -1,4 +1,4 @@
-# The Language Bank Korp Instance Provisioning
+# The Language Bank's Korp management
 
 ## Prerequisites
 
@@ -8,9 +8,9 @@
 - Your cPouta project's [OpenStack RC file](https://docs.csc.fi/cloud/pouta/install-client/#configure-your-terminal-environment-for-openstack)
 - Key pair for cPouta instances. Created in https://pouta.csc.fi/ (Project > Compute > Key Pairs) and must be named "kielipouta".
 
-## Install requirements
+### Install requirements
 For Python requirements, it is recommended to use a virtual environment:
-```
+```bash
 virtualenv .venv -p python3
 source .venv/bin/activate
 pip install -r requirements_dev.txt
@@ -19,47 +19,32 @@ pip install -r requirements_dev.txt
 The activation step must be done separately for each new session.
 
 After that, external ansible roles can be installed via
-```
+```bash
 ansible-galaxy install -r requirements.yml
 ```
 
-## Source your cPouta (OpenStack) auth file.
+### Source your cPouta (OpenStack) auth file.
 
 The [OpenStack auth file](https://docs.csc.fi/#cloud/pouta/install-client/#configure-your-terminal-environment-for-openstack) is necessary for provisioning the OpenStack resources.
 
-```
-$ source project_2000680-openrc.sh
-```
-
-## Making sure that SSH connection to production Korp works
-
-To ensure that you can establish an SSH connection from your local machine to korp2.csc.fi from outside the office network (VPN still needed), add the following entries to your `.ssh/config`:
-
-
-```
-host korp.csc.fi
-  HostName korp.csc.fi
-  ForwardAgent yes
-  User cloud-user
-  IdentityFile ~/.ssh/id_rsa
-
-host korp2.csc.fi
-  HostName korp2.csc.fi
-  ProxyJump korp.csc.fi
-  User cloud-user
+```bash
+source project_2000680-openrc.sh
 ```
 
-Modify the `IdentityFile` path if needed. Establishing a connection to korp2.csc.fi should now work via korp.csc.fi (i.e. the playbook should run without issues).
+That is correct for the production instance, but note that some instances may be running on a different project, like `clarin`.
 
+### SSH access to Korp
 
-## Provisioning
+You will need to be able to connect via `ssh` to the Korp instance you are provisioning (see `inventories/`). Generally this requires connecting via VPN or the office network, and using a key that has already been installed there by someone else. If you are provisining a fresh Pouta instance, you can install any keys you like by editing `pouta-vm.yml`
+
+## Provisioning an instance
 
 ### Development instance
 
-Development instance is created on Pouta and uses a local database. No corpora are included out of the box.
+The development instance is created on Pouta and uses a local database. No corpora are included out of the box.
 
-```
-$ ansible-playbook korp-pouta.yml -i inventories/dev/hosts
+```bash
+ansible-playbook korp-pouta.yml -i inventories/dev/hosts
 ```
 
 Accessing a newly created instance requires updating the IP in (pre-prod) proxy settings: see [proxy repo](https://github.com/cscfi/kielipankki-proxy?tab=readme-ov-file#updating-ips-of-proxied-vms-like-portal-webanno-etc) for more details.
@@ -68,8 +53,8 @@ Accessing a newly created instance requires updating the IP in (pre-prod) proxy 
 
 Run the provisioning playbook.
 
-```
-$  ansible-playbook korp-production.yml -i inventories/prod/hosts
+```bash
+ansible-playbook korp-production.yml -i inventories/prod/hosts
 ```
 
 By default, some files are downloaded locally into `~/Downloads`. If you do not
