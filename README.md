@@ -79,3 +79,35 @@ $ ansible-playbook -vi inventories/prod/hosts korp-production.yml -t korp-fronte
 To only update the autoindex file creating the links in "/download" run
 
 $ ansible-playbook -vi inventories/prod/hosts korp-production.yml -t download_autoindex
+
+## Exporting and importing corpora
+
+An Allas bucket, by default `korp_corpus_packages`, may be used to export corpus packages from a Korp instance, and as an installation source to install new corpus packages to a Korp instance.
+
+This is managed with two playbooks, `export-corpus.yml` and `install-corpus.yml`.
+
+### Exporting
+
+One-off command-line use can be done with eg.:
+
+```bash
+ansible-playbook -i inventories/prod/ export-corpus.yml --extra-vars '{"corpus_packages_to_export": ["klk_fi_1900", "klk_fi_1901"]}'
+```
+
+This causes the listed packages to be packaged by a script on the remote machine and uploaded to the Allas bucket. By default, the created packages are also deleted, and the Allas bucket is purged of possible older versions of the package. These features can be disabled with the variables `cleanup` and `purge_old_allas_packages`, respectively, being set to `false`.
+
+If you want to have a long list of vars (many packages) in a file, remember Ansible's `--extra-vars @./my_export_vars.yml` syntax.
+
+### Importing
+
+One-off command-line use can be done with eg.:
+
+```bash
+ansible-playbook -i inventories/prod/ install-corpus.yml --extra-vars '{"corpus_packages_to_export": ["klk_fi_1900", "klk_fi_1901"]}'
+```
+
+This causes the listed corpus names to be identified in Allas, downloaded to the remote machine, and installed. If `future_build` is `true`, backend corpus configurations will also be installed _if_ they are present in the backend corpus configurations repo. In other words, this installer doesn't support backend configurations to be included in the package (yet).
+
+By default, the installer identifies the newest (based on timestamps included in object names) available matching package in Allas, but you can also give a full object name, in which case that object name specifically will be used to install the corpus.
+
+By default, the downloaded packages are deleted, which behaviour can again be disabled by setting `cleanup` to `false`.
