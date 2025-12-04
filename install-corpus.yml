@@ -100,9 +100,9 @@
         - result.rc != 0
         - '"skipping" not in result.stderr'
       environment:
-        MYSQL_USER: "root"
-        MYSQL_HOST: "{{ korp_db_server }}"
-        MYSQL_PASSWORD: "{{ db_root_password }}"
+        KORP_MYSQL_USER: "{{ 'korp_admin' if korp_db_server != 'localhost' else 'root' }}"
+        KORP_MYSQL_HOST: "{{ korp_db_server }}"
+        KORP_MYSQL_PASSWORD: "{{ db_root_password }}"
 
     - name: Clean up package files
       when: cleanup
