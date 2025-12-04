@@ -90,7 +90,9 @@
     - name: Run korp-install-corpora.sh
       when: resolved_packages | length > 0
       ansible.builtin.command:
-        cmd: "./korp-install-corpora.sh {{ package_directory }}/{{ item }}"
+        # korp-install-corpora waits really long when the load is big, although installing a corpus
+        # isn't actually that demanding for the server, so let's make a high limit here.
+        cmd: "./korp-install-corpora.sh --load-limit 50 {{ package_directory }}/{{ item }}"
         chdir: "{{ korp_utils_root }}/{{ kp_utils_name }}/scripts"
       loop: "{{ resolved_packages }}"
       loop_control:
