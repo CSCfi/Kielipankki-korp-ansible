@@ -490,6 +490,18 @@ autoindex_info:
     text: 'Citation Database of Fennistic Dialect Dissertations'
     url: 'http://urn.fi/urn:nbn:fi:lb-2025111402'
 
+  - regex: 'femrap/src/*.zip'
+    text: 'RES +NC +PRIV +DEP +OTHER'
+    link: 'http://urn.fi/urn:nbn:fi:lb-2025030505'
+
+  - regex: 'femrap/src'
+    text: 'Feminist women and non-binary rappers in Finland, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025030503'
+
+  - regex: 'femrap'
+    text: 'Feminist women and non-binary rappers in Finland'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025030503'
+
   - regex: 'Fenno-Ugrica*.zip'
     text: 'CC BY'
     url: 'http://creativecommons.org/licenses/by/4.0/'

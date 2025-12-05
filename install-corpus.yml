@@ -90,7 +90,9 @@
     - name: Run korp-install-corpora.sh
       when: resolved_packages | length > 0
       ansible.builtin.command:
-        cmd: "./korp-install-corpora.sh {{ package_directory }}/{{ item }}"
+        # korp-install-corpora waits really long when the load is big, although installing a corpus
+        # isn't actually that demanding for the server, so let's make a high limit here.
+        cmd: "./korp-install-corpora.sh --load-limit 50 {{ package_directory }}/{{ item }}"
         chdir: "{{ korp_utils_root }}/{{ kp_utils_name }}/scripts"
       loop: "{{ resolved_packages }}"
       loop_control:
@@ -100,9 +102,9 @@
         - result.rc != 0
         - '"skipping" not in result.stderr'
       environment:
-        MYSQL_USER: "root"
-        MYSQL_HOST: "{{ korp_db_server }}"
-        MYSQL_PASSWORD: "{{ db_root_password }}"
+        KORP_MYSQL_USER: "{{ 'korp_admin' if korp_db_server != 'localhost' else 'root' }}"
+        KORP_MYSQL_HOST: "{{ korp_db_server }}"
+        KORP_MYSQL_PASSWORD: "{{ db_root_password }}"
 
     - name: Clean up package files
       when: cleanup
