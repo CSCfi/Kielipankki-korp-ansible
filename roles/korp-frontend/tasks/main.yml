@@ -11,7 +11,7 @@
 
 - name: Add nodejs repository (KP variant)
   ansible.builtin.shell:
-    cmd: curl -sL https://rpm.nodesource.com/setup_12.x | bash -
+    cmd: curl -sL https://rpm.nodesource.com/setup_18.x | bash -
     creates: /etc/yum.repos.d/nodesource-el9.repo
   when: not future_build
 
@@ -84,7 +84,7 @@
 
 - name: Build frontend
   ansible.builtin.shell:
-    cmd: "umask 0022 && yarn build"
+    cmd: "umask 0022 && NODE_OPTIONS=--openssl-legacy-provider yarn build"
     chdir: "{{ korp_frontend_home }}"
   when: compile_frontend == true
 
