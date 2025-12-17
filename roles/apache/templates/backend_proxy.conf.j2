@@ -1,4 +1,4 @@
 # Configure reverse proxy for the Korp backend
 ProxyPreserveHost On
-ProxyPass "/{{ korp_path }}/api8" "unix:{{ korp_backend_socket }}|http://127.0.0.1" retry=0
-ProxyPassReverse "/{{ korp_path }}/api8" "unix:{{ korp_backend_socket }}|http://127.0.0.1"
+ProxyPass "/korp/api8" "unix:{{ korp_backend_socket }}|http://127.0.0.1" retry=0
+ProxyPassReverse "/korp/api8" "unix:{{ korp_backend_socket }}|http://127.0.0.1"
