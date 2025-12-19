@@ -45,13 +45,6 @@
       branch: "{{ korp_frontend_news_version }}"
     }
 
-- name: Make our own local config edits
-  ansible.builtin.replace:
-    path: "{{ korp_frontend_config_home }}/app/config.js"
-    regexp: "/korp/api8"
-    replace: "/{{ korp_path }}/api8"
-  when: korp_path != "korp"
-
 - name: Skip this if all up to date
   ansible.builtin.set_fact:
     compile_frontend: true
