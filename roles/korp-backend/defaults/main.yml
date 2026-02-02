@@ -9,6 +9,7 @@ cwb_svn_repo: https://svn.code.sf.net/p/cwb/code/cwb/trunk
 cwb_revision: "r1732"
 cwb_registry: /v/corpora/registry
 cwb_compile_root: "{{ korp_appl_root }}/cwb"
+python_package_name: "python3"
 korp_backend_home: "{{ korp_git_root }}/{{ korp_backend_name }}"
 korp_backend_auth_home: "{{ korp_git_root }}/Kielipankki-korp-backend-auth"
 korp_backend_plugin_home: "{{ korp_git_root }}/Kielipankki-korp-backend-plugins"
