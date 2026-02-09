@@ -1,8 +1,8 @@
 ---
 
 future_build: True
-korp_backend_version: "KP-10997-ACA-RES-support"
-korp_frontend_version: "KP-10997-ACA-RES-support"
+korp_backend_version: "sb-master"
+korp_frontend_version: "future"
 
 korp_backend_corpusconfig_repo: "https://github.com/CSCfi/Kielipankki-korp-corpus-config"
 korp_backend_corpusconfig_version: "future"
