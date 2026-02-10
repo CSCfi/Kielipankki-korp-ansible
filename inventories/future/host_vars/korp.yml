@@ -10,10 +10,12 @@ korp_backend_corpusconfig_home: "{{ korp_git_root }}/Kielipankki-korp-backend-co
 korp_corpus_config_dir: "/v/corpora/config"
 
 korp_backend_plugin_repo: "https://github.com/CSCfi/Kielipankki-korp-backend-plugins"
-korp_backend_plugin_version: "main"
+korp_backend_plugin_version: "future"
 
 korp_frontend_config_repo: "https://github.com/CSCfi/Kielipankki-korp-frontend-config"
 korp_frontend_config_version: "future"
 
 korp_path: "future/korp"
 korp_url: "{{ korp_domain }}/{{ korp_path }}"
+
+python_package_name: "python3.13"
