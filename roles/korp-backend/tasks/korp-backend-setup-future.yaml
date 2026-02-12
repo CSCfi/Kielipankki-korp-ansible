@@ -57,3 +57,10 @@
   loop:
     - modes
     - attributes
+
+- name: Set up mink user
+  ansible.builtin.user:
+    name: mink
+    state: present
+    group: mink
+    generate_ssh_key: yes # easiest way to make sure .ssh and autorized_keys already exists?
