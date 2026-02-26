@@ -60,6 +60,11 @@
     - modes
     - attributes
 
+- name: Set up mink group
+  ansible.builtin.group:
+    name: mink
+    state: present
+
 - name: Set up mink user
   ansible.builtin.user:
     name: mink
