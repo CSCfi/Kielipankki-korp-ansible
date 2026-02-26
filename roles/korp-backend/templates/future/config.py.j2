@@ -63,7 +63,11 @@ CORPUS_CONFIG_DIR = "/v/corpora/config"
 LAB_MODE = False
 
 # Plugins to load
-PLUGINS = []
+PLUGINS = ["plugins.auth_jwt"]
 
 # Plugin configuration
-PLUGINS_CONFIG = {}
+PLUGINS_CONFIG = {
+    "plugins.auth_jwt": {
+        "pubkey_file": "{{ korp_backend_home }}/instance/public_key.pem",
+    }
+}
