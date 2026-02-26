@@ -33,6 +33,7 @@
   loop:
     - src: "future/config.py.j2"
       dest: "{{ korp_backend_home }}/instance/config.py"
+  notify: restart korp-backend
 
 - name: Make corpus configuration dirs
   ansible.builtin.file:
