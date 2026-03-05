@@ -1389,6 +1389,10 @@ autoindex_info:
   - regex: 'YLE'
     text: 'Archives of the Finnish Broadcasting Company'
 
+  - regex: 'YLE/fi/2022-2024-s-vrt/ylenews-fi-2022-2024-s-vrt'
+    text: 'CC BY'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2022082901'
+
   - regex: 'YLE/fi/2019-2021-s-vrt/ylenews-fi-2019-2021-s-vrt'
     text: 'CC BY'
     url: 'https://creativecommons.org/licenses/by/4.0/'
@@ -1444,6 +1448,10 @@ autoindex_info:
   - regex: 'YLE/fi/2019-2021-s-vrt'
     text: 'Finnish news 2019-2021, scrambled VRT'
     url: 'http://urn.fi/urn:nbn:fi:lb-2022082503'
+
+  - regex: 'YLE/fi/2022-2024-s-vrt'
+    text: 'Finnish news 2022-2024, scrambled VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025110405'
 
   - regex: 'YLE/fi/2021-src'
     text: 'Finnish news 2021 source'
