@@ -1425,6 +1425,10 @@ autoindex_info:
     text: 'CLARIN ACA +NC'
     url: 'http://urn.fi/urn:nbn:fi:lb-2022050901'
 
+  - regex: 'YLE/fi/2022-2024-vrt/ylenews-fi-2022-2024-vrt'
+    text: 'CLARIN ACA +NC'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2022050901'
+
   - regex: 'YLE/fi/2011-2018-src'
     text: 'Finnish news 2011-2018, source'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017070501'
@@ -1440,6 +1444,10 @@ autoindex_info:
   - regex: 'YLE/fi/2019-2021-vrt'
     text: 'Finnish news 2019-2021, VRT'
     url: 'http://urn.fi/urn:nbn:fi:lb-2022082501'
+
+  - regex: 'YLE/fi/2022-2024-vrt'
+    text: 'Finnish news 2022-2024, VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025102203'
 
   - regex: 'YLE/fi/2011-2018-s-vrt'
     text: 'Finnish news 2011-2018, scrambled VRT'
