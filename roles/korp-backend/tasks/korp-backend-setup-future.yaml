@@ -70,4 +70,5 @@
     name: mink
     state: present
     group: mink
+    groups: corpora
     generate_ssh_key: yes # easiest way to make sure .ssh and autorized_keys already exists?
