@@ -406,13 +406,13 @@ autoindex_info:
     text: 'DigiTala (2019–2023)'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024013001'
 
-  - regex: 'doneraprat/doneraprat-sample'
-    text: 'The Corpus of Donated Finland-Swedish Speech (Sample)'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2025052721'
-    
   - regex: 'doneraprat/doneraprat-sample/*.zip'
     text: 'The Corpus of Donated Finland-Swedish Speech (Sample, for commercial use)'
     url: 'http://urn.fi/urn:nbn:fi:lb-2024111132'
+
+  - regex: 'doneraprat/doneraprat-sample'
+    text: 'The Corpus of Donated Finland-Swedish Speech (Sample)'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025052721'
 
   - regex: 'doneraprat'
     text: 'The Corpus of Donated Finland-Swedish Speech'
