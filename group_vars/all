@@ -763,26 +763,6 @@ autoindex_info:
     text: 'HFST test morphologies for various languages'
     url: 'http://urn.fi/urn:nbn:fi:lb-2018041704'
 
-  - regex: 'iijoki/vrt/iijoki_vrt.zip'
-    text: 'CLARIN ACA +NC +DEP'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2021030501'
-
-  - regex: 'iijoki/vrt'
-    text: 'Iijoki VRT'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2021020401'
-
-  - regex: 'iijoki/src/iijoki_src.zip'
-    text: 'CLARIN ACA +NC +DEP'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2021030503'
-
-  - regex: 'iijoki/src'
-    text: 'Iijoki SRC'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2021020403'
-
-  - regex: 'iijoki'
-    text: 'Iijoki Collection'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2023110921'
-
   - regex: 'italian-letters/*.zip'
     text: 'CC BY SA'
     url: 'http://creativecommons.org/licenses/by-sa/4.0/'
@@ -950,6 +930,50 @@ autoindex_info:
   - regex: 'ORACC'
     text: 'Open Richly Annotated Cuneiform Corpus'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019111602'
+
+  - regex: 'paatalo/iijoki/vrt/iijoki_vrt.zip'
+    text: 'CLARIN ACA +NC +DEP'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021030501'
+
+  - regex: 'paatalo/iijoki/vrt'
+    text: 'Iijoki VRT'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021020401'
+
+  - regex: 'paatalo/iijoki/src/iijoki_src.zip'
+    text: 'CLARIN ACA +NC +DEP'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021030503'
+
+  - regex: 'paatalo/iijoki/src'
+    text: 'Iijoki Collection, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2021020403'
+
+  - regex: 'paatalo/iijoki'
+    text: 'Iijoki Collection'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2023110921'
+
+  - regex: 'paatalo/paatalo-*/src/*.zip'
+    text: 'CLARIN ACA +NC +DEP v2.1'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2019102105'
+
+  - regex: 'paatalo/paatalo-koilismaa/src'
+    text: 'Koilismaa Collection, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025052201'
+
+  - regex: 'paatalo/paatalo-ihmisia/src'
+    text: 'Ihmisiä telineillä, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025052203'
+
+  - regex: 'paatalo/paatalo-koilismaa'
+    text: 'Koilismaa Collection'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2023110921'
+
+  - regex: 'paatalo/paatalo-ihmisia'
+    text: 'Ihmisiä telineillä'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2023110921'
+
+  - regex: 'paatalo'
+    text: 'The University of Oulu Päätalo collection'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2023110921'
 
   - regex: 'psychlingdesc'
     text: 'Psycholinguistic Descriptives'
