@@ -17,3 +17,5 @@ korp_frontend_config_version: "future"
 
 korp_path: "future/korp"
 korp_url: "{{ korp_domain }}/{{ korp_path }}"
+
+python_package_name: "python3.13"
