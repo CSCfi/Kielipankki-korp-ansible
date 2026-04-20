@@ -947,16 +947,16 @@ autoindex_info:
     text: 'CLARIN ACA +NC +DEP v2.1'
     url: 'http://urn.fi/urn:nbn:fi:lb-2019102105'
 
-  - regex: 'paatalo/paatalo-koillismaa/src'
-    text: 'Koillismaa Collection, source'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2025052201'
+  - regex: 'paatalo/paatalo-koilismaa/src'
+    text: 'Koilismaa Collection, source'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025052203'
 
   - regex: 'paatalo/paatalo-ihmisia/src'
     text: 'Ihmisiä telineillä, source'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2025052203'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2025052201'
 
-  - regex: 'paatalo/paatalo-koillismaa'
-    text: 'Koillismaa Collection'
+  - regex: 'paatalo/paatalo-koilismaa'
+    text: 'Koilismaa Collection'
     url: 'http://urn.fi/urn:nbn:fi:lb-2023110921'
 
   - regex: 'paatalo/paatalo-ihmisia'
