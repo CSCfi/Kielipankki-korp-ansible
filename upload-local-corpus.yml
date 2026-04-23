@@ -1,0 +1,42 @@
+---
+
+# Run like:
+# ansible-playbook upload-local-corpus.yml --extra-vars '{"files_to_upload": ["/path/to/corpus1.tgz", "/path/to/corpus2.tgz"]}'
+#
+# Optional variables:
+#   corpus_package_bucket: Target bucket (default: korp_corpus_packages)
+#
+
+- name: Upload local corpus packages to Allas
+  hosts: localhost
+  connection: local
+  vars:
+    corpus_package_bucket: "korp_corpus_packages"
+    allas_secret_key: "{{ lookup('passwordstore', 'lb_passwords/korp/allas_robot_ec2_secret') }}"
+    allas_access_key: "{{ lookup('passwordstore', 'lb_passwords/korp/allas_robot_ec2_access') }}"
+    s3cmd: "s3cmd --host=a3s.fi --host-bucket='%(bucket)s.a3s.fi' --access_key='{{ allas_access_key }}' --secret_key='{{ allas_secret_key }}'"
+  tasks:
+
+    - name: Check that files_to_upload is defined
+      ansible.builtin.fail:
+        msg: "You must specify files_to_upload, e.g. --extra-vars '{\"files_to_upload\": [\"/path/to/file.tgz\"]}'"
+      when: files_to_upload is not defined or files_to_upload | length == 0
+
+    - name: Verify files exist
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ files_to_upload }}"
+      register: file_stats
+
+    - name: Fail if any file does not exist
+      ansible.builtin.fail:
+        msg: "File not found: {{ item.item }}"
+      loop: "{{ file_stats.results }}"
+      when: not item.stat.exists
+
+    - name: Upload to Allas bucket
+      ansible.builtin.command:
+        cmd: "{{ s3cmd }} put {{ item }} s3://{{ corpus_package_bucket }}/"
+      loop: "{{ files_to_upload }}"
+      loop_control:
+        label: "Uploaded {{ item }}"
