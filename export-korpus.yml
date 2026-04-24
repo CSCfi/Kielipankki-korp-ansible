@@ -10,7 +10,7 @@
         tasks_from: pre-run-steps
       tags: always
 
-- import_playbook: playbooks/korp-production.yml
+- import_playbook: playbooks/export-corpus.yml
 
 - name: Backup logging if normal pre-playbook logging did not happen
   hosts: localhost
