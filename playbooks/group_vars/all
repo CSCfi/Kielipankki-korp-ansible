@@ -1039,9 +1039,13 @@ autoindex_info:
     text: 'Helsinki Corpus of Scottish Correspondence'
     url: 'http://urn.fi/urn:nbn:fi:lb-201411071'
 
-  - regex: 'ScotsCorr/vrt'
-    text: 'Helsinki Corpus of Scottish Correspondence'
-    url: 'http://urn.fi/urn:nbn:fi:lb-201411071'
+  - regex: 'somepressa24/*.zip'
+    text: 'CLARIN RES end-user license +ID +PLAN +BY +NC +LOC +PRIV +NORED +DEP +OTHER'
+    url: 'https://urn.fi/urn:nbn:fi:lb-2024030503'
+
+  - regex: 'somepressa24'
+    text: 'Finnish presidential elections 2024 in social media'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024030505'
 
   - regex: 'YLE/fi-selko/2011-2018-selko-src/ylenews-fi-2011-2018-selko-src'
     text: 'CLARIN ACA +NC'
