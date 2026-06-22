@@ -99,6 +99,26 @@ autoindex_info:
     text: 'Puheen ja EGG:n samanaikaiset tallenteet'
     url: 'http://urn.fi/urn:nbn:fi:lb-2020112923'
 
+  - regex: 'amersuom/*/*/*.zip'
+    text: 'CLARIN RES +ID +PLAN +BY +PRIV +NORED +DEP +OTHER v2.2'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024081923'
+
+  - regex: 'amersuom/*/*.xlsx'
+    text: 'CLARIN RES +ID +PLAN +BY +PRIV +NORED +DEP +OTHER v2.2'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024081923'
+
+  - regex: 'amersuom/WUG_test/Questionnaire/*.pdf'
+    text: 'Questionnaire task files'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024081923'
+
+  - regex: 'amersuom/Sociolinguistic_questionnaire/*.pdf'
+    text: 'Samples of questionnaires'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024081923'
+
+  - regex: 'amersuom'
+    text: 'Spoken Finnish and English of Finnish-American Immigrants (amersuom)'
+    url: 'http://urn.fi/urn:nbn:fi:lb-2024082921'
+
   - regex: 'amph*'
     text: 'CLARIN ACA +NC'
     url: 'http://urn.fi/urn:nbn:fi:lb-2017022402'
