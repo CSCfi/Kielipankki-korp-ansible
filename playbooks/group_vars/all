@@ -109,11 +109,9 @@ autoindex_info:
 
   - regex: 'amersuom/WUG_test/Questionnaire/*.pdf'
     text: 'Questionnaire task files'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2024081923'
 
   - regex: 'amersuom/Sociolinguistic_questionnaire/*.pdf'
     text: 'Samples of questionnaires'
-    url: 'http://urn.fi/urn:nbn:fi:lb-2024081923'
 
   - regex: 'amersuom'
     text: 'Spoken Finnish and English of Finnish-American Immigrants (amersuom)'
