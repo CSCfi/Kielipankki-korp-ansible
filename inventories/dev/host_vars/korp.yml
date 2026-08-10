@@ -1,3 +1,4 @@
 ---
 
 korp_path: "staging/korp"
+korp_backend_venv_python: python3.13

@@ -31,6 +31,14 @@
       - mariadb-devel
       - python-xlwt # for korp_download.cgi
 
+- name: Install non-default venv python
+  when: korp_backend_venv_python != "python3"
+  ansible.builtin.dnf:
+    name:
+      - "{{ korp_backend_venv_python }}"
+      - "{{ korp_backend_venv_python }}-devel"
+    state: present
+
 - name: Create corpora group
   ansible.builtin.group:
     name: corpora
@@ -106,14 +114,14 @@
     name: pip
     state: latest
     virtualenv: "{{ korp_backend_venv }}"
-    virtualenv_python: python3
+    virtualenv_python: "{{ korp_backend_venv_python }}"
     umask: "0022"
 
 - name: Install requirements
   ansible.builtin.pip:
     requirements: "{{ korp_backend_home }}/requirements.txt"
     virtualenv: "{{ korp_backend_venv }}"
-    virtualenv_python: python3
+    virtualenv_python: "{{ korp_backend_venv_python }}"
     umask: "0022"
 
 - name: Set up legacy Kielipankki-korp structure
@@ -131,7 +139,7 @@
     name: gunicorn
     state: latest
     virtualenv: "{{ korp_backend_venv }}"
-    virtualenv_python: python3
+    virtualenv_python: "{{ korp_backend_venv_python }}"
     umask: "0022"
   notify:
     - restart korp-backend
