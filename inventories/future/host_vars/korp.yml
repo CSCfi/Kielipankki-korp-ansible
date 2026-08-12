@@ -3,10 +3,10 @@
 future_build: True
 korp_backend_version: "future"
 korp_backend_venv_python: python3.13
-korp_frontend_version: "KP-11569-fixes-for-presentation"
+korp_frontend_version: "future"
 
 korp_backend_corpusconfig_repo: "https://github.com/CSCfi/Kielipankki-korp-corpus-config"
-korp_backend_corpusconfig_version: "KP-11569-fixes-for-presentation"
+korp_backend_corpusconfig_version: "future"
 korp_backend_corpusconfig_home: "{{ korp_git_root }}/Kielipankki-korp-backend-corpusconfigs"
 korp_corpus_config_dir: "/v/corpora/config"
 
@@ -14,7 +14,7 @@ korp_backend_plugin_repo: "https://github.com/CSCfi/Kielipankki-korp-backend-plu
 korp_backend_plugin_version: "future"
 
 korp_frontend_config_repo: "https://github.com/CSCfi/Kielipankki-korp-frontend-config"
-korp_frontend_config_version: "KP-11569-fixes-for-presentation"
+korp_frontend_config_version: "future"
 
 korp_path: "future/korp"
 korp_url: "{{ korp_domain }}/{{ korp_path }}"
