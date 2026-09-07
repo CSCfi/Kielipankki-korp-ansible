@@ -23,7 +23,7 @@
   become: true
 
 - name: Set root password for MariaDB
-  community.mysql.mysql_user:
+  ansible.mysql.mysql_user:
     login_user: root
     name: root
     password: "{{ db_root_password }}"
@@ -41,7 +41,7 @@
     - korp_auth
 
 - name: Create databases
-  community.mysql.mysql_db:
+  ansible.mysql.mysql_db:
     login_user: root
     login_password: "{{ db_root_password }}"
     name: "{{ item }}"
@@ -60,7 +60,7 @@
     - korp_auth
 
 - name: Create korp user for MariaDB
-  community.mysql.mysql_user:
+  ansible.mysql.mysql_user:
     login_user: root
     login_password: "{{ db_root_password }}"
     user: korp
