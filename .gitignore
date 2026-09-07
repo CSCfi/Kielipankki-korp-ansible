@@ -17,3 +17,6 @@ clarin-openrc.sh
 
 # the obvious:
 *~
+
+# Local ansible directory
+.ansible
