@@ -63,6 +63,6 @@
   ansible.mysql.mysql_user:
     login_user: root
     login_password: "{{ db_root_password }}"
-    user: korp
+    name: korp
     password: "{{ korp_db_password }}"
     priv: "korp.*:ALL/korp_auth.*:ALL"
